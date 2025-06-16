@@ -1,6 +1,6 @@
-QT       += core gui
+QT += core gui
 QT +=network
-
+QT += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,6 +17,7 @@ SOURCES += \
     src/ui/mainwindow.cpp
 
 HEADERS += \
+    src/backend/db/DBM.h \
     src/ui/mainwindow.h
 
 FORMS += \
