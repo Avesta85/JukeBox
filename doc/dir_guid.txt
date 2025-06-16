@@ -1,0 +1,4 @@
+/src --> only cpp 
+	-/backend -> only cpp independent of ui
+	-/ui -> only cpp dependent on ui 
+/ui - > only .ui
