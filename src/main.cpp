@@ -6,7 +6,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    DBM::get_instance();
+
+    QThread* l = QThread::create(&DBM::get_instance);
+    l->start();
 
     MainWindow w;
 
