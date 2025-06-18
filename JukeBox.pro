@@ -18,6 +18,7 @@ SOURCES += \
     src/ui/mainwindow.cpp
 
 HEADERS += \
+    src/backend/db/DBM.h \
     src/ui/mainwindow.h
 
 FORMS += \
