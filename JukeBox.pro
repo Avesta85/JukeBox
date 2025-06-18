@@ -1,6 +1,7 @@
 QT += core gui
 QT +=network
 QT += sql
+QT += concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,6 +14,7 @@ CONFIG += c++17
 INCLUDEPATH += $$PWD/src
 
 SOURCES += \
+    src/backend/db/DBM.cpp \
     src/main.cpp \
     src/ui/mainwindow.cpp
 
