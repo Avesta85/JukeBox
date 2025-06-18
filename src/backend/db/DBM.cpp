@@ -24,7 +24,6 @@ DBM &DBM::get_instance()
     return *s_instance;
 }
 
-
 DBM::DBM()
 {
     try
@@ -56,6 +55,8 @@ DBM::DBM()
 
 void DBM::SetupDb()
 {
+    {
+    std::scoped_lock<QMutex>lock(m_db_mutex);
     QDir path_dir(s_db_path);
     if(!path_dir.exists())
     {
@@ -73,11 +74,13 @@ void DBM::SetupDb()
     }
 
     qDebug() << "data base opened successfully";
+    }
     this->SetupTable();
 }
 
 void DBM::SetupTable()
 {
+    std::scoped_lock<QMutex>lock(m_db_mutex);
     QSqlQuery query;
 
     // user table id , Username , firstname , lastname,password ,email,secret key
@@ -117,7 +120,7 @@ void DBM::SetupTable()
 
     success &= query.exec(""
                           "CREATE TABLE IF NOT EXISTS PlaylistSongs ( "
-                          "Playlist_id INTEGER NOT NULL, "
+                          "playlist_id INTEGER NOT NULL, "
                           "song_id INTEGER NOT NULL, "
                           "PRIMARY KEY (playlist_id , song_id ),"
                           "FOREIGN KEY (playlist_id) REFERENCES playlists (id) ON DELETE CASCADE, "
@@ -139,12 +142,10 @@ void DBM::SetupTable()
 
     success &= query.exec(""
                           "CREATE TABLE IF NOT EXISTS Friends ( "
-                          "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                          "user_id INTEGER NOT NULL, "
-                          "name TEXT, "
-                          "ip TEXT UNIQUE NOT NULL,"
-                          "port INTEGER ,"
-                          "FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE "
+                          "owner_id INTEGER NOT NULL, "
+                          "friend_username TEXT NOT NULL , "
+                          "PRIMARY KEY (owner_id , friend_username),"
+                          "FOREIGN KEY (owner_id) REFERENCES Users (id) ON DELETE CASCADE "
                           "); ");
 
     if(!success)
@@ -180,7 +181,7 @@ QMap<QString, QString> DBM::scanDiskForSongs(const QString &folder_path) const
 
 void DBM::applySyncChanges(const QMap<QString, QString> &diskSongs)
 {
-
+    std::scoped_lock<QMutex>lock(m_db_mutex);
     // load from songs table
 
     QMap<QString,QString> dbSongs;
@@ -253,7 +254,235 @@ void DBM::applySyncChanges(const QMap<QString, QString> &diskSongs)
     }
 }
 
-bool DBM::isDbOpen() const
+bool DBM::insertSong(const QString &name, const QString &path)
 {
+    std::scoped_lock<QMutex>lock(m_db_mutex);
+    QSqlQuery insert;
+
+    insert.prepare("INSERT INTO Songs (name , path) VALUES ( :name , :path )");
+    insert.bindValue(":name",name);
+    insert.bindValue(":path",path);
+
+    if(!insert.exec())
+    {
+        qDebug() << "Failed to insert song:" << insert.lastError().text();
+        return false;
+    }
+
+    qDebug()<<"Song" << name << "inserted successfully.";
+    return true;
+
+}
+
+bool DBM::insertUser(const QString &Username, const QString &Password, const QString &first_name, const QString &last_name, const QString &email, const QString &secret_Key)
+{
+    std::scoped_lock<QMutex>lock(m_db_mutex);
+    QSqlQuery insert ;
+
+    insert.prepare("INSERT INTO Users (username , password , firstname , lastname , email , secret_key) "
+                   "VALUES ( :username , :password , :firstname , :lastname , :email , :secret_key )");
+
+    insert.bindValue(":username", Username);
+    insert.bindValue(":password", Password);
+    insert.bindValue(":firstname", first_name);
+    insert.bindValue(":lastname", last_name);
+    insert.bindValue(":email", email);
+    insert.bindValue(":secret_key", secret_Key);
+
+    if (!insert.exec()) {
+        qDebug() << "Failed to insert user:" << insert.lastError().text();
+        return false;
+    }
+
+    qDebug() << "User" << Username << "inserted successfully.";
+    return true;
+
+}
+
+bool DBM::insertPlaylist(const QString &Playlist_Name, const size_t User_id)
+{
+    std::scoped_lock<QMutex>lock(m_db_mutex);
+    QSqlQuery insert ;
+
+    insert.prepare("INSERT INTO Playlists (name , user_id) VALUES (:name , :user_id )");
+    insert.bindValue(":name",Playlist_Name);
+    insert.bindValue(":user_id",static_cast<qint64>(User_id));
+
+    if (!insert.exec()) {
+        qDebug() << "Failed to insert playlist:" << insert.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Playlist" << Playlist_Name << "inserted successfully.";
+    return true;
+}
+
+bool DBM::insertPlaylistSongs(const size_t Playlist_id, const size_t Song_id)
+{
+    std::scoped_lock<QMutex>lock(m_db_mutex);
+    QSqlQuery insert;
+
+    insert.prepare("INSERT INTO PlaylistSongs (playlist_id , song_id ) VALUES ( :playlist_id , :song_id )");
+    insert.bindValue(":playlist_id",Playlist_id);
+    insert.bindValue(":song_id",Song_id);
+
+    if (!insert.exec()) {
+        qDebug() << "Failed to insert playlist songs:" << insert.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Playlistsong inserted successfully.";
+    return true;
+}
+
+bool DBM::insertFriend(const size_t owner_id, const QString &friend_username)
+{
+    std::scoped_lock<QMutex>lock(m_db_mutex);
+    QSqlQuery insert;
+
+    insert.prepare("INSERT INTO Friends (owner_id , friend_username ) VALUES ( :owner_id , :friend_username )");
+    insert.bindValue(":owner_id",owner_id);
+    insert.bindValue(":friend_username",friend_username);
+
+
+    if (!insert.exec()) {
+        qDebug() << "Failed to insert Friend :" << insert.lastError().text();
+        return false;
+    }
+
+    qDebug() << "Friend inserted successfully.";
+    return true;
+}
+
+bool DBM::insertFavoritSong(const size_t user_id, const size_t song_id)
+{
+    std::scoped_lock<QMutex>lock(m_db_mutex);
+    QSqlQuery insert;
+
+    insert.prepare("INSERT INTO FavoriteSongs (user_id , song_id ) VALUES ( :user_id , :song_id )");
+    insert.bindValue(":user_id",user_id);
+    insert.bindValue(":song_id",song_id);
+
+
+    if (!insert.exec()) {
+        qDebug() << "Failed to insert FavoriteSongs :" << insert.lastError().text();
+        return false;
+    }
+
+    qDebug() << "FavoriteSongs inserted successfully.";
+    return true;
+}
+
+bool DBM::isDbOpen()
+{
+
+    std::scoped_lock<QMutex>lock(m_db_mutex);
     return m_db.isOpen();
+}
+
+bool DBM::isUsernameUnique(const QString& Username)
+{
+    std::scoped_lock<QMutex>lock(m_db_mutex);
+
+    QSqlQuery search;
+
+    search.prepare("SELECT EXISTS(SELECT 1 FROM Users WHERE username = :username");
+    search.bindValue(":username",Username);
+
+    if(!search.exec())
+    {
+        qDebug()<< "username search faild" << search.lastError().text();
+        return false;
+    }
+    if(search.next())
+    {
+        bool exi = search.value(0).toBool();
+
+        return !exi;
+    }
+
+    return false;
+}
+
+bool DBM::verifySongsPath(const QString& path)
+{
+
+    QFileInfo fileInfo(path);
+
+    if (!fileInfo.exists() || !fileInfo.isFile()) {
+        return false;
+    }
+
+    QString suffix = fileInfo.suffix().toLower();
+    if (suffix == "mp3" || suffix == "wav") {
+        return true;
+    }
+
+    return false;
+}
+
+void DBM::applyVerifySongsPath()
+{
+
+    std::scoped_lock<QMutex>lock(m_db_mutex);
+    // Select all songs
+
+    QMap<qint64,QString> allsongs;
+    QSqlQuery selectall;
+    if(!selectall.exec("SELECT id , path FROM Songs"))
+    {
+        qDebug() << "can not select songs from db";
+        throw std::runtime_error("can not select songs from db");
+    }
+
+    while(selectall.next())
+    {
+        allsongs.insert(selectall.value(0).toLongLong(),selectall.value(1).toString());
+    }
+
+    QList<qint64> idsToDelete;
+    for(auto it = allsongs.begin();it != allsongs.end();it++)
+    {
+        if(!verifySongsPath(it.value()))
+        {
+            qDebug()<<"delete invalid path "<<it.value() ;
+            idsToDelete.append(it.key());
+        }
+    }
+
+    if(idsToDelete.isEmpty())
+    {
+        qDebug()<<"all paths is valid";
+        return;
+    }
+
+    qDebug() << " delete paths : "<<idsToDelete.size();
+
+
+
+    if (!m_db.transaction()) {
+        qDebug() << "Failed to start transaction for deletion:" << m_db.lastError().text();
+        return;
+    }
+
+    QSqlQuery deleteQuery;
+    deleteQuery.prepare("DELETE FROM Songs WHERE id = ?");
+    for (const qint64 id : idsToDelete) {
+        deleteQuery.addBindValue(id);
+        if (!deleteQuery.exec()) {
+            qDebug() << "Failed to delete song with id" << id << ":" << deleteQuery.lastError().text();
+            m_db.rollback();
+            return;
+        }
+    }
+
+    if (m_db.commit()) {
+        qDebug() << "Successfully deleted all invalid entries";
+    } else {
+        qDebug() << "Failed to commit deletion transaction : " << m_db.lastError().text();
+        m_db.rollback();
+    }
+
+
+
 }
