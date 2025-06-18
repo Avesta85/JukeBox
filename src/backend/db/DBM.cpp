@@ -202,7 +202,8 @@ void DBM::applySyncChanges(const QMap<QString, QString> &diskSongs)
 
     // compare
 
-    const QSet<QString> dbPath(dbSongs.begin(),dbSongs.end());
+    auto tmplist1 = dbSongs.keys();
+    const QSet<QString> dbPath(tmplist1.begin(),tmplist1.end());
     auto tmplist = diskSongs.keys();
     const QSet<QString> diskPaths(tmplist.begin(),tmplist.end());
 
