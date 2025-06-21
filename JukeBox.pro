@@ -19,6 +19,7 @@ SOURCES += \
     src/ui/mainwindow.cpp
 
 HEADERS += \
+    src/backend/core/Application.h \
     src/backend/db/DBM.h \
     src/ui/mainwindow.h
 
