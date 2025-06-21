@@ -13,10 +13,14 @@ CONFIG += c++17
 INCLUDEPATH += $$PWD/src
 
 SOURCES += \
+    src/backend/core/person.cpp \
+    src/backend/core/user.cpp \
     src/main.cpp \
     src/ui/mainwindow.cpp
 
 HEADERS += \
+    src/backend/core/person.h \
+    src/backend/core/user.h \
     src/backend/db/DBM.h \
     src/ui/mainwindow.h
 
