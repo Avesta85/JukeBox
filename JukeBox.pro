@@ -1,6 +1,7 @@
 QT += core gui
 QT +=network
 QT += sql
+<<<<<<< HEAD
 QT += concurrent
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,10 +15,15 @@ INCLUDEPATH += $$PWD/src
 
 SOURCES += \
     src/backend/db/DBM.cpp \
+    src/backend/core/person.cpp \
+    src/backend/core/user.cpp \
     src/main.cpp \
     src/ui/mainwindow.cpp
 
 HEADERS += \
+
+    src/backend/core/person.h \
+    src/backend/core/user.h \
     src/backend/db/DBM.h \
     src/ui/mainwindow.h
 
