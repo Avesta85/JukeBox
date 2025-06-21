@@ -1,7 +1,6 @@
 QT += core gui
 QT +=network
 QT += sql
-<<<<<<< HEAD
 QT += concurrent
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,7 +20,6 @@ SOURCES += \
     src/ui/mainwindow.cpp
 
 HEADERS += \
-
     src/backend/core/person.h \
     src/backend/core/user.h \
     src/backend/db/DBM.h \
