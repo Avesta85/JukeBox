@@ -13,14 +13,28 @@ CONFIG += c++17
 INCLUDEPATH += $$PWD/src
 
 SOURCES += \
+<<<<<<< HEAD
     src/backend/core/person.cpp \
     src/backend/core/user.cpp \
+=======
+    src/backend/core/media.cpp \
+    src/backend/core/movie.cpp \
+    src/backend/core/playlist.cpp \
+    src/backend/core/song.cpp \
+>>>>>>> media-song-movie
     src/main.cpp \
     src/ui/mainwindow.cpp
 
 HEADERS += \
+<<<<<<< HEAD
     src/backend/core/person.h \
     src/backend/core/user.h \
+=======
+    src/backend/core/media.h \
+    src/backend/core/movie.h \
+    src/backend/core/playlist.h \
+    src/backend/core/song.h \
+>>>>>>> media-song-movie
     src/backend/db/DBM.h \
     src/ui/mainwindow.h
 
