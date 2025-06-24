@@ -15,6 +15,7 @@ INCLUDEPATH += $$PWD/src
 SOURCES += \
     src/backend/core/media.cpp \
     src/backend/core/movie.cpp \
+    src/backend/core/playlist.cpp \
     src/backend/core/song.cpp \
     src/main.cpp \
     src/ui/mainwindow.cpp
@@ -22,6 +23,7 @@ SOURCES += \
 HEADERS += \
     src/backend/core/media.h \
     src/backend/core/movie.h \
+    src/backend/core/playlist.h \
     src/backend/core/song.h \
     src/backend/db/DBM.h \
     src/ui/mainwindow.h
