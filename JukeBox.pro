@@ -18,6 +18,7 @@ SOURCES += \
     src/backend/core/playlist.cpp \
     src/backend/core/song.cpp \
     src/main.cpp \
+    src/ui/choicewindow.cpp \
     src/ui/mainwindow.cpp
 
 HEADERS += \
@@ -26,9 +27,11 @@ HEADERS += \
     src/backend/core/playlist.h \
     src/backend/core/song.h \
     src/backend/db/DBM.h \
+    src/ui/choicewindow.h \
     src/ui/mainwindow.h
 
 FORMS += \
+    ui/choicewindow.ui \
     ui/mainwindow.ui
 
 
@@ -36,3 +39,9 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    res/images/157822-concert-fortnite_extended_set-electronic_dance_music-here_with_me-automotive_lighting-3840x2160.jpg
+
+RESOURCES += \
+    res/seoned-resorces.qrc
