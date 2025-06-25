@@ -10,10 +10,11 @@ class Playlist {
 private:
     QString name;
     size_t playlistId;
+    size_t owner_id;
 
 public:
     Playlist(const QString& name);
-    Playlist(const QString& name, size_t id);
+    Playlist(const QString& name, size_t id , size_t owner_id);
     Playlist(const Playlist& other);
 
     ~Playlist();

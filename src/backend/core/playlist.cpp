@@ -7,7 +7,7 @@ Playlist::Playlist(const QString& name) : name(name), playlistId(-1)
     qDebug() << "Playlist created:" << name;
 }
 
-Playlist::Playlist(const QString& name, size_t id) : name(name), playlistId(id)
+Playlist::Playlist(const QString& name, size_t id,size_t ownerId) : name(name), playlistId(id),owner_id(ownerId)
 {
     qDebug() << "Playlist created:" << name << "with ID:" << id;
 }

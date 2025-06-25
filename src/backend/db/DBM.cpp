@@ -1,5 +1,6 @@
 #include "./DBM.h"
 #include "QtConcurrent/qtconcurrentrun.h"
+#include <optional>
 
 std::unique_ptr<DBM> DBM::s_instance = nullptr;
 
@@ -373,6 +374,143 @@ bool DBM::insertFavoritSong(const size_t user_id, const size_t song_id)
 
     qDebug() << "FavoriteSongs inserted successfully.";
     return true;
+}
+
+//select
+
+void DBM::selectUser(std::optional<User>&local_user_holder,const QString &Username, const QString &Password)
+{
+    std::scoped_lock<QMutex> locker(m_db_mutex);
+
+    QSqlQuery select;
+
+    select.prepare("SELECT id , username , firstname,lastname,email,secret_key FROM Users"
+                   " WHERE username = :username AND password = :password ");
+    select.bindValue(":username" ,Username);
+    select.bindValue(":password",Password);
+
+    if(!select.exec())
+    {
+        throw std::runtime_error("cant run user select query");
+    }
+
+    if(select.next())
+    {
+
+        local_user_holder->setID(select.value(0).toLongLong());
+        local_user_holder->setUserName(select.value(1).toString());
+        local_user_holder->setFirstName(select.value(2).toString());
+        local_user_holder->setLastName(select.value(3).toString());
+        local_user_holder->setEmail(select.value(4).toString());
+
+    }
+    else
+    {
+        local_user_holder = std::nullopt;
+    }
+
+}
+
+QList<Playlist> DBM::getPlaylistsForUser(qint64 userId)
+{
+    std::scoped_lock<QMutex> locker(m_db_mutex);
+
+    QSqlQuery select;
+    QList<Playlist> holder;
+    select.prepare("SELECT id , name, user_id FROM Playlists WHERE user_id = :user_id");
+    select.bindValue(":user_id",userId);
+
+    if(!select.exec())
+    {
+        throw std::runtime_error("cant select playlist from db");
+    }
+
+    while(select.next())
+    {
+
+        Playlist tmp(select.value(1).toString(),select.value(0).toLongLong(),select.value(2).toLongLong());
+        holder.append(tmp);
+    }
+
+    return holder;
+}
+
+QList<Song> DBM::getSongsInPlaylist(qint64 playlistId)
+{
+    std::scoped_lock<QMutex> locker(m_db_mutex);
+
+    QSqlQuery select;
+    QList<Song> holder;
+
+    select.prepare(
+        "SELECT s.id , s.name , s.path FROM Song s "
+        "INNER JOIN PlaylistSongs ps ON s.id = ps.song_id "
+        "WHERE ps.playlist_id = :playlist_id "
+        );
+    select.bindValue(":playlist_id",playlistId);
+
+    if(!select.exec())
+    {
+        throw std::runtime_error("cant select playlist songs from db");
+    }
+
+    while(select.next())
+    {
+        holder.append(Song(select.value(1).toString(),select.value(2).toString(),0,"",select.value(0).toLongLong()));
+    }
+    return holder;
+}
+
+QList<Song> DBM::getFavoriteSongsForUser(qint64 userId)
+{
+    std::scoped_lock<QMutex> locker(m_db_mutex);
+
+    QSqlQuery select;
+    QList<Song> holder;
+
+    select.prepare(
+        "SELECT s.id , s.name ,s.path FROM Songs s "
+        "INNER JOIN FavoriteSongs fs ON s.id = fs.song_id "
+        "WHERE fs.user_id = :user_id"
+        );
+
+    select.bindValue(":user_id",userId);
+
+    if(!select.exec())
+    {
+        throw std::runtime_error("cant select Favorite songs from db");
+    }
+
+    while(select.next())
+    {
+        holder.append(Song(select.value(1).toString(),select.value(2).toString(),0,"",select.value(0).toLongLong()));
+    }
+    return holder;
+}
+
+QList<Person> DBM::getFriendsForUser(qint64 userId)
+{
+    std::scoped_lock<QMutex> locker(m_db_mutex);
+
+    QSqlQuery select;
+    QList<Person> holder;
+
+    select.prepare(
+        "SELECT friend_username WHERE owner_id = :owner_id "
+        );
+    select.bindValue(":owner_id",userId);
+
+    if(!select.exec())
+    {
+        throw std::runtime_error("cant select friend from db");
+    }
+    while(select.next())
+    {
+        holder.append(Person(select.value(0).toString()));
+    }
+
+    return holder;
+
 }
 
 // delete

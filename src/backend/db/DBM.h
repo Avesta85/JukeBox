@@ -63,11 +63,11 @@ public:
 
     //select
 
-    User selectUser(const QString& Username,const QString& Password);
-    QList<Playlist> getPlaylistsForUser(qint64 userId) const;
-    QList<Song> getSongsInPlaylist(qint64 playlistId) const;
-    QList<Song> getFavoriteSongsForUser(qint64 userId) const;
-    QList<User> getFriendsForUser(qint64 userId) const;
+    void selectUser(std::optional<User>& local_user_holder,const QString& Username,const QString& Password);
+    QList<Playlist> getPlaylistsForUser(qint64 userId);
+    QList<Song> getSongsInPlaylist(qint64 playlistId);
+    QList<Song> getFavoriteSongsForUser(qint64 userId);
+    QList<Person> getFriendsForUser(qint64 userId);
 
     // delete
 
