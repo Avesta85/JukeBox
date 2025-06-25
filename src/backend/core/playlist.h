@@ -21,7 +21,7 @@ public:
     const size_t& getId() const;
 
     void setName(const QString& NewName);
-    void setPlaylistId(const size_t NewID);
+    void setPlaylistId(const size_t& NewID);
 
 
 };

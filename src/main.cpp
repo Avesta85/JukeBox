@@ -21,16 +21,10 @@ int main(int argc, char *argv[])
     //signupWin.showMaximized();
     //FrogotPasswordWindow forgotpasswordWin;
     //forgotpasswordWin.showMaximized();
-
-
-
     QThread* l = QThread::create(&DBM::get_instance);
     l->start();
-
     MainWindow w;
-
     w.show();
-
 
     return a.exec();
 }
