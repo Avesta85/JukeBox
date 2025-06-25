@@ -19,7 +19,10 @@ SOURCES += \
     src/backend/core/song.cpp \
     src/main.cpp \
     src/ui/choicewindow.cpp \
-    src/ui/mainwindow.cpp
+    src/ui/frogotpasswordwindow.cpp \
+    src/ui/loginwindow.cpp \
+    src/ui/mainwindow.cpp \
+    src/ui/signupwindow.cpp
 
 HEADERS += \
     src/backend/core/media.h \
@@ -28,11 +31,17 @@ HEADERS += \
     src/backend/core/song.h \
     src/backend/db/DBM.h \
     src/ui/choicewindow.h \
-    src/ui/mainwindow.h
+    src/ui/frogotpasswordwindow.h \
+    src/ui/loginwindow.h \
+    src/ui/mainwindow.h \
+    src/ui/signupwindow.h
 
 FORMS += \
     ui/choicewindow.ui \
-    ui/mainwindow.ui
+    ui/frogotpasswordwindow.ui \
+    ui/loginwindow.ui \
+    ui/mainwindow.ui \
+    ui/signupwindow.ui
 
 
 # Default rules for deployment.

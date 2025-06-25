@@ -20,23 +20,11 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/*QDialog {
+   <string notr="true">QDialog {
     background-image: url(:/dailogs-images/images/157822-concert-fortnite_extended_set-electronic_dance_music-here_with_me-automotive_lighting-3840x2160.jpg);
     background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;  
-}*/
-
-QDialog {
-    background-image: url(:/dailogs-images/images/157822-concert-fortnite_extended_set-electronic_dance_music-here_with_me-automotive_lighting-3840x2160.jpg);
-    background-repeat: no-repeat;
-    /* این خطوط برای پوشش کامل تصویر پس‌زمینه مهم هستند */
-    background-position: center; /* تصویر رو در مرکز قرار میده */
-    background-size: cover;    /* تصویر رو طوری مقیاس‌بندی می‌کنه که کل فضای دیالوگ رو پر کنه */
-
-    /* این خطوط برای مطمئن شدن از پوشش کامل دیالوگ مهم هستند */
-    /* اگر دیالوگ به اندازه کافی بزرگ نباشه، تصویر هم فضای کمی رو پوشش میده */
-    /* بنابراین، مطمئن شوید دیالوگ شما حداکثر اندازه ممکن رو اشغال کنه */
+    background-position: center; 
+    background-size: cover;    
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
