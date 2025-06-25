@@ -80,28 +80,9 @@ void User::setPassword(const QString &password)
 }
 
 //exeption for this methods.....
-void User::addToPlaylist(const std::shared_ptr<Song> &song)
-{
-    m_playlist.append(song);
-}
-
-void User::enqueueFavoriteSong(const std::shared_ptr<Song> &song)
-{
-    m_favoriteSongs.enqueue(song);
-}
-
-void User::addFriend(const std::shared_ptr<Person> &Friend)
-{
-    m_friends.append(Friend);
-}
-
 QString User::getFirstName()const noexcept {return m_firstName;}
 QString User::getLastName()const noexcept {return m_lastName;}
 size_t User::getID()const noexcept {return m_ID;}
 QString User::getEmail()const noexcept {return m_email;}
 QString User::getPassword()const noexcept {return m_password;}
-QVector<std::shared_ptr<Song>> User::getPlaylist()const noexcept {return m_playlist;}
-QQueue<std::shared_ptr<Song>> User::getFavoriteSongs()const noexcept {return m_favoriteSongs;}
-QVector<std::shared_ptr<Person>> User::getFriends()const noexcept {return m_friends;}
-
 User::~User(){}

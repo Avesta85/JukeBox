@@ -32,18 +32,13 @@ public:
     void setID(const size_t ID);
     void setEmail(const QString &email);
     void setPassword(const QString &password);
-    void addToPlaylist(const std::shared_ptr<Song> &song);
-    void enqueueFavoriteSong(const std::shared_ptr<Song> &song);
-    void addFriend(const std::shared_ptr<Person> &Friend);
 
     QString getFirstName() const noexcept;
     QString getLastName()const noexcept;
     size_t getID()const noexcept;
     QString getEmail()const noexcept;
     QString getPassword()const noexcept;
-    QVector<std::shared_ptr<Song>> getPlaylist()const noexcept;
-    QQueue<std::shared_ptr<Song>> getFavoriteSongs()const noexcept;
-    QVector<std::shared_ptr<Person>> getFriends()const noexcept;
+
 
     ~User();
 
