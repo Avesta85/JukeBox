@@ -1,7 +1,7 @@
 #ifndef PLAYLIST_H
 #define PLAYLIST_H
-#include <iostream>
-#include "song.h"
+
+#include "src/backend/core/song.h"
 #include <QString>
 #include <QDebug>
 #include <vector>

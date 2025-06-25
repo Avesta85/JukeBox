@@ -14,7 +14,10 @@
 #include <QMap>
 #include <QSet>
 #include <QObject>
-#include <src/backend/core/user.h>
+#include "src/backend/core/user.h"
+#include "src/backend/core/song.h"
+#include "src/backend/core/playlist.h"
+#include "src/backend/core/person.h"
 
 ///
 /// \brief The DBM class
@@ -61,6 +64,10 @@ public:
     //select
 
     User selectUser(const QString& Username,const QString& Password);
+    QList<Playlist> getPlaylistsForUser(qint64 userId) const;
+    QList<Song> getSongsInPlaylist(qint64 playlistId) const;
+    QList<Song> getFavoriteSongsForUser(qint64 userId) const;
+    QList<User> getFriendsForUser(qint64 userId) const;
 
     // delete
 

@@ -1,6 +1,6 @@
 #ifndef USER_H
 #define USER_H
-#include <vector>
+#include <Qvector>
 #include <QQueue>
 
 #include "person.h"

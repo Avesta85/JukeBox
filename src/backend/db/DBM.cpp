@@ -255,6 +255,7 @@ void DBM::applySyncChanges(const QMap<QString, QString> &diskSongs)
     }
 }
 
+// insert
 bool DBM::insertSong(const QString &name, const QString &path)
 {
     std::scoped_lock<QMutex>lock(m_db_mutex);
@@ -374,6 +375,7 @@ bool DBM::insertFavoritSong(const size_t user_id, const size_t song_id)
     return true;
 }
 
+// delete
 bool DBM::deleteUser(const size_t user_id)
 {
     std::scoped_lock locker(m_db_mutex);
@@ -470,6 +472,7 @@ bool DBM::deleteFavoritSong(const size_t user_id, const size_t song_id)
     return del.numRowsAffected() > 0;
 }
 
+// update
 bool DBM::updatePlaylistName(const size_t playlist_id, const QString &newPlaylist_Name)
 {
     std::scoped_lock locker(m_db_mutex);
