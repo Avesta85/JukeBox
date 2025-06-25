@@ -14,6 +14,8 @@ INCLUDEPATH += $$PWD/src
 
 SOURCES += \
     src/backend/db/DBM.cpp \
+    src/backend/db/DBM.cpp \
+    src/backend/db/DBM.cpp \
     src/backend/core/person.cpp \
     src/backend/core/user.cpp \
     src/main.cpp \
@@ -22,6 +24,7 @@ SOURCES += \
 HEADERS += \
     src/backend/core/person.h \
     src/backend/core/user.h \
+    src/backend/db/DBM.h \
     src/backend/db/DBM.h \
     src/ui/mainwindow.h
 

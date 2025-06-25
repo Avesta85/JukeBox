@@ -374,6 +374,124 @@ bool DBM::insertFavoritSong(const size_t user_id, const size_t song_id)
     return true;
 }
 
+bool DBM::deleteUser(const size_t user_id)
+{
+    std::scoped_lock locker(m_db_mutex);
+    QSqlQuery del;
+    del.prepare("DELETE FROM Users WHERE id = :id");
+    del.bindValue(":id",static_cast<qint64>(user_id));
+
+    if(!del.exec())
+    {
+        qDebug() << "Failed to delete user:" << del.lastError().text();
+        return false;
+    }
+
+    return del.numRowsAffected() > 0;
+}
+
+bool DBM::deleteSong(const size_t Song_id)
+{
+    std::scoped_lock locker(m_db_mutex);
+    QSqlQuery del;
+    del.prepare("DELETE FROM Songs WHERE id = :id");
+    del.bindValue(":id",static_cast<qint64>(Song_id));
+
+    if(!del.exec())
+    {
+        qDebug() << "Failed to delete song:" << del.lastError().text();
+        return false;
+    }
+
+    return del.numRowsAffected() > 0;
+}
+
+bool DBM::deletePlaylist(const size_t playlist_id)
+{
+    std::scoped_lock locker(m_db_mutex);
+    QSqlQuery del;
+    del.prepare("DELETE FROM Playlists WHERE id = :id");
+    del.bindValue(":id",static_cast<qint64>(playlist_id));
+
+    if(!del.exec())
+    {
+        qDebug() << "Failed to delete playlist:" << del.lastError().text();
+        return false;
+    }
+
+    return del.numRowsAffected() > 0;
+}
+
+bool DBM::deletePlaylistSong(const size_t playlist_id, const size_t song_id)
+{
+    std::scoped_lock locker(m_db_mutex);
+    QSqlQuery del;
+    del.prepare("DELETE FROM PlaylistSongs WHERE playlist_id = :playlist_id AND song_id = :song_id ");
+    del.bindValue(":playlist_id",static_cast<qint64>(playlist_id));
+    del.bindValue(":song_id",static_cast<qint64>(song_id));
+    if(!del.exec())
+    {
+        qDebug() << "Failed to delete song from playlist:" << del.lastError().text();
+        return false;
+    }
+
+    return del.numRowsAffected() > 0;
+}
+
+bool DBM::deleteFriend(const size_t user_id, const QString &friend_username)
+{
+    std::scoped_lock locker(m_db_mutex);
+    QSqlQuery del;
+    del.prepare("DELETE FROM Friends WHERE owner_id = :owner_id AND friend_username = :friend_username ");
+    del.bindValue(":owner_id",static_cast<qint64>(user_id));
+    del.bindValue(":friend_username",friend_username);
+    if(!del.exec())
+    {
+        qDebug() << "Failed to delete friend:" << del.lastError().text();
+        return false;
+    }
+
+    return del.numRowsAffected() > 0;
+}
+
+bool DBM::deleteFavoritSong(const size_t user_id, const size_t song_id)
+{
+    std::scoped_lock locker(m_db_mutex);
+    QSqlQuery del;
+    del.prepare("DELETE FROM FavoriteSongs WHERE user_id = :user_id AND song_id = :song_id ");
+    del.bindValue(":user_id",static_cast<qint64>(user_id));
+    del.bindValue(":song_id",static_cast<qint64>(song_id));
+    if(!del.exec())
+    {
+        qDebug() << "Failed to delete favorite song:" << del.lastError().text();
+        return false;
+    }
+
+    return del.numRowsAffected() > 0;
+}
+
+bool DBM::updatePlaylistName(const size_t playlist_id, const QString &newPlaylist_Name)
+{
+    std::scoped_lock locker(m_db_mutex);
+    QSqlQuery update;
+    update.prepare("UPDATE Playlists SET name = :new_name WHERE id = :id");
+    update.bindValue(":new_name",newPlaylist_Name);
+    update.bindValue(":id",static_cast<qint64>(playlist_id));
+
+    if(!update.exec())
+    {
+        qDebug() << "Failed to update playlist name:" << update.lastError().text();
+        return false;
+    }
+    if (update.numRowsAffected() > 0) {
+        qDebug() << "Playlist with id" << playlist_id << "was successfully updated to" << newPlaylist_Name;
+        return true;
+    } else {
+        qDebug() << "Tried to update playlist with id" << playlist_id << "but it was not found.";
+        return false;
+    }
+}
+
 bool DBM::isDbOpen()
 {
 

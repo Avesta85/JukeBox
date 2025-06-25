@@ -14,7 +14,7 @@
 #include <QMap>
 #include <QSet>
 #include <QObject>
-
+#include <src/backend/core/user.h>
 
 ///
 /// \brief The DBM class
@@ -60,7 +60,22 @@ public:
 
     //select
 
+    User selectUser(const QString& Username,const QString& Password);
 
+    // delete
+
+    bool deleteUser(const size_t user_id);
+    bool deleteSong(const size_t Song_id);
+    bool deletePlaylist(const size_t playlist_id);
+    bool deletePlaylistSong(const size_t playlist_id,const size_t song_id);
+    bool deleteFriend(const size_t user_id,const QString& friend_username);
+    bool deleteFavoritSong(const size_t user_id , const size_t song_id);
+
+
+    //update
+
+    bool updateUser(const size_t oldUser_id,const User& newUser);//username sabet hast pas hamechy ro up mikone joz username;
+    bool updatePlaylistName(const size_t playlist_id,const QString& newPlaylist_Name);
 
     //ckeckers
 
