@@ -1,5 +1,6 @@
 #include "person.h"
 
+<<<<<<< HEAD
 Person::Person(QObject *parent) : QObject(parent) {}
 
 void Person::setFirstName(QString firstName)
@@ -25,6 +26,20 @@ void Person::setLastName(QString lastName)
         emit lastNameChanged();
     }
 }
+=======
+Person::Person(QObject *parrent) : QObject(parrent) {}
+
+Person::Person(QString userName , QObject *parrent) : QObject(parrent)
+{
+    if(userName.trimmed().isEmpty())
+    {
+        throw std::invalid_argument("This field cannot be empty!");
+    }
+
+        m_userName = userName;
+}
+
+>>>>>>> user
 
 void Person::setUserName(QString userName)
 {
@@ -38,6 +53,7 @@ void Person::setUserName(QString userName)
     }
 }
 
+<<<<<<< HEAD
 void Person::setIP(QString IP)
 {
     if(IP.trimmed().isEmpty())
@@ -75,5 +91,10 @@ QString Person::getIP() noexcept {return m_IP;}
 size_t Person::getPort() noexcept {return m_port;}
 
 
+=======
+
+QString Person::getUserName() noexcept {return m_userName;}
+
+>>>>>>> user
 Person::~Person() {}
 
