@@ -13,18 +13,44 @@ CONFIG += c++17
 INCLUDEPATH += $$PWD/src
 
 SOURCES += \
+    src/backend/core/media.cpp \
+    src/backend/core/movie.cpp \
+    src/backend/core/playlist.cpp \
+    src/backend/core/song.cpp \
     src/main.cpp \
-    src/ui/mainwindow.cpp
+    src/ui/choicewindow.cpp \
+    src/ui/frogotpasswordwindow.cpp \
+    src/ui/loginwindow.cpp \
+    src/ui/mainwindow.cpp \
+    src/ui/signupwindow.cpp
 
 HEADERS += \
+    src/backend/core/media.h \
+    src/backend/core/movie.h \
+    src/backend/core/playlist.h \
+    src/backend/core/song.h \
     src/backend/db/DBM.h \
-    src/ui/mainwindow.h
+    src/ui/choicewindow.h \
+    src/ui/frogotpasswordwindow.h \
+    src/ui/loginwindow.h \
+    src/ui/mainwindow.h \
+    src/ui/signupwindow.h
 
 FORMS += \
-    ui/mainwindow.ui
+    ui/choicewindow.ui \
+    ui/frogotpasswordwindow.ui \
+    ui/loginwindow.ui \
+    ui/mainwindow.ui \
+    ui/signupwindow.ui
 
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    res/images/157822-concert-fortnite_extended_set-electronic_dance_music-here_with_me-automotive_lighting-3840x2160.jpg
+
+RESOURCES += \
+    res/seoned-resorces.qrc
