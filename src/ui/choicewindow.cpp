@@ -4,9 +4,9 @@
 #include <QApplication>
 #include <QDebug>
 
-Choicewindow::Choicewindow(QWidget *parent)
+ChoiceWindow::ChoiceWindow(QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::Choicewindow)
+    , ui(new Ui::ChoiceWindow)
 {
     ui->setupUi(this);
     QScreen *screen = QApplication::primaryScreen();
@@ -19,7 +19,7 @@ Choicewindow::Choicewindow(QWidget *parent)
     }
 }
 
-Choicewindow::~Choicewindow()
+ChoiceWindow::~ChoiceWindow()
 {
     delete ui;
 }

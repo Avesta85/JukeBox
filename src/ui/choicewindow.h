@@ -4,19 +4,19 @@
 #include <QDialog>
 
 namespace Ui {
-class Choicewindow;
+class ChoiceWindow;
 }
 
-class Choicewindow : public QDialog
+class ChoiceWindow : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Choicewindow(QWidget *parent = nullptr);
-    ~Choicewindow();
+    explicit ChoiceWindow(QWidget *parent = nullptr);
+    ~ChoiceWindow();
 
 private:
-    Ui::Choicewindow *ui;
+    Ui::ChoiceWindow *ui;
 };
 
 #endif // CHOICEWINDOW_H
