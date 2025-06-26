@@ -1,8 +1,8 @@
 #include "person.h"
 
-Person::Person(QObject *parrent) : QObject(parrent) {}
+Person::Person(){}
 
-Person::Person(QString userName , QObject *parrent) : QObject(parrent)
+Person::Person(QString userName)
 {
     if(userName.trimmed().isEmpty())
     {
@@ -21,7 +21,6 @@ void Person::setUserName(QString userName)
     if(this->m_userName != userName)
     {
         this->m_userName = userName;
-        emit userNameChanged();
     }
 }
 
