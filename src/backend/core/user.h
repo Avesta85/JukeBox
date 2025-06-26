@@ -1,17 +1,13 @@
 #ifndef USER_H
 #define USER_H
-#include <Qvector>
+#include <QVector>
 #include <QQueue>
 
 #include "person.h"
 
 class User final : public Person
 {
-    Q_OBJECT
-    Q_PROPERTY(QString m_firstName READ getFirstName WRITE setFirstName NOTIFY firstNameChanged)
-    Q_PROPERTY(QString m_lastName READ getLastName WRITE setLastName NOTIFY lastNameChanged)
-    Q_PROPERTY(QString m_password READ getPassword WRITE setPassword NOTIFY passwordChanged)
-    Q_PROPERTY(QString m_email READ getEmail WRITE setEmail NOTIFY emailChanged)
+
 
 private:
     QString m_firstName;
@@ -19,13 +15,10 @@ private:
     size_t  m_ID;
     QString m_password;
     QString m_email;
-    QVector<std::shared_ptr<Song>> m_playlist;
-    QQueue<std::shared_ptr<Song>> m_favoriteSongs ;
-    QVector<std::shared_ptr<Person>> m_friends;
 
 public:
     User();
-    User(QString firstName, QString lastName, QString userName, size_t ID, QString password, QString email, QObject *parrent = nullptr);
+    User(QString firstName, QString lastName, QString userName, size_t ID, QString password, QString email);
 
     void setFirstName(const QString firstName);
     void setLastName(const QString lastName);
@@ -41,12 +34,6 @@ public:
 
 
     ~User();
-
-signals:
-    void firstNameChanged();
-    void lastNameChanged();
-    void passwordChanged();
-    void emailChanged();
 };
 
 #endif // USER_H

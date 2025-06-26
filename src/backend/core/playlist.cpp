@@ -16,7 +16,6 @@ Playlist::Playlist(const Playlist& other) : name(other.name), playlistId(other.p
 {
     // these are shallow copy , if you want to have a sprated source must use deep copy wich is not commen
 
-
     qDebug() << "Playlist copy constructor called for:" << name;
 }
 
