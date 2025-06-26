@@ -75,7 +75,7 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QLineEdit" name="lineEdit_first"/>
+            <widget class="QLineEdit" name="lineEdit_first_word"/>
            </item>
            <item>
             <widget class="QLineEdit" name="lineEdit_seconde_word"/>
@@ -114,7 +114,14 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="pushButton_Back">
+           <property name="text">
+            <string>Back</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_coniform">
            <property name="text">
             <string>Confirm</string>
            </property>

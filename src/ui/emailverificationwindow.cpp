@@ -12,3 +12,11 @@ EmailVerificationWindow::~EmailVerificationWindow()
 {
     delete ui;
 }
+
+void EmailVerificationWindow::on_pushButton_Back_clicked()
+{
+    ui->lineEdit_email->clear();
+    emit backToForgetPassWindow();
+    this->close();
+}
+

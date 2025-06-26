@@ -15,6 +15,12 @@ public:
     explicit EmailVerificationWindow(QWidget *parent = nullptr);
     ~EmailVerificationWindow();
 
+signals:
+    void backToForgetPassWindow();
+
+private slots:
+    void on_pushButton_Back_clicked();
+
 private:
     Ui::EmailVerificationWindow *ui;
 };

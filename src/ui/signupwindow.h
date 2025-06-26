@@ -2,6 +2,9 @@
 #define SIGNUPWINDOW_H
 
 #include <QDialog>
+#include <QString>
+#include <QMessageBox>
+#include <QRegularExpression>
 
 namespace Ui {
 class SignupWindow;
@@ -14,6 +17,14 @@ class SignupWindow : public QDialog
 public:
     explicit SignupWindow(QWidget *parent = nullptr);
     ~SignupWindow();
+
+signals:
+    void backToChoiseWindow();
+
+private slots:
+    void on_pushButton_cancel_clicked();
+
+    void on_pushButton_signup_clicked();
 
 private:
     Ui::SignupWindow *ui;
