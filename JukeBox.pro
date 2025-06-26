@@ -15,12 +15,9 @@ INCLUDEPATH += $$PWD/src
 
 SOURCES += \
     src/backend/db/DBM.cpp \
-    src/backend/db/DBM.cpp \
-    src/backend/db/DBM.cpp \
     src/backend/core/person.cpp \
     src/backend/core/media.cpp \
     src/backend/core/movie.cpp \
-    src/backend/core/person.cpp \
     src/backend/core/playlist.cpp \
     src/backend/core/song.cpp \
     src/backend/core/user.cpp \
@@ -31,7 +28,6 @@ HEADERS += \
     src/backend/core/person.h \
     src/backend/core/user.h \
     src/backend/db/DBM.h \
-    src/backend/core/Application.h \
     src/backend/core/media.h \
     src/backend/core/movie.h \
     src/backend/core/person.h \
