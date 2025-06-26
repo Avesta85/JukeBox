@@ -2,7 +2,7 @@
 
 User::User() {}
 
-User::User(QString firstName, QString lastName, QString userName, size_t ID, QString password, QString email, QObject *parrent) : Person(userName, parrent)
+User::User(QString firstName, QString lastName, QString userName, size_t ID, QString password, QString email) : Person(userName)
 {
     if(firstName.trimmed().isEmpty())
         throw std::invalid_argument("This field cannot be empty!");
@@ -31,7 +31,7 @@ void User::setFirstName(const QString firstName)
     if(this->m_firstName != firstName)
     {
         this->m_firstName = firstName;
-        emit firstNameChanged();
+
     }
 }
 
@@ -43,7 +43,7 @@ void User::setLastName(const QString lastName)
     if(this->m_lastName != lastName)
     {
         this->m_lastName = lastName;
-        emit lastNameChanged();
+
     }
 }
 
@@ -58,13 +58,6 @@ void User::setEmail(const QString &email)
     if(email.trimmed().isEmpty())
         throw std::invalid_argument("This field cannot be empty!");
 
-    // more exeption will add
-
-    if(this->m_email != email)
-    {
-        this->m_email = email;
-        emit emailChanged();
-    }
 }
 
 void User::setPassword(const QString &password)
@@ -75,7 +68,7 @@ void User::setPassword(const QString &password)
     if(this->m_password != password)
     {
         this->m_password = password;
-        emit passwordChanged();
+
     }
 }
 
