@@ -31,6 +31,7 @@ win32 {
 }
 
 SOURCES += \
+    src/backend/core/UserManager.cpp \
     src/backend/db/DBM.cpp \
     src/backend/core/person.cpp \
     src/backend/core/media.cpp \

@@ -437,28 +437,32 @@ QList<Playlist> DBM::getPlaylistsForUser(qint64 userId)
 
 QList<Song> DBM::getSongsInPlaylist(qint64 playlistId)
 {
-    std::scoped_lock<QMutex> locker(m_db_mutex);
+    std::scoped_lock locker(m_db_mutex);
+    QList<Song> songs;
+    QSqlQuery query;
 
-    QSqlQuery select;
-    QList<Song> holder;
-
-    select.prepare(
-        "SELECT s.id , s.name , s.path FROM Song s "
-        "INNER JOIN PlaylistSongs ps ON s.id = ps.song_id "
-        "WHERE ps.playlist_id = :playlist_id "
+    query.prepare(
+        "SELECT Songs.id, Songs.name, Songs.path FROM Songs "
+        "INNER JOIN PlaylistSongs ON Songs.id = PlaylistSongs.song_id "
+        "WHERE PlaylistSongs.playlist_id = ?"
         );
-    select.bindValue(":playlist_id",playlistId);
+    query.addBindValue(playlistId);
 
-    if(!select.exec())
-    {
-        throw std::runtime_error("cant select playlist songs from db");
+    if (!query.exec()) {
+        qDebug() << "Failed to get songs for playlist:" << query.lastError();
+        return songs;
     }
 
-    while(select.next())
-    {
-        holder.append(Song(select.value(1).toString(),select.value(2).toString(),0,"",select.value(0).toLongLong()));
+    while (query.next()) {
+        songs.append(Song(
+            query.value(1).toString(),   // name
+            query.value(2).toString(),     // path
+            0,
+            "",
+            query.value(0).toLongLong() // id
+            ));
     }
-    return holder;
+    return songs;
 }
 
 QList<Song> DBM::getFavoriteSongsForUser(qint64 userId)
@@ -487,6 +491,7 @@ QList<Song> DBM::getFavoriteSongsForUser(qint64 userId)
     }
     return holder;
 }
+
 
 QList<Person> DBM::getFriendsForUser(qint64 userId)
 {
@@ -530,21 +535,7 @@ bool DBM::deleteUser(const size_t user_id)
     return del.numRowsAffected() > 0;
 }
 
-bool DBM::deleteSong(const size_t Song_id)
-{
-    std::scoped_lock locker(m_db_mutex);
-    QSqlQuery del;
-    del.prepare("DELETE FROM Songs WHERE id = :id");
-    del.bindValue(":id",static_cast<qint64>(Song_id));
 
-    if(!del.exec())
-    {
-        qDebug() << "Failed to delete song:" << del.lastError().text();
-        return false;
-    }
-
-    return del.numRowsAffected() > 0;
-}
 
 bool DBM::deletePlaylist(const size_t playlist_id)
 {
@@ -608,6 +599,56 @@ bool DBM::deleteFavoritSong(const size_t user_id, const size_t song_id)
     }
 
     return del.numRowsAffected() > 0;
+}
+
+bool DBM::updateUserPassword(qint64 user_id, const QString &newPassword)
+{
+
+    std::scoped_lock locker(m_db_mutex);
+
+    QSqlQuery query;
+    query.prepare("UPDATE Users SET password = :password WHERE id = :id");
+
+    query.bindValue(":password", newPassword);
+    query.bindValue(":id", user_id);
+
+    if (!query.exec()) {
+        qDebug() << "Failed to update user password:" << query.lastError().text();
+        return false;
+    }
+
+    if (query.numRowsAffected() > 0) {
+        qDebug() << "Password for user id" << user_id << "updated successfully.";
+        return true;
+    } else {
+        qDebug() << "Update password failed: User with id" << user_id << "not found.";
+        return false;
+    }
+}
+
+bool DBM::updateUserEmail(qint64 user_id, const QString &newEmail)
+{
+
+    std::scoped_lock locker(m_db_mutex);
+
+    QSqlQuery query;
+    query.prepare("UPDATE Users SET email = :email WHERE id = :id");
+
+    query.bindValue(":email", newEmail);
+    query.bindValue(":id", user_id);
+
+    if (!query.exec()) {
+        qDebug() << "Failed to update user email:" << query.lastError().text();
+        return false;
+    }
+
+    if (query.numRowsAffected() > 0) {
+        qDebug() << "Email for user id" << user_id << "updated successfully.";
+        return true;
+    } else {
+        qDebug() << "Update email failed: User with id" << user_id << "not found.";
+        return false;
+    }
 }
 
 // update

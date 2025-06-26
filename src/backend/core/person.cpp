@@ -23,7 +23,7 @@ void Person::setUserName(QString userName)
     }
 }
 
-QString Person::getUserName() noexcept {return m_userName;}
+QString Person::getUserName() const noexcept {return m_userName;}
 
 Person::~Person() {}
 

@@ -72,7 +72,21 @@ public:
     // delete
 
     bool deleteUser(const size_t user_id);
-    bool deleteSong(const size_t Song_id);
+    bool deleteSong(const size_t Song_id)
+    {
+        std::scoped_lock locker(m_db_mutex);
+        QSqlQuery del;
+        del.prepare("DELETE FROM Songs WHERE id = :id");
+        del.bindValue(":id",static_cast<qint64>(Song_id));
+
+        if(!del.exec())
+        {
+            qDebug() << "Failed to delete song:" << del.lastError().text();
+            return false;
+        }
+
+        return del.numRowsAffected() > 0;
+    }
     bool deletePlaylist(const size_t playlist_id);
     bool deletePlaylistSong(const size_t playlist_id,const size_t song_id);
     bool deleteFriend(const size_t user_id,const QString& friend_username);
@@ -81,7 +95,8 @@ public:
 
     //update
 
-    bool updateUser(const size_t oldUser_id,const User& newUser);//username sabet hast pas hamechy ro up mikone joz username;
+    bool updateUserPassword(qint64 user_id ,const QString& newPassword );
+    bool updateUserEmail(qint64 user_id , const QString& newEmail);
     bool updatePlaylistName(const size_t playlist_id,const QString& newPlaylist_Name);
 
     //ckeckers

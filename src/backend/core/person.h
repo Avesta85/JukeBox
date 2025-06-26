@@ -23,7 +23,7 @@ public:
 
     void setUserName(QString m_userName);
 
-    QString getUserName()noexcept;
+    QString getUserName() const noexcept;
 
     ~Person();
 };
