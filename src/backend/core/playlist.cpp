@@ -15,8 +15,6 @@ Playlist::Playlist(const QString& name, size_t id,size_t ownerId) : name(name), 
 Playlist::Playlist(const Playlist& other) : name(other.name), playlistId(other.playlistId)
 {
     // these are shallow copy , if you want to have a sprated source must use deep copy wich is not commen
-    for (Media* item : other.mediaItems)
-        mediaItems.push_back(item);
 
     qDebug() << "Playlist copy constructor called for:" << name;
 }
@@ -24,7 +22,7 @@ Playlist::Playlist(const Playlist& other) : name(other.name), playlistId(other.p
 Playlist::~Playlist()
 {
     qDebug() << "Playlist destructor called for:" << name;
-    mediaItems.clear();
+
 }
 
 void Playlist::setName(const QString& NewName)

@@ -10,27 +10,22 @@
 
 
 
-class Person : public QObject
+class Person
 {
-    Q_OBJECT
-    Q_PROPERTY(QString m_userName READ getUserName WRITE setUserName NOTIFY userNameChanged)
+
 
 private :
     QString m_userName;
 
 public:
-    Person(QObject *parrent = nullptr);
-    Person(QString userName, QObject *parrent = nullptr);
+    Person();
+    Person(QString userName);
 
     void setUserName(QString m_userName);
 
     QString getUserName()noexcept;
 
     ~Person();
-
-signals:
-    void userNameChanged();
-
 };
 
 #endif // PERSON_H
