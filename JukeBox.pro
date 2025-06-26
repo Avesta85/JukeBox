@@ -5,17 +5,30 @@ QT += concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++20
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-BOTAN_PATH = C:/vcpkg/installed/x64-windows
+BOTAN_PATH = $$(BOTAN_ROOT)
 
-INCLUDEPATH += $$PWD/src &&BOTAN_PATH/include/botan
+isEmpty(BOTAN_PATH) {
 
+    error("Environment variable 'BOTAN_ROOT' is not set. Please set it to your Botan installation path (e.g., C:/vcpkg/installed/x64-mingw-static).")
+} else {
+
+    message("Using Botan from environment variable: $$BOTAN_PATH")
+}
+
+
+INCLUDEPATH += $$BOTAN_PATH/include
 LIBS += -L$$BOTAN_PATH/lib -lbotan-3
+
+win32 {
+    message("Configuring Botan for Windows platform...")
+    DEFINES += BOTAN_TARGET_OS_IS_WINDOWS
+}
 
 SOURCES += \
     src/backend/db/DBM.cpp \
@@ -25,6 +38,7 @@ SOURCES += \
     src/backend/core/playlist.cpp \
     src/backend/core/song.cpp \
     src/backend/core/user.cpp \
+    src/backend/security/SecurityManager.cpp \
     src/main.cpp \
     src/ui/mainwindow.cpp
 
@@ -40,6 +54,7 @@ HEADERS += \
     src/backend/core/song.h \
     src/backend/core/user.h \
     src/backend/db/DBM.h \
+    src/backend/security/SecurityManager.h \
     src/ui/mainwindow.h
 
 
