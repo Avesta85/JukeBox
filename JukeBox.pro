@@ -18,10 +18,13 @@ SOURCES += \
     src/backend/core/playlist.cpp \
     src/backend/core/song.cpp \
     src/main.cpp \
+    src/ui/changepasswordwindow.cpp \
     src/ui/choicewindow.cpp \
+    src/ui/emailverificationwindow.cpp \
     src/ui/frogotpasswordwindow.cpp \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
+    src/ui/receivesecurewordswindow.cpp \
     src/ui/signupwindow.cpp
 
 HEADERS += \
@@ -30,17 +33,23 @@ HEADERS += \
     src/backend/core/playlist.h \
     src/backend/core/song.h \
     src/backend/db/DBM.h \
+    src/ui/changepasswordwindow.h \
     src/ui/choicewindow.h \
+    src/ui/emailverificationwindow.h \
     src/ui/frogotpasswordwindow.h \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
+    src/ui/receivesecurewordswindow.h \
     src/ui/signupwindow.h
 
 FORMS += \
+    ui/changepasswordwindow.ui \
     ui/choicewindow.ui \
+    ui/emailverificationwindow.ui \
     ui/frogotpasswordwindow.ui \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
+    ui/receivesecurewordswindow.ui \
     ui/signupwindow.ui
 
 
