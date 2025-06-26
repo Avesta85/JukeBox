@@ -25,6 +25,7 @@ SOURCES += \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
     src/ui/receivesecurewordswindow.cpp \
+    src/ui/showkeywords.cpp \
     src/ui/signupwindow.cpp
 
 HEADERS += \
@@ -40,6 +41,7 @@ HEADERS += \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
     src/ui/receivesecurewordswindow.h \
+    src/ui/showkeywords.h \
     src/ui/signupwindow.h
 
 FORMS += \
@@ -50,6 +52,7 @@ FORMS += \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
     ui/receivesecurewordswindow.ui \
+    ui/showkeywords.ui \
     ui/signupwindow.ui
 
 
