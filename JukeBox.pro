@@ -11,7 +11,11 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += $$PWD/src
+BOTAN_PATH = C:/vcpkg/installed/x64-windows
+
+INCLUDEPATH += $$PWD/src &&BOTAN_PATH/include/botan
+
+LIBS += -L$$BOTAN_PATH/lib -lbotan-3
 
 SOURCES += \
     src/backend/db/DBM.cpp \
@@ -25,6 +29,7 @@ SOURCES += \
     src/ui/mainwindow.cpp
 
 HEADERS += \
+    src/backend/core/UserManager.h \
     src/backend/core/person.h \
     src/backend/core/user.h \
     src/backend/db/DBM.h \
@@ -41,12 +46,6 @@ HEADERS += \
 FORMS += \
     ui/mainwindow.ui
 
-INCLUDEPATH += $$PWD/src
-QT += core gui
-QT += network
-QT += sql
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-CONFIG += c++17
 
 
 # Default rules for deployment.
