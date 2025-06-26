@@ -1,7 +1,9 @@
 #ifndef EMAILVERIFICATIONWINDOW_H
 #define EMAILVERIFICATIONWINDOW_H
-
+#include <QString>
+#include <QMessageBox>
 #include <QDialog>
+#include "changepasswordwindow.h"
 
 namespace Ui {
 class EmailVerificationWindow;
@@ -21,8 +23,11 @@ signals:
 private slots:
     void on_pushButton_Back_clicked();
 
+    void on_pushButton_coniform_clicked();
+
 private:
     Ui::EmailVerificationWindow *ui;
+    ChangePasswordWindow* changePassWindow;
 };
 
 #endif // EMAILVERIFICATIONWINDOW_H

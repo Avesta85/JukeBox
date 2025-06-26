@@ -1,3 +1,4 @@
+
 #include "./src/ui/mainwindow.h"
 #include "ui/choicewindow.h"
 #include "ui/loginwindow.h"
@@ -17,7 +18,7 @@ int main(int argc, char *argv[])
     choiceWin.showMaximized();
     LoginWindow loginWin;
     //loginWin.showMaximized();
-     SignupWindow signupWin;
+    SignupWindow signupWin;
     //signupWin.showMaximized();
     FrogotPasswordWindow forgotpasswordWin;
     //forgotpasswordWin.showMaximized();

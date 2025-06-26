@@ -7,7 +7,9 @@ LoginWindow::LoginWindow(QWidget *parent)
 {
     ui->setupUi(this);
     forgetPassWindow = new FrogotPasswordWindow;
+    changePass = new ChangePasswordWindow;
     connect(forgetPassWindow, &FrogotPasswordWindow::backToLoginWindow, this, LoginWindow::show);
+    connect(changePass, &ChangePasswordWindow::goToLoginWindow, this , LoginWindow::show);
 }
 
 LoginWindow::~LoginWindow()

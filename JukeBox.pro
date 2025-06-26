@@ -13,6 +13,7 @@ CONFIG += c++17
 INCLUDEPATH += $$PWD/src
 
 SOURCES += \
+    src/backend/core/SendEmail.cpp \
     src/backend/core/media.cpp \
     src/backend/core/movie.cpp \
     src/backend/core/playlist.cpp \
@@ -28,6 +29,7 @@ SOURCES += \
     src/ui/signupwindow.cpp
 
 HEADERS += \
+    src/backend/core/SendEmail.h \
     src/backend/core/media.h \
     src/backend/core/movie.h \
     src/backend/core/playlist.h \
@@ -51,6 +53,15 @@ FORMS += \
     ui/mainwindow.ui \
     ui/receivesecurewordswindow.ui \
     ui/signupwindow.ui
+
+QT += core
+CONFIG += c++11
+
+INCLUDEPATH += $$PWD/curl
+LIBS += -L$$PWD/lib -lcurl
+
+
+QT += network
 
 
 # Default rules for deployment.

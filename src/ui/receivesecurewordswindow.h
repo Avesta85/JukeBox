@@ -2,6 +2,9 @@
 #define RECEIVESECUREWORDSWINDOW_H
 
 #include <QDialog>
+#include <Qstring>
+#include <QMessageBox>
+#include "changepasswordwindow.h"
 
 namespace Ui {
 class ReceiveSecureWordsWindow;
@@ -21,8 +24,12 @@ signals:
 private slots:
     void on_pushButton_Back_clicked();
 
+    void on_pushButton_coniform_clicked();
+
 private:
     Ui::ReceiveSecureWordsWindow *ui;
+    ChangePasswordWindow* changePassWidnow;
 };
+
 
 #endif // RECEIVESECUREWORDSWINDOW_H
