@@ -26,7 +26,6 @@ SOURCES += \
     src/ui/frogotpasswordwindow.cpp \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
-    src/ui/settingdialog.cpp \
     src/ui/signupwindow.cpp
 
 HEADERS += \
@@ -42,12 +41,10 @@ HEADERS += \
     src/ui/frogotpasswordwindow.h \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
-    src/ui/settingdialog.h \
     src/ui/signupwindow.h
 
 
 FORMS += \
-    src/ui/settingdialog.ui \
     ui/choicewindow.ui \
     ui/frogotpasswordwindow.ui \
     ui/loginwindow.ui \
