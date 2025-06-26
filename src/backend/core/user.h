@@ -1,12 +1,17 @@
 #ifndef USER_H
 #define USER_H
-#include <Qvector>
+#include <QVector>
 #include <QQueue>
 
 #include "person.h"
 
-class User final : public Person
+class User final : public Person , public QObject
 {
+    Q_OBJECT
+    Q_PROPERTY(QString m_firstName READ getFirstName WRITE setFirstName NOTIFY firstNameChanged)
+    Q_PROPERTY(QString m_lastName READ getLastName WRITE setLastName NOTIFY lastNameChanged)
+    Q_PROPERTY(QString m_password READ getPassword WRITE setPassword NOTIFY passwordChanged)
+    Q_PROPERTY(QString m_email READ getEmail WRITE setEmail NOTIFY emailChanged)
 
 private:
     QString m_firstName;
@@ -14,7 +19,6 @@ private:
     size_t  m_ID;
     QString m_password;
     QString m_email;
-
 
 public:
     User();
