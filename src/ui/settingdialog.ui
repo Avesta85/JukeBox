@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FrogotPasswordWindow</class>
- <widget class="QDialog" name="FrogotPasswordWindow">
+ <class>SettingDialog</class>
+ <widget class="QDialog" name="SettingDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>885</width>
-    <height>643</height>
+    <width>859</width>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle">
