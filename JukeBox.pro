@@ -39,7 +39,6 @@ SOURCES += \
     src/backend/core/song.cpp \
     src/backend/core/user.cpp \
     src/backend/security/SecurityManager.cpp \
-    src/backend/security/SecurityManager.cpp \
     src/main.cpp \
     src/ui/mainwindow.cpp
 
@@ -55,7 +54,6 @@ HEADERS += \
     src/backend/core/song.h \
     src/backend/core/user.h \
     src/backend/db/DBM.h \
-    src/backend/security/SecurityManager.h \
     src/backend/security/SecurityManager.h \
     src/ui/mainwindow.h
 

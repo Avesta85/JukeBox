@@ -8,12 +8,7 @@ int main(int argc, char *argv[])
 
     SecurityManager sm;
 
-    QString test = "Avestagame858";
-    auto hashed = sm.Hash(test);
-    auto encrypted = sm.encrypt(test,"Avesta");
-    auto decrypted = sm.decrypt(test,"Avesta");
-    qDebug()<< hashed;
-    qDebug()<< encrypted;
-    qDebug()<< decrypted ;
+    qDebug()<< sm.securityKey_gen();
+
     return a.exec();
 }
