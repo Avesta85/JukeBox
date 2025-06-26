@@ -93,7 +93,20 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout">
              <item>
-              <widget class="QLineEdit" name="lineEdit_name"/>
+              <widget class="QLineEdit" name="lineEdit_name">
+               <property name="toolTip">
+                <string>just alphabets</string>
+               </property>
+               <property name="toolTipDuration">
+                <number>-1</number>
+               </property>
+               <property name="statusTip">
+                <string/>
+               </property>
+               <property name="autoFillBackground">
+                <bool>false</bool>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -113,7 +126,11 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_2">
              <item>
-              <widget class="QLineEdit" name="lineEdit_lastname"/>
+              <widget class="QLineEdit" name="lineEdit_lastname">
+               <property name="toolTip">
+                <string>just alphabets</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -133,7 +150,11 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
-              <widget class="QLineEdit" name="lineEdit_username"/>
+              <widget class="QLineEdit" name="lineEdit_username">
+               <property name="toolTip">
+                <string>just alphabets , 1_9 underscore. At least 3 characters.</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -153,7 +174,11 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
-              <widget class="QLineEdit" name="lineEdit_password"/>
+              <widget class="QLineEdit" name="lineEdit_password">
+               <property name="toolTip">
+                <string>At least 8 characters. At least one lowercase English letter. At least one uppercase English letter. At least one number. At least one special character from !@#$%^&amp;*()_+.</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -171,7 +196,11 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_confirm_pass"/>
+            <widget class="QLineEdit" name="lineEdit_confirm_pass">
+             <property name="toolTip">
+              <string>At least 8 characters. At least one lowercase English letter. At least one uppercase English letter. At least one number. At least one special character from !@#$%^&amp;*()_+.</string>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_3">
@@ -189,7 +218,11 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
-              <widget class="QLineEdit" name="lineEdit_email"/>
+              <widget class="QLineEdit" name="lineEdit_email">
+               <property name="toolTip">
+                <string/>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>

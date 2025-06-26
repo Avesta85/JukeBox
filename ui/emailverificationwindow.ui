@@ -13,6 +13,14 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+    background-image: url(:/dailogs-images/images/wp4206379.jpg);
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: cover;    
+}</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="1">
     <spacer name="verticalSpacer">
@@ -39,7 +47,11 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit"/>
+        <widget class="QLineEdit" name="lineEdit">
+         <property name="toolTip">
+          <string/>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

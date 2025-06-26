@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     LoginWindow loginWin;
     //loginWin.showMaximized();
      SignupWindow signupWin;
-    //signupWin.showMaximized();
+    signupWin.showMaximized();
     FrogotPasswordWindow forgotpasswordWin;
     //forgotpasswordWin.showMaximized();
     EmailVerificationWindow emailverificwin;
@@ -26,6 +26,6 @@ int main(int argc, char *argv[])
     ReceiveSecureWordsWindow receivesecurwin;
     //receivesecurwin.showMaximized();
     ChangePasswordWindow changepasswing;
-    changepasswing.showMaximized();
+    //changepasswing.showMaximized();
     return a.exec();
 }

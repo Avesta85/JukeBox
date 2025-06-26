@@ -1,5 +1,8 @@
 #include "showkeywords.h"
 #include "ui_showkeywords.h"
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
+#include <QDebug> // برای qWarning
 
 ShowKeyWords::ShowKeyWords(QWidget *parent)
     : QDialog(parent)

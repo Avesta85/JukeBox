@@ -6,12 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>843</width>
-    <height>518</height>
+    <width>1190</width>
+    <height>790</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+    background-image: url(:/dailogs-images/images/116773318-vintage-music-wallpaper-free.jpg);
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: cover;  
+ 
+}</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="1">
@@ -75,13 +84,24 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QLineEdit" name="lineEdit_first"/>
+            <widget class="QLineEdit" name="lineEdit_first">
+             <property name="toolTip">
+              <string>just alphabets</string>
+             </property>
+            </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_seconde_word"/>
+            <widget class="QLineEdit" name="lineEdit_seconde_word">
+             <property name="toolTip">
+              <string>just alphabets</string>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLineEdit" name="lineEdit_third_word">
+             <property name="toolTip">
+              <string>just alphabets</string>
+             </property>
              <property name="toolTipDuration">
               <number>-1</number>
              </property>
@@ -90,7 +110,7 @@
            <item>
             <widget class="QLineEdit" name="lineEdit_fourth_word">
              <property name="toolTip">
-              <string/>
+              <string>just alphabets</string>
              </property>
             </widget>
            </item>
