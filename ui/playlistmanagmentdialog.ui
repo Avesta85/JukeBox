@@ -87,6 +87,13 @@
                <item>
                 <widget class="QLineEdit" name="lineEdit_search_playlist_name"/>
                </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_search_playlist">
+                 <property name="text">
+                  <string>search</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </item>
             </layout>
@@ -112,6 +119,13 @@
                </item>
                <item>
                 <widget class="QLineEdit" name="lineEdit_2_search_song_name"/>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_search_song">
+                 <property name="text">
+                  <string>search</string>
+                 </property>
+                </widget>
                </item>
               </layout>
              </item>
