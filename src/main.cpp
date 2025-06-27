@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     //MainWindow w;
     //w.show();
-    bool p = sendMail("mohammad1384esf@gmail.com" , "ameneh1360esf@gmail.com" , "1234");
+    bool p = sendMail("mohammad1384esf@gmail.com" , "--useremail--" , "1234");
     ChoiceWindow choiceWin;
     choiceWin.showMaximized();
     LoginWindow loginWin;
