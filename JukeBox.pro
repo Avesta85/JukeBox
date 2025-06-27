@@ -42,6 +42,7 @@ HEADERS += \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
     src/ui/receivesecurewordswindow.h \
+    src/ui/settingdialog.h \
     src/ui/showkeywords.h \
     src/ui/signupwindow.h
 
