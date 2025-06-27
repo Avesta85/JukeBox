@@ -22,6 +22,11 @@ private slots:
 
 private:
     Ui::ChoiceWindow *ui;
+
+signals:
+
+    void LoginRequest();
+    void SignupRequest();
 };
 
 #endif // CHOICEWINDOW_H

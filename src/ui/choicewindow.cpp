@@ -26,13 +26,12 @@ ChoiceWindow::~ChoiceWindow()
 
 void ChoiceWindow::on_pushButton_login_clicked()
 {
-    Application::getInstance().show_loginWindow();
+    emit LoginRequest();
 }
 
 
 void ChoiceWindow::on_pushButton_signup_clicked()
 {
-
-    Application::getInstance().show_signupWindow();
+    emit SignupRequest();
 }
 

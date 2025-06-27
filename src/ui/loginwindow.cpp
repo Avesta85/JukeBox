@@ -6,16 +6,13 @@ LoginWindow::LoginWindow(QWidget *parent)
     , ui(new Ui::LoginWindow)
 {
     ui->setupUi(this);
-    forgetPassWindow = new FrogotPasswordWindow;
-    changePass = new ChangePasswordWindow;
-    connect(forgetPassWindow, &FrogotPasswordWindow::backToLoginWindow, this, LoginWindow::show);
-    connect(changePass, &ChangePasswordWindow::goToLoginWindow, this , LoginWindow::show);
 }
+
 
 LoginWindow::~LoginWindow()
 {
     delete ui;
-    delete forgetPassWindow;
+
 }
 
 void LoginWindow::on_pushButton_ok_clicked()
@@ -51,26 +48,27 @@ void LoginWindow::on_pushButton_ok_clicked()
     ui->lineEdit_username->clear();
     ui->lineEdit_password->clear();
     // will delete....
-    backToMain();
+
 
 }
 
 
 void LoginWindow::on_pushButton_cancel_clicked()
 {
-    emit backToMain();
 
+    emit CancelOperation();
     ui->lineEdit_password->clear();
     ui->lineEdit_username->clear();
-    this->close();
+
 }
 
 
 void LoginWindow::on_pushButton_forgetpassword_clicked()
 {
-    forgetPassWindow->show();
+
+    emit ForgotPassword();
     ui->lineEdit_password->clear();
     ui->lineEdit_username->clear();
-    this->close();
+
 }
 

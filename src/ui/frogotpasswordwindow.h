@@ -22,7 +22,8 @@ public:
 
 signals:
     void backToLoginWindow();
-
+    void EmailVerification();
+    void SecurityVerification();
 private slots:
     void on_pushButton_ok_clicked();
 
@@ -30,8 +31,7 @@ private slots:
 
 private:
     Ui::FrogotPasswordWindow *ui;
-    EmailVerificationWindow *emailVrifi;
-    ReceiveSecureWordsWindow *secureWordsVrifi;
+
 
 };
 

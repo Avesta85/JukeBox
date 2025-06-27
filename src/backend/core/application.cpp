@@ -20,12 +20,19 @@ Application &Application::getInstance()
     return *s_instance;
 }
 
+void Application::Run()
+{
+    this->show_choiceWindow();
+}
+
 void Application::show_choiceWindow()
 {
     if (!w_choice_window) {
         w_choice_window = new ChoiceWindow();
 
         // signals
+        connect(w_choice_window,&ChoiceWindow::LoginRequest,this,&Application::show_loginWindow);
+        connect(w_choice_window,&ChoiceWindow::SignupRequest,this,&Application::show_signupWindow);
     }
     switchWindow(w_choice_window);
 }
@@ -36,6 +43,8 @@ void Application::show_loginWindow()
         w_login_window = new LoginWindow();
 
         // signals
+        connect(w_login_window,&LoginWindow::CancelOperation,this,&Application::show_choiceWindow);
+        connect(w_login_window,&LoginWindow::ForgotPassword,this,&Application::show_forgotPassword_window);
     }
     switchWindow(w_login_window);
 }
@@ -96,11 +105,10 @@ Application::Application(QObject *parent)
 void Application::switchWindow(QWidget *nextWindow)
 {
     if(!nextWindow) return;
-
+    nextWindow->show();
     if(m_currentWindow)
     {
         m_currentWindow->hide();
     }
-    nextWindow->show();
     m_currentWindow = nextWindow;
 }

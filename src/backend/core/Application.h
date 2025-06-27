@@ -22,7 +22,7 @@ public:
     static Application& getInstance();
 
 
-
+    void Run();
     ///// window getters
 
     void show_choiceWindow();
@@ -57,7 +57,8 @@ private:
     // function
     void switchWindow(QWidget* nextWindow);
 
-signals:
+private slots:
+
 };
 
 #endif // APPLICATION_H
