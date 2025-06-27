@@ -1,4 +1,5 @@
 #include "signupwindow.h"
+#include "aplicationmanager.h"
 #include "ui_signupwindow.h"
 
 SignupWindow::SignupWindow(QWidget *parent)
@@ -23,7 +24,8 @@ void SignupWindow::on_pushButton_cancel_clicked()
     ui->lineEdit_username->clear();
 
     this->close();
-    emit backToChoiseWindow();
+    AplicationManager* am = AplicationManager::instance();
+    am->showChoiseWindow();
 }
 
 
@@ -87,6 +89,7 @@ void SignupWindow::on_pushButton_signup_clicked()
     // meesag box
 
     this->close();
-    emit backToChoiseWindow();
+    AplicationManager* am = AplicationManager::instance();
+    am->showChoiseWindow();
 }
 

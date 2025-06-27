@@ -1,4 +1,5 @@
 #include "receivesecurewordswindow.h"
+#include "aplicationmanager.h"
 #include "ui_receivesecurewordswindow.h"
 
 ReceiveSecureWordsWindow::ReceiveSecureWordsWindow(QWidget *parent)
@@ -6,13 +7,11 @@ ReceiveSecureWordsWindow::ReceiveSecureWordsWindow(QWidget *parent)
     , ui(new Ui::ReceiveSecureWordsWindow)
 {
     ui->setupUi(this);
-    changePassWidnow = new ChangePasswordWindow;
 }
 
 ReceiveSecureWordsWindow::~ReceiveSecureWordsWindow()
 {
     delete ui;
-    delete changePassWidnow;
 }
 
 void ReceiveSecureWordsWindow::on_pushButton_Back_clicked()
@@ -21,7 +20,8 @@ void ReceiveSecureWordsWindow::on_pushButton_Back_clicked()
     ui->lineEdit_seconde_word->clear();
     ui->lineEdit_third_word->clear();
     ui->lineEdit_fourth_word->clear();
-    emit backToForgetPassWindow();
+    AplicationManager* am = AplicationManager::instance();
+    am->showForgetPassWindow();
     this->close();
 }
 
@@ -47,6 +47,7 @@ void ReceiveSecureWordsWindow::on_pushButton_coniform_clicked()
     ui->lineEdit_fourth_word->clear();
     this->close();
 
-    changePassWidnow->show();
+    AplicationManager* am = AplicationManager::instance();
+    am->showChangePassWindow();
 }
 

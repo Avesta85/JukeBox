@@ -1,4 +1,5 @@
 #include "changepasswordwindow.h"
+#include "aplicationmanager.h"
 #include "ui_changepasswordwindow.h"
 
 ChangePasswordWindow::ChangePasswordWindow(QWidget *parent)
@@ -35,6 +36,7 @@ void ChangePasswordWindow::on_pushButton_clicked()
     ui->lineEdit_confirmePassword->clear();
 
     this->close();
-    emit goToLoginWindow();
+    AplicationManager* am = AplicationManager::instance();
+    am->showLoginWindow();
 }
 

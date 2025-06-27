@@ -1,21 +1,17 @@
 #include "loginwindow.h"
 #include "ui_loginwindow.h"
+#include "aplicationmanager.h"
 
 LoginWindow::LoginWindow(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::LoginWindow)
 {
     ui->setupUi(this);
-    forgetPassWindow = new FrogotPasswordWindow;
-    changePass = new ChangePasswordWindow;
-    connect(forgetPassWindow, &FrogotPasswordWindow::backToLoginWindow, this, LoginWindow::show);
-    connect(changePass, &ChangePasswordWindow::goToLoginWindow, this , LoginWindow::show);
 }
 
 LoginWindow::~LoginWindow()
 {
     delete ui;
-    delete forgetPassWindow;
 }
 
 void LoginWindow::on_pushButton_ok_clicked()
@@ -50,15 +46,13 @@ void LoginWindow::on_pushButton_ok_clicked()
 
     ui->lineEdit_username->clear();
     ui->lineEdit_password->clear();
-    // will delete....
-    backToMain();
-
 }
 
 
 void LoginWindow::on_pushButton_cancel_clicked()
 {
-    emit backToMain();
+    AplicationManager* am = AplicationManager::instance();
+    am->showChoiseWindow();
 
     ui->lineEdit_password->clear();
     ui->lineEdit_username->clear();
@@ -68,7 +62,9 @@ void LoginWindow::on_pushButton_cancel_clicked()
 
 void LoginWindow::on_pushButton_forgetpassword_clicked()
 {
-    forgetPassWindow->show();
+    AplicationManager* am = AplicationManager::instance();
+    am->showForgetPassWindow();
+
     ui->lineEdit_password->clear();
     ui->lineEdit_username->clear();
     this->close();

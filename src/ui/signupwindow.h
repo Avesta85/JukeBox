@@ -18,12 +18,8 @@ public:
     explicit SignupWindow(QWidget *parent = nullptr);
     ~SignupWindow();
 
-signals:
-    void backToChoiseWindow();
-
 private slots:
     void on_pushButton_cancel_clicked();
-
     void on_pushButton_signup_clicked();
 
 private:

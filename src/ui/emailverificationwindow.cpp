@@ -1,4 +1,5 @@
 #include "emailverificationwindow.h"
+#include "aplicationmanager.h"
 #include "ui_emailverificationwindow.h"
 
 EmailVerificationWindow::EmailVerificationWindow(QWidget *parent)
@@ -6,7 +7,6 @@ EmailVerificationWindow::EmailVerificationWindow(QWidget *parent)
     , ui(new Ui::EmailVerificationWindow)
 {
     ui->setupUi(this);
-    changePassWindow = new ChangePasswordWindow;
 }
 
 EmailVerificationWindow::~EmailVerificationWindow()
@@ -17,7 +17,8 @@ EmailVerificationWindow::~EmailVerificationWindow()
 void EmailVerificationWindow::on_pushButton_Back_clicked()
 {
     ui->lineEdit_email->clear();
-    emit backToForgetPassWindow();
+    AplicationManager* am = AplicationManager::instance();
+    am->showForgetPassWindow();
     this->close();
 }
 
@@ -36,6 +37,7 @@ void EmailVerificationWindow::on_pushButton_coniform_clicked()
 
     ui->lineEdit_email->clear();
     this->close();
-    changePassWindow->show();
+    AplicationManager* am = AplicationManager::instance();
+    am->showChangePassWindow();
 }
 

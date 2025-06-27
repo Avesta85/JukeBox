@@ -1,4 +1,5 @@
 #include "frogotpasswordwindow.h"
+#include "aplicationmanager.h"
 #include "ui_frogotpasswordwindow.h"
 
 FrogotPasswordWindow::FrogotPasswordWindow(QWidget *parent)
@@ -6,17 +7,11 @@ FrogotPasswordWindow::FrogotPasswordWindow(QWidget *parent)
     , ui(new Ui::FrogotPasswordWindow)
 {
     ui->setupUi(this);
-    emailVrifi = new EmailVerificationWindow;
-    secureWordsVrifi = new ReceiveSecureWordsWindow;
-    connect(emailVrifi, &EmailVerificationWindow::backToForgetPassWindow, this, &FrogotPasswordWindow::show);
-    connect(secureWordsVrifi , &ReceiveSecureWordsWindow::backToForgetPassWindow, this, &FrogotPasswordWindow::show);
 }
 
 FrogotPasswordWindow::~FrogotPasswordWindow()
 {
     delete ui;
-    delete emailVrifi;
-    delete secureWordsVrifi;
 }
 
 void FrogotPasswordWindow::on_pushButton_ok_clicked()
@@ -51,17 +46,18 @@ void FrogotPasswordWindow::on_pushButton_ok_clicked()
     {
         ui->radioButton_email_verification->setChecked(false);
         ui->lineEdit->clear();
+        AplicationManager* am = AplicationManager::instance();
+        am->showEmailVrifiWindow();
         this->close();
-        emailVrifi->show();
-
     }
 
     else if(ui->radioButton_secure_words->isChecked())
     {
         ui->radioButton_secure_words->setChecked(true);
         ui->lineEdit->clear();
+        AplicationManager* am = AplicationManager::instance();
+        am->showSecureWordWindow();
         this->close();
-        secureWordsVrifi->show();
     }
 
 }
@@ -69,7 +65,8 @@ void FrogotPasswordWindow::on_pushButton_ok_clicked()
 
 void FrogotPasswordWindow::on_pushButton_back_clicked()
 {
-    emit backToLoginWindow();
+    AplicationManager* am = AplicationManager::instance();
+    am->showLoginWindow();
     ui->lineEdit->clear();
     this->close();
 }

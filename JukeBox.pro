@@ -13,6 +13,7 @@ CONFIG += c++17
 INCLUDEPATH += $$PWD/src
 
 SOURCES += \
+    aplicationmanager.cpp \
     src/backend/core/SendEmail.cpp \
     src/backend/core/media.cpp \
     src/backend/core/movie.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
     src/ui/signupwindow.cpp
 
 HEADERS += \
+    aplicationmanager.h \
     src/backend/core/SendEmail.h \
     src/backend/core/media.h \
     src/backend/core/movie.h \

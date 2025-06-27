@@ -1,8 +1,6 @@
 #ifndef LOGINWINDOW_H
 #define LOGINWINDOW_H
 
-#include "frogotpasswordwindow.h"
-#include "changepasswordwindow.h"
 #include <QString>
 #include <QMessageBox>
 #include <QRegularExpression>
@@ -22,18 +20,12 @@ public:
 
     ~LoginWindow();
 
-signals:
-    void backToMain();
-
-
 private slots:
     void on_pushButton_ok_clicked();
     void on_pushButton_cancel_clicked();
     void on_pushButton_forgetpassword_clicked();
 
 private:
-    FrogotPasswordWindow* forgetPassWindow;
-   ChangePasswordWindow* changePass;
 
 };
 

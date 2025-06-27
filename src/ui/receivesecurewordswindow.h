@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <Qstring>
 #include <QMessageBox>
-#include "changepasswordwindow.h"
 
 namespace Ui {
 class ReceiveSecureWordsWindow;
@@ -18,9 +17,6 @@ public:
     explicit ReceiveSecureWordsWindow(QWidget *parent = nullptr);
     ~ReceiveSecureWordsWindow();
 
-signals:
-    void backToForgetPassWindow();
-
 private slots:
     void on_pushButton_Back_clicked();
 
@@ -28,7 +24,6 @@ private slots:
 
 private:
     Ui::ReceiveSecureWordsWindow *ui;
-    ChangePasswordWindow* changePassWidnow;
 };
 
 

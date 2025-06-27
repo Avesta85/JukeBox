@@ -3,6 +3,7 @@
 #include <QScreen>
 #include <QApplication>
 #include <QDebug>
+#include "aplicationmanager.h"
 
 ChoiceWindow::ChoiceWindow(QWidget *parent)
     : QDialog(parent)
@@ -17,29 +18,25 @@ ChoiceWindow::ChoiceWindow(QWidget *parent)
     } else {
         qDebug() << "Could not get primary screen information. Dialog might not be full screen.";
     }
-    loginWindow = new LoginWindow();
-    signupWindow = new SignupWindow();
-    connect(loginWindow, &LoginWindow::backToMain, this, &ChoiceWindow::show);
-    connect(signupWindow, &SignupWindow::backToChoiseWindow, this, &ChoiceWindow::show);
 }
 
 ChoiceWindow::~ChoiceWindow()
 {
     delete ui;
-    delete loginWindow;
-    delete signupWindow;
 }
 
 void ChoiceWindow::on_pushButton_login_clicked()
 {
-    loginWindow->show();
+    AplicationManager* am = AplicationManager::instance();
+    am->showLoginWindow();
     this->close();
 }
 
 
 void ChoiceWindow::on_pushButton_signup_clicked()
 {
-    signupWindow->show();
+    AplicationManager* am = AplicationManager::instance();
+    am->showSignupWindow();
     this->close();
 }
 
