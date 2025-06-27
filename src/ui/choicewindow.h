@@ -2,8 +2,6 @@
 #define CHOICEWINDOW_H
 
 #include <QDialog>
-#include "loginwindow.h"
-#include "signupwindow.h"
 
 namespace Ui {
 class ChoiceWindow;
@@ -24,8 +22,6 @@ private slots:
 
 private:
     Ui::ChoiceWindow *ui;
-    LoginWindow* loginWindow;
-    SignupWindow* signupWindow;
 };
 
 #endif // CHOICEWINDOW_H

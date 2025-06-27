@@ -1,7 +1,9 @@
+
 #include <QCoreApplication>
 #include <QDebug>
 #include <curl/curl.h>
 #include <cstring>
+#include <QFile>
 
 size_t payloadSource(void* ptr, size_t size, size_t nmemb, void* userp)
 {
@@ -17,36 +19,46 @@ size_t payloadSource(void* ptr, size_t size, size_t nmemb, void* userp)
     return 0;
 }
 
-bool sendMail(char* from , char* to , char* verifiMessege)
+bool sendMail(char* from, char* to, char* verifiMessage)
 {
     CURL* curl = curl_easy_init();
-    if (!curl)
-    {
-        qDebug() << "❌ curl_easy_init failed!";
+    if (!curl) {
+        qDebug() << "curl_easy_init failed!";
         return false;
     }
 
-    char* password = "zizpjuzuanejognr";
-    char* username = from;
-    std::string payload_ =
-    "To: " + std::string(to) + "\r\n"
-    "From: " + std::string(from) + "\r\n"
-    "Subject: vrifi code:\r\n" +
-    std::string(verifiMessege) + "\r\n";
+    // 🔐 WARNING: You should NOT hardcode credentials like this in production
+    const char* password = "zizpjuzuanejognr";
 
-    char* payload_text = strdup(payload_.c_str());
+    // Build the email message with headers
+    std::string payload =
+        "To: " + std::string(to) + "\r\n"
+                                   "From: " + std::string(from) + "\r\n"
+                              "Subject: Verify Code\r\n"
+                              "Content-Type: text/plain; charset=\"UTF-8\"\r\n"
+                              "\r\n" +
+        std::string(verifiMessage) + "\r\n";
 
+    char* payload_data = strdup(payload.c_str());
+    char* payload_ptr = payload_data;
 
+    // Build the full path to cacert.pem
+    QString certPath = QCoreApplication::applicationDirPath() + "/cacert.pem";
+    if (!QFile::exists(certPath)) {
+        qDebug() << "CA cert file not found at:" << certPath;
+        free(payload_data);
+        curl_easy_cleanup(curl);
+        return false;
+    }
 
-    char* payload = payload_text;
     struct curl_slist* recipients = nullptr;
 
-    curl_easy_setopt(curl, CURLOPT_USERNAME, username);
+    curl_easy_setopt(curl, CURLOPT_USERNAME, from);
     curl_easy_setopt(curl, CURLOPT_PASSWORD, password);
     curl_easy_setopt(curl, CURLOPT_URL, "smtps://smtp.gmail.com:465");
 
-    // استفاده از گواهی معتبر
-    curl_easy_setopt(curl, CURLOPT_CAINFO, "cacert.pem");
+    // Set up SSL certificate options
+    curl_easy_setopt(curl, CURLOPT_CAINFO, certPath.toStdString().c_str());
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2L);
 
@@ -55,19 +67,21 @@ bool sendMail(char* from , char* to , char* verifiMessege)
     curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
 
     curl_easy_setopt(curl, CURLOPT_READFUNCTION, payloadSource);
-    curl_easy_setopt(curl, CURLOPT_READDATA, &payload);
+    curl_easy_setopt(curl, CURLOPT_READDATA, &payload_ptr);
     curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
 
-    qDebug() << "📤 در حال ارسال ایمیل امن...";
+    qDebug() << "Sending email...";
+
     CURLcode res = curl_easy_perform(curl);
-
     if (res != CURLE_OK)
-        qDebug() << "❌ خطا در ارسال:" << curl_easy_strerror(res);
+        qDebug() << "Failed:" << curl_easy_strerror(res);
     else
-        qDebug() << "✅ ایمیل با موفقیت و امنیت ارسال شد!";
+        qDebug() << "Email sent successfully ✔️";
 
+    // Clean up resources
     curl_slist_free_all(recipients);
     curl_easy_cleanup(curl);
+    free(payload_data);
+
     return (res == CURLE_OK);
 }
-

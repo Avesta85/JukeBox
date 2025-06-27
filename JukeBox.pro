@@ -21,11 +21,22 @@ isEmpty(BOTAN_PATH) {
     message("Using Botan from environment variable: $$BOTAN_PATH")
 }
 
+INCLUDEPATH += $$PWD/curl
+LIBS += -L$$PWD/lib -lcurl
 
-INCLUDEPATH += $$BOTAN_PATH/include
+INCLUDEPATH += $$BOTAN_PATH/include $$CURL_PATH/include
+
 LIBS += -L$$BOTAN_PATH/lib -lbotan-3
 
+
+INCLUDEPATH += $$CURL_PATH/include
+
+LIBS += -L$$BOTAN_PATH/lib -L$$CURL_PATH/lib
+
+
+
 win32 {
+
     message("Configuring Botan for Windows platform...")
     DEFINES += BOTAN_TARGET_OS_IS_WINDOWS
 }
@@ -33,7 +44,6 @@ win32 {
 SOURCES += \
     src/backend/core/SendEmail.cpp \
     src/backend/core/UserManager.cpp \
-    src/backend/core/application.cpp \
     src/backend/core/application.cpp \
     src/backend/db/DBM.cpp \
     src/backend/core/person.cpp \
@@ -57,7 +67,6 @@ HEADERS += \
     src/backend/core/SendEmail.h \
     src/backend/core/UserManager.h \
     src/backend/core/application.h \
-    src/backend/core/application.h \
     src/backend/core/media.h \
     src/backend/core/movie.h \
     src/backend/core/person.h \
@@ -73,7 +82,7 @@ HEADERS += \
     src/ui/mainwindow.h \
     src/ui/receivesecurewordswindow.h \
     src/ui/signupwindow.h
-    src/backend/security/SecurityManager.h \
+    src/backend/security/SecurityManager.h
 
 
 
@@ -87,24 +96,13 @@ FORMS += \
     ui/receivesecurewordswindow.ui \
     ui/signupwindow.ui
 
-QT += core
-CONFIG += c++11
-
-INCLUDEPATH += $$PWD/curl
-LIBS += -L$$PWD/lib -lcurl
-
-
-QT += network
-
-
-
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    res/images/157822-concert-fortnite_extended_set-electronic_dance_music-here_with_me-automotive_lighting-3840x2160.jpg
+    $$PWD/res/images/157822-concert-fortnite_extended_set-electronic_dance_music-here_with_me-automotive_lighting-3840x2160.jpg
 
 RESOURCES += \
-    res/seoned-resorces.qrc
+    $$PWD/res/seoned-resorces.qrc
