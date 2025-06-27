@@ -1,4 +1,3 @@
-
 #include "./src/ui/mainwindow.h"
 #include "ui/choicewindow.h"
 #include "ui/loginwindow.h"
@@ -7,8 +6,10 @@
 #include "ui/emailverificationwindow.h"
 #include "ui/receivesecurewordswindow.h"
 #include "ui/changepasswordwindow.h"
+#include "./src/ui/mainwindow.h"
+#include "./src/backend/db/DBM.h"
 #include <QApplication>
-
+#include <src/backend/security/SecurityManager.h>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -28,5 +29,8 @@ int main(int argc, char *argv[])
     //receivesecurwin.showMaximized();
     ChangePasswordWindow changepasswing;
     //changepasswing.showMaximized();
+    SecurityManager sm;
+
+    qDebug()<< sm.securityKey_gen();
     return a.exec();
 }

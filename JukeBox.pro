@@ -1,23 +1,46 @@
 QT += core gui
 QT +=network
 QT += sql
+QT += concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17
+CONFIG += c++20
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += $$PWD/src
+BOTAN_PATH = $$(BOTAN_ROOT)
+
+isEmpty(BOTAN_PATH) {
+
+    error("Environment variable 'BOTAN_ROOT' is not set. Please set it to your Botan installation path (e.g., C:/vcpkg/installed/x64-mingw-static).")
+} else {
+
+    message("Using Botan from environment variable: $$BOTAN_PATH")
+}
+
+
+INCLUDEPATH += $$BOTAN_PATH/include
+LIBS += -L$$BOTAN_PATH/lib -lbotan-3
+
+win32 {
+    message("Configuring Botan for Windows platform...")
+    DEFINES += BOTAN_TARGET_OS_IS_WINDOWS
+}
 
 SOURCES += \
     src/backend/core/SendEmail.cpp \
+    src/backend/core/UserManager.cpp \
+    src/backend/db/DBM.cpp \
+    src/backend/core/person.cpp \
     src/backend/core/media.cpp \
     src/backend/core/movie.cpp \
     src/backend/core/playlist.cpp \
     src/backend/core/song.cpp \
+    src/backend/core/user.cpp \
+    src/backend/security/SecurityManager.cpp \
     src/main.cpp \
     src/ui/changepasswordwindow.cpp \
     src/ui/choicewindow.cpp \
@@ -30,10 +53,13 @@ SOURCES += \
 
 HEADERS += \
     src/backend/core/SendEmail.h \
+    src/backend/core/UserManager.h \
     src/backend/core/media.h \
     src/backend/core/movie.h \
+    src/backend/core/person.h \
     src/backend/core/playlist.h \
     src/backend/core/song.h \
+    src/backend/core/user.h \
     src/backend/db/DBM.h \
     src/ui/changepasswordwindow.h \
     src/ui/choicewindow.h \
@@ -43,6 +69,9 @@ HEADERS += \
     src/ui/mainwindow.h \
     src/ui/receivesecurewordswindow.h \
     src/ui/signupwindow.h
+    src/backend/security/SecurityManager.h \
+
+
 
 FORMS += \
     ui/changepasswordwindow.ui \
@@ -62,6 +91,7 @@ LIBS += -L$$PWD/lib -lcurl
 
 
 QT += network
+
 
 
 # Default rules for deployment.
