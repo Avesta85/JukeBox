@@ -33,6 +33,8 @@ win32 {
 SOURCES += \
     src/backend/core/SendEmail.cpp \
     src/backend/core/UserManager.cpp \
+    src/backend/core/application.cpp \
+    src/backend/core/application.cpp \
     src/backend/db/DBM.cpp \
     src/backend/core/person.cpp \
     src/backend/core/media.cpp \
@@ -54,6 +56,8 @@ SOURCES += \
 HEADERS += \
     src/backend/core/SendEmail.h \
     src/backend/core/UserManager.h \
+    src/backend/core/application.h \
+    src/backend/core/application.h \
     src/backend/core/media.h \
     src/backend/core/movie.h \
     src/backend/core/person.h \

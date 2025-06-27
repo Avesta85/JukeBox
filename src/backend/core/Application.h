@@ -1,18 +1,15 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include <QObject>
 
-
-class Application final :
+class Application : public QObject
 {
-
+    Q_OBJECT
 public:
+    explicit Application(QObject *parent = nullptr);
 
-
-
-
-private:
-
+signals:
 };
 
 #endif // APPLICATION_H
