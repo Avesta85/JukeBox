@@ -25,6 +25,7 @@ SOURCES += \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
     src/ui/receivesecurewordswindow.cpp \
+    src/ui/settingdialog.cpp \
     src/ui/showkeywords.cpp \
     src/ui/signupwindow.cpp
 
@@ -52,6 +53,7 @@ FORMS += \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
     ui/receivesecurewordswindow.ui \
+    ui/settingdialog.ui \
     ui/showkeywords.ui \
     ui/signupwindow.ui
 
