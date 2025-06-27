@@ -7,6 +7,7 @@
 #include "ui/receivesecurewordswindow.h"
 #include "ui/changepasswordwindow.h"
 #include "ui/settingdialog.h"
+#include "ui/musicplayerview.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -29,6 +30,8 @@ int main(int argc, char *argv[])
     ChangePasswordWindow changepasswing;
     //changepasswing.showMaximized();
     SettingDialog settingwin;
-    settingwin.showMaximized();
+    //settingwin.showMaximized();
+    MusicPlayerView musicpwin;
+    musicpwin.showMaximized();
     return a.exec();
 }

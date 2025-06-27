@@ -24,6 +24,7 @@ SOURCES += \
     src/ui/frogotpasswordwindow.cpp \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
+    src/ui/musicplayerview.cpp \
     src/ui/receivesecurewordswindow.cpp \
     src/ui/settingdialog.cpp \
     src/ui/showkeywords.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     src/ui/frogotpasswordwindow.h \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
+    src/ui/musicplayerview.h \
     src/ui/receivesecurewordswindow.h \
     src/ui/settingdialog.h \
     src/ui/showkeywords.h \
@@ -53,6 +55,7 @@ FORMS += \
     ui/frogotpasswordwindow.ui \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
+    ui/musicplayerview.ui \
     ui/receivesecurewordswindow.ui \
     ui/settingdialog.ui \
     ui/showkeywords.ui \
