@@ -110,15 +110,26 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QLineEdit" name="lineEdit_first"/>
+            <widget class="QLineEdit" name="lineEdit_first">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_seconde_word"/>
+            <widget class="QLineEdit" name="lineEdit_seconde_word">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLineEdit" name="lineEdit_third_word">
              <property name="toolTipDuration">
               <number>-1</number>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -126,6 +137,9 @@
             <widget class="QLineEdit" name="lineEdit_fourth_word">
              <property name="toolTip">
               <string/>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
