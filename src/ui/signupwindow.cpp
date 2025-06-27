@@ -1,4 +1,5 @@
 #include "signupwindow.h"
+#include "src/backend/core/UserManager.h"
 #include "ui_signupwindow.h"
 
 SignupWindow::SignupWindow(QWidget *parent)
@@ -72,6 +73,26 @@ void SignupWindow::on_pushButton_signup_clicked()
         QMessageBox::warning(this, "Warning", "password must be equal with coniform password!");
         return;
     }
+    else{
+        //gen security key;
+        SecurityManager sm;
+        auto key = sm.securityKey_gen();
+
+        UserManager::getInstance().attempSignup(userName,Password,name,lastName,email,key);
+
+        QPushButton button("Click Me for a Popup!");
+        button.resize(250, 50);
+
+        QObject::connect(&button, &QPushButton::clicked, []() {
+            QMessageBox::information(
+                nullptr,                          // Parent
+                "Popup Title",                    // Title
+                "This is a notification message that appeared suddenly." // Text
+                );
+        });
+
+        button.show();
+    }
 
     // else db check
     //....
@@ -86,7 +107,6 @@ void SignupWindow::on_pushButton_signup_clicked()
 
     // meesag box
 
-    this->close();
     emit backToChoiseWindow();
 }
 

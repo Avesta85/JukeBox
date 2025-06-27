@@ -14,6 +14,7 @@ class FrogotPasswordWindow;
 class LoginWindow;
 class ReceiveSecureWordsWindow;
 class SignupWindow;
+class ShowKeyWords;
 
 class Application : public QObject
 {
@@ -32,6 +33,7 @@ public:
     void show_emailVWindow();
     void show_forgotPassword_window();
     void show_receiveSWWindow();
+    void show_showKeyWindow();
 
 private:
     explicit Application(QObject *parent = nullptr);
@@ -52,7 +54,7 @@ private:
     LoginWindow* w_login_window;
     ReceiveSecureWordsWindow* w_receive_secureWords_window;
     SignupWindow* w_signUp_window;
-
+    ShowKeyWords* w_showKey_Window;
 
     // function
     void switchWindow(QWidget* nextWindow);

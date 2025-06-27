@@ -1,11 +1,16 @@
 #include "application.h"
+#include "src/backend/core/UserManager.h"
+#include "src/backend/db/DBM.h"
 #include "src/ui/changepasswordwindow.h"
 #include "src/ui/choicewindow.h"
 #include "src/ui/loginwindow.h"
+#include "src/ui/showkeywords.h"
 #include "src/ui/signupwindow.h"
 #include "src/ui/emailverificationwindow.h"
 #include "src/ui/frogotpasswordwindow.h"
 #include "src/ui/receivesecurewordswindow.h"
+
+#include <QThread>
 
 
 std::unique_ptr<Application> Application::s_instance = nullptr;
@@ -22,9 +27,19 @@ Application &Application::getInstance()
 
 void Application::Run()
 {
+    QThread* startDB = QThread::create([](){
+                          DBM::get_instance();
+    });
+    QThread* startUM  = QThread::create([](){
+        UserManager::getInstance();
+    });
+    startUM->start();
+    startDB->start();
     this->show_choiceWindow();
+    startDB->wait();
+    startUM->wait();
 }
-
+//ok
 void Application::show_choiceWindow()
 {
     if (!w_choice_window) {
@@ -36,7 +51,7 @@ void Application::show_choiceWindow()
     }
     switchWindow(w_choice_window);
 }
-
+//ok
 void Application::show_loginWindow()
 {
     if (!w_login_window) {
@@ -57,7 +72,7 @@ void Application::show_signupWindow()
     }
     switchWindow(w_signUp_window);
 }
-
+//ok
 void Application::show_changePasswordWindow()
 {
     if(!w_change_password_window){
@@ -75,12 +90,15 @@ void Application::show_emailVWindow()
     }
     switchWindow(w_email_verification_window);
 }
-
+//ok
 void Application::show_forgotPassword_window()
 {
     if(!w_forgot_password_window){
         w_forgot_password_window = new FrogotPasswordWindow();
 
+        connect(w_forgot_password_window ,&FrogotPasswordWindow::backToLoginWindow,this,&Application::show_loginWindow);
+        connect(w_forgot_password_window ,&FrogotPasswordWindow::EmailVerification,this,&Application::show_emailVWindow);
+        connect(w_forgot_password_window ,&FrogotPasswordWindow::SecurityVerification,this,&Application::show_receiveSWWindow);
     }
     switchWindow(w_forgot_password_window);
 }
@@ -92,6 +110,15 @@ void Application::show_receiveSWWindow()
 
     }
     switchWindow(w_receive_secureWords_window);
+}
+
+void Application::show_showKeyWindow()
+{
+    if(!w_showKey_Window){
+        w_showKey_Window = new ShowKeyWords();
+
+    }
+    switchWindow(w_showKey_Window);
 }
 
 Application::Application(QObject *parent)
