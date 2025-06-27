@@ -6,6 +6,7 @@
 #include "ui/emailverificationwindow.h"
 #include "ui/receivesecurewordswindow.h"
 #include "ui/changepasswordwindow.h"
+#include "ui/settingdialog.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -17,8 +18,8 @@ int main(int argc, char *argv[])
     //choiceWin.showMaximized();
     LoginWindow loginWin;
     //loginWin.showMaximized();
-     SignupWindow signupWin;
-    signupWin.showMaximized();
+    //SignupWindow signupWin;
+    //signupWin.showMaximized();
     FrogotPasswordWindow forgotpasswordWin;
     //forgotpasswordWin.showMaximized();
     EmailVerificationWindow emailverificwin;
@@ -27,5 +28,7 @@ int main(int argc, char *argv[])
     //receivesecurwin.showMaximized();
     ChangePasswordWindow changepasswing;
     //changepasswing.showMaximized();
+    SettingDialog settingwin;
+    settingwin.showMaximized();
     return a.exec();
 }
