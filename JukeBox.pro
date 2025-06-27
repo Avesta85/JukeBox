@@ -21,6 +21,7 @@ SOURCES += \
     src/ui/changepasswordwindow.cpp \
     src/ui/choicewindow.cpp \
     src/ui/emailverificationwindow.cpp \
+    src/ui/friendlistwindow.cpp \
     src/ui/frogotpasswordwindow.cpp \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     src/ui/changepasswordwindow.h \
     src/ui/choicewindow.h \
     src/ui/emailverificationwindow.h \
+    src/ui/friendlistwindow.h \
     src/ui/frogotpasswordwindow.h \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
@@ -54,6 +56,7 @@ FORMS += \
     ui/changepasswordwindow.ui \
     ui/choicewindow.ui \
     ui/emailverificationwindow.ui \
+    ui/friendlistwindow.ui \
     ui/frogotpasswordwindow.ui \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
