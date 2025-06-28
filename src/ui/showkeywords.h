@@ -2,6 +2,8 @@
 #define SHOWKEYWORDS_H
 
 #include <QDialog>
+#include <QString>
+#include <QMessageBox>
 
 namespace Ui {
 class ShowKeyWords;

@@ -89,6 +89,7 @@ CONFIG += c++17 # از c++17 استفاده می کنیم، نه c++11
 INCLUDEPATH += $$PWD/src
 
 SOURCES += \
+    src/backend/core/aplicationmanager.cpp \
     src/backend/core/SendEmail.cpp \
     src/backend/core/media.cpp \
     src/backend/core/movie.cpp \
@@ -102,9 +103,12 @@ SOURCES += \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
     src/ui/receivesecurewordswindow.cpp \
+    src/ui/settingdialog.cpp \
+    src/ui/showkeywords.cpp \
     src/ui/signupwindow.cpp
 
 HEADERS += \
+    src/backend/core/aplicationmanager.h \
     src/backend/core/SendEmail.h \
     src/backend/core/media.h \
     src/backend/core/movie.h \
@@ -118,6 +122,8 @@ HEADERS += \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
     src/ui/receivesecurewordswindow.h \
+    src/ui/settingdialog.h \
+    src/ui/showkeywords.h \
     src/ui/signupwindow.h
 
 FORMS += \
@@ -128,6 +134,8 @@ FORMS += \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
     ui/receivesecurewordswindow.ui \
+    ui/settingdialog.ui \
+    ui/showkeywords.ui \
     ui/signupwindow.ui
 
 # ****** بخش مربوط به CURL و NETWORK به طور صحیح ادغام شد ******

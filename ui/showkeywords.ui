@@ -110,7 +110,7 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QLineEdit" name="lineEdit_first">
+            <widget class="QLineEdit" name="lineEdit_firstword">
              <property name="readOnly">
               <bool>true</bool>
              </property>

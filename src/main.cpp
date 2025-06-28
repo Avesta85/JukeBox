@@ -19,9 +19,9 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv); 
     MainWindow w;
     //w.show();
-    SecurityManager sm;
+    //SecurityManager sm;
 
-    qDebug()<< sm.securityKey_gen();
+    //qDebug()<< sm.securityKey_gen();
 
     //bool p = sendMail("mohammad1384esf@gmail.com" , "--useremail--" , "1234");
     ChoiceWindow choiceWin;
