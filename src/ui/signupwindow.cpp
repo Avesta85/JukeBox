@@ -79,6 +79,8 @@ SignupWindow::SignupWindow(QWidget *parent)
         // در صورت عدم استفاده، می‌توانید lastNameValidator را اینجا حذف کنید
         delete lastNameValidator;
     }
+
+    setWindowIcon(QIcon(":/icone/musicplayer"));
 }
 
 SignupWindow::~SignupWindow()
@@ -117,33 +119,51 @@ void SignupWindow::on_pushButton_signup_clicked()
 
     if(userName.isEmpty() || name.isEmpty() || lastName.isEmpty() || Password.isEmpty() || email.isEmpty() || confirmPass.isEmpty())
     {
-        QMessageBox::warning(this, "Warning", "All fields must be filled.");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "You must fill the fields!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
 
     else if (!regex.match(userName).hasMatch() || !regex.match(Password).hasMatch() || !regex.match(confirmPass).hasMatch())
     {
-        QMessageBox::warning(this, "Warning", "usern name and password Fields can only contain a-z and 0-9.");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "User name and password Fields can only contain a-z and 0-9!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
     else if(!regexEmail.match(email).hasMatch())
     {
-        QMessageBox::warning(this, "Warning", "Invalid email!");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "You enterd an invalid email!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
     else if(!regexName.match(name).hasMatch() || !regexName.match(lastName).hasMatch())
     {
-        QMessageBox::warning(this, "Warning", "Invalid name or last name!");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "You enterd invalid name or last name!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
     else if (Password.length() < 8)
     {
-        QMessageBox::warning(this, "Warning", "password must be bigger than 7 character!");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "Password must be bigger than 7 character!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
     else if (Password != confirmPass)
     {
-        QMessageBox::warning(this, "Warning", "password must be equal with coniform password!");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "Password must be equal with coniform password!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
 

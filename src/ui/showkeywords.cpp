@@ -9,6 +9,7 @@ ShowKeyWords::ShowKeyWords(QWidget *parent)
     , ui(new Ui::ShowKeyWords)
 {
     ui->setupUi(this);
+    setWindowIcon(QIcon(":/icone/musicplayer"));
 }
 
 ShowKeyWords::~ShowKeyWords()

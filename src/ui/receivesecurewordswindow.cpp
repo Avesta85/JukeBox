@@ -44,6 +44,8 @@ ReceiveSecureWordsWindow::ReceiveSecureWordsWindow(QWidget *parent)
         qWarning("اخطار: lineEdit_third در UI یافت نشد. Validator تنظیم نشد.");
         delete validatorThird;
     }
+
+    setWindowIcon(QIcon(":/icone/musicplayer"));
 }
 
 ReceiveSecureWordsWindow::~ReceiveSecureWordsWindow()
@@ -72,7 +74,10 @@ void ReceiveSecureWordsWindow::on_pushButton_coniform_clicked()
 
     if(word1.isEmpty() || word2.isEmpty() || word3.isEmpty() || word4.isEmpty())
     {
-        QMessageBox::warning(this, "Warning", "You must fill the fields!");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "You must fill the fields!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
 

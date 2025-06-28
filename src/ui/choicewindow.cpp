@@ -18,6 +18,9 @@ ChoiceWindow::ChoiceWindow(QWidget *parent)
     } else {
         qDebug() << "Could not get primary screen information. Dialog might not be full screen.";
     }
+
+    setWindowIcon(QIcon(":/icone/musicplayer"));
+
 }
 
 ChoiceWindow::~ChoiceWindow()

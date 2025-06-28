@@ -42,6 +42,8 @@ LoginWindow::LoginWindow(QWidget *parent)
     } else {
         qWarning("اخطار: passwordLineEdit در UI یافت نشد. Validator تنظیم نشد.");
     }
+
+    setWindowIcon(QIcon(":/icone/musicplayer"));
 }
 
 LoginWindow::~LoginWindow()
@@ -57,20 +59,29 @@ void LoginWindow::on_pushButton_ok_clicked()
 
     if(userNameField.isEmpty() || passField.isEmpty())
     {
-        QMessageBox::warning(this, "Warning", "All fields must be filled.");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "All fields must be filled!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
 
     else if (!regex.match(userNameField).hasMatch() || !regex.match(passField).hasMatch())
     {
-        QMessageBox::warning(this, "Warning", "Fields can only contain a-z and 0-9.");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "Fields can only contain a-z and 0-9!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         ui->lineEdit_username->clear();
         return;
     }
 
     else if(passField.length()<8)
     {
-        QMessageBox::warning(this, "Warning", "password must be begger than 8 charecter");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "Password must be begger than 7 charecter!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
 

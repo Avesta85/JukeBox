@@ -17,14 +17,14 @@ void AplicationManager::showChoiseWindow()
     if(choiseW == nullptr)
         choiseW = new ChoiceWindow;
 
-    choiseW->show();
+    choiseW->showMaximized();
 }
 void AplicationManager::showLoginWindow()
 {
     if(loginW == nullptr)
         loginW = new LoginWindow;
 
-    loginW->show();
+    loginW->showMaximized();
 }
 
 void AplicationManager::showChangePassWindow()
@@ -32,7 +32,7 @@ void AplicationManager::showChangePassWindow()
     if(changePassW == nullptr)
         changePassW = new ChangePasswordWindow;
 
-    changePassW->show();
+    changePassW->showMaximized();
 }
 
 void AplicationManager::showEmailVrifiWindow()
@@ -40,7 +40,7 @@ void AplicationManager::showEmailVrifiWindow()
     if(emailVrifiW == nullptr)
         emailVrifiW = new EmailVerificationWindow;
 
-    emailVrifiW->show();
+    emailVrifiW->showMaximized();
 }
 
 void AplicationManager::showForgetPassWindow()
@@ -48,7 +48,7 @@ void AplicationManager::showForgetPassWindow()
     if(forgetPassW == nullptr)
         forgetPassW = new FrogotPasswordWindow;
 
-    forgetPassW->show();
+    forgetPassW->showMaximized();
 }
 
 void AplicationManager::showSecureWordWindow()
@@ -56,7 +56,7 @@ void AplicationManager::showSecureWordWindow()
     if(secureWordW == nullptr)
         secureWordW = new ReceiveSecureWordsWindow;
 
-    secureWordW->show();
+    secureWordW->showMaximized();
 }
 
 void AplicationManager::showSignupWindow()
@@ -64,7 +64,7 @@ void AplicationManager::showSignupWindow()
     if(signupW == nullptr)
         signupW = new SignupWindow;
 
-    signupW->show();
+    signupW->showMaximized();
 }
 
 AplicationManager::~AplicationManager()

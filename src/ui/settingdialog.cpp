@@ -91,6 +91,8 @@ SettingDialog::SettingDialog(QWidget *parent)
         qWarning("اخطار: passwordLineEdit در UI یافت نشد. Validator تنظیم نشد.");
     }
 
+    setWindowIcon(QIcon(":/icone/musicplayer"));
+
 }
 
 SettingDialog::~SettingDialog()

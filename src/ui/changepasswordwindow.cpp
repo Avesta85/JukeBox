@@ -51,12 +51,18 @@ void ChangePasswordWindow::on_pushButton_clicked()
 
     if(password.isEmpty() || confirmPassword.isEmpty())
     {
-        QMessageBox::warning(this, "Warning", "You must fill the field!");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "You must fill the field!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
     else if(password != confirmPassword)
     {
-        QMessageBox::warning(this, "Warning", "password must bu equal with confirm password!");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "Password must bu equal with confirm password!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
 

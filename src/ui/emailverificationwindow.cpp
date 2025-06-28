@@ -23,6 +23,8 @@ EmailVerificationWindow::EmailVerificationWindow(QWidget *parent)
     } else {
         qWarning("اخطار: usernameLineEdit در UI یافت نشد. Validator تنظیم نشد.");
     }
+
+    setWindowIcon(QIcon(":/icone/musicplayer"));
 }
 
 EmailVerificationWindow::~EmailVerificationWindow()
@@ -45,7 +47,10 @@ void EmailVerificationWindow::on_pushButton_coniform_clicked()
 
     if(vrifiCode.isEmpty())
     {
-        QMessageBox::warning(this, "Warning", "You must fill the field!");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "You must fill the field!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
 
