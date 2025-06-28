@@ -17,8 +17,8 @@
    <string notr="true">QDialog {
     background-image: url(:/dailogs-images/images/wp4206379.jpg);
     background-repeat: no-repeat;
-    background-position: center; 
-    background-size: cover;    
+    background-position: center;
+    background-size: cover;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
@@ -47,11 +47,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit">
-         <property name="toolTip">
-          <string/>
-         </property>
-        </widget>
+        <widget class="QLineEdit" name="lineEdit_email"/>
        </item>
       </layout>
      </item>
@@ -71,7 +67,14 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="pushButton_Back">
+         <property name="text">
+          <string>Back</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_coniform">
          <property name="text">
           <string>Confirm</string>
          </property>

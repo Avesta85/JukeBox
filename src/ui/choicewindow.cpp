@@ -3,6 +3,7 @@
 #include <QScreen>
 #include <QApplication>
 #include <QDebug>
+#include "aplicationmanager.h"
 
 ChoiceWindow::ChoiceWindow(QWidget *parent)
     : QDialog(parent)
@@ -23,3 +24,19 @@ ChoiceWindow::~ChoiceWindow()
 {
     delete ui;
 }
+
+void ChoiceWindow::on_pushButton_login_clicked()
+{
+    AplicationManager* am = AplicationManager::instance();
+    am->showLoginWindow();
+    this->close();
+}
+
+
+void ChoiceWindow::on_pushButton_signup_clicked()
+{
+    AplicationManager* am = AplicationManager::instance();
+    am->showSignupWindow();
+    this->close();
+}
+

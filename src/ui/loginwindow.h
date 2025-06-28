@@ -1,6 +1,9 @@
 #ifndef LOGINWINDOW_H
 #define LOGINWINDOW_H
 
+#include <QString>
+#include <QMessageBox>
+#include <QRegularExpression>
 #include <QDialog>
 
 namespace Ui {
@@ -12,11 +15,18 @@ class LoginWindow : public QDialog
     Q_OBJECT
 
 public:
+    Ui::LoginWindow *ui;
     explicit LoginWindow(QWidget *parent = nullptr);
+
     ~LoginWindow();
 
+private slots:
+    void on_pushButton_ok_clicked();
+    void on_pushButton_cancel_clicked();
+    void on_pushButton_forgetpassword_clicked();
+
 private:
-    Ui::LoginWindow *ui;
+
 };
 
 #endif // LOGINWINDOW_H

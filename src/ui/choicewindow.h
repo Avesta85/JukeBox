@@ -15,6 +15,10 @@ public:
     explicit ChoiceWindow(QWidget *parent = nullptr);
     ~ChoiceWindow();
 
+private slots:
+    void on_pushButton_login_clicked();
+    void on_pushButton_signup_clicked();
+
 private:
     Ui::ChoiceWindow *ui;
 };
