@@ -5,6 +5,8 @@
 #include <QString>
 #include <QRegularExpression>
 #include <QMessageBox>
+#include <QDir>
+#include <QIcon>
 
 namespace Ui {
 class FrogotPasswordWindow;

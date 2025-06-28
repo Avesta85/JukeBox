@@ -148,7 +148,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    res/icone/warning.png \
     res/images/157822-concert-fortnite_extended_set-electronic_dance_music-here_with_me-automotive_lighting-3840x2160.jpg
 
 RESOURCES += \
+    res/icones.qrc \
     res/seoned-resorces.qrc

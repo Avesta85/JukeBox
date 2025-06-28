@@ -43,14 +43,20 @@ void FrogotPasswordWindow::on_pushButton_ok_clicked()
 
     else if (!regex.match(userNameField).hasMatch())
     {
-        QMessageBox::warning(this, "Warning", "Field of user name can only contain a-z and 0-9.");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "kkkk.", QMessageBox::Ok, this);
+        msgBox.setIconPixmap(QPixmap(":/warning.png"));
+        msgBox.exec();
         ui->lineEdit->clear();
         return;
     }
 
     else if (!ui->radioButton_email_verification->isChecked() && !ui->radioButton_secure_words->isChecked())
     {
-        QMessageBox::warning(this, "Warning", "Please select one option.");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "kkkkkkkkkkkk.", QMessageBox::Ok, this);
+       // msgBox.setIconPixmap(QPixmap(":/icone/warning.png"));
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.exec();
+        ui->lineEdit->clear();
         return;
     }
 
