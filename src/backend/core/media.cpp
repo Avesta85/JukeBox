@@ -1,6 +1,6 @@
 #include "media.h"
 
-Media::Media() : name("") , path("") , duration(0) {}
+Media::Media() : path("") , name("") , duration(0) {}
 
 Media::Media(QString Name , QString Path , size_t Duration) : name(Name) , path(Path) , duration(Duration){}
 

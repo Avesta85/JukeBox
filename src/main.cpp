@@ -8,30 +8,19 @@
 #include "ui/changepasswordwindow.h"
 #include "ui/settingdialog.h"
 #include "ui/musicplayerview.h"
+#include "./src/backend/db/DBM.h"
 #include <QApplication>
+#include <src/backend/security/SecurityManager.h>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    //MainWindow w;
+    QApplication a(argc, argv); 
+    MainWindow w;
     //w.show();
-    ChoiceWindow choiceWin;
-    //choiceWin.showMaximized();
-    LoginWindow loginWin;
-    //loginWin.showMaximized();
-    //SignupWindow signupWin;
-    //signupWin.showMaximized();
-    FrogotPasswordWindow forgotpasswordWin;
-    //forgotpasswordWin.showMaximized();
-    EmailVerificationWindow emailverificwin;
-    //emailverificwin.showMaximized();
-    ReceiveSecureWordsWindow receivesecurwin;
-    //receivesecurwin.showMaximized();
-    ChangePasswordWindow changepasswing;
-    //changepasswing.showMaximized();
-    SettingDialog settingwin;
-    //settingwin.showMaximized();
-    MusicPlayerView musicpwin;
-    musicpwin.showMaximized();
+
+    SecurityManager sm;
+
+    qDebug()<< sm.securityKey_gen();
+
     return a.exec();
 }
