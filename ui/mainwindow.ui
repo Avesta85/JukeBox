@@ -14,7 +14,28 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout"/>
+   <widget class="StageWidget" name="stackedWidget_video_placholder">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>60</y>
+      <width>251</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <widget class="QWidget" name="page"/>
+    <widget class="QWidget" name="page_2"/>
+   </widget>
+   <widget class="PlayerControlWidget" name="widget_playercontrol_placeholder" native="true">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>280</y>
+      <width>271</width>
+      <height>91</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -28,6 +49,20 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>StageWidget</class>
+   <extends>QStackedWidget</extends>
+   <header location="global">stagewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PlayerControlWidget</class>
+   <extends>QWidget</extends>
+   <header>playercontrolwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

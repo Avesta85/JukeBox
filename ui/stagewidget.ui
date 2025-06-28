@@ -19,7 +19,7 @@
   <widget class="QWidget" name="page_cover_art">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="label_cover_art">
       <property name="text">
        <string>TextLabel</string>
       </property>
@@ -30,7 +30,7 @@
   <widget class="QWidget" name="page_video">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
-     <widget class="QWidget" name="widget_video" native="true"/>
+     <widget class="QVideoWidget" name="widget_video" native="true"/>
     </item>
    </layout>
   </widget>
@@ -42,6 +42,14 @@
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QVideoWidget</class>
+   <extends>QWidget</extends>
+   <header>qvideowidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
