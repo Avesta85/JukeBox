@@ -52,6 +52,9 @@ SOURCES += \
     src/backend/core/playlist.cpp \
     src/backend/core/song.cpp \
     src/backend/core/user.cpp \
+    src/backend/network/ConnectionManager.cpp \
+    src/backend/network/filetransferworker.cpp \
+    src/backend/network/sessionmanager.cpp \
     src/backend/security/SecurityManager.cpp \
     src/main.cpp \
     src/ui/changepasswordwindow.cpp \
@@ -65,6 +68,7 @@ SOURCES += \
     src/ui/signupwindow.cpp
 
 HEADERS += \
+    ConnectionManager.h \
     src/backend/core/SendEmail.h \
     src/backend/core/UserManager.h \
     src/backend/core/application.h \
@@ -75,6 +79,10 @@ HEADERS += \
     src/backend/core/song.h \
     src/backend/core/user.h \
     src/backend/db/DBM.h \
+    src/backend/network/ConnectionManager.h \
+    src/backend/network/NetworkProtocol.h \
+    src/backend/network/filetransferworker.h \
+    src/backend/network/sessionmanager.h \
     src/backend/security/SecurityManager.h \
     src/ui/changepasswordwindow.h \
     src/ui/choicewindow.h \

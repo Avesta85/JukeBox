@@ -16,8 +16,8 @@ public:
     void setArtist(const QString& NewArtist);
     void setID(const size_t& NewID);
 
-    const QString& getArtist();
-    const size_t& getID();
+    const QString& getArtist()const;
+    const size_t& getID()const;
 };
 
 #endif // SONG_H
