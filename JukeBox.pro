@@ -2,6 +2,7 @@ QT += core gui
 QT +=network
 QT += sql
 QT += concurrent
+QT += widgets multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
@@ -63,7 +64,8 @@ SOURCES += \
     src/ui/playercontrolwidget.cpp \
     src/ui/receivesecurewordswindow.cpp \
     src/ui/showkeywords.cpp \
-    src/ui/signupwindow.cpp
+    src/ui/signupwindow.cpp \
+    src/ui/stagewidget.cpp
 
 HEADERS += \
     src/backend/core/SendEmail.h \
@@ -86,7 +88,8 @@ HEADERS += \
     src/ui/playercontrolwidget.h \
     src/ui/receivesecurewordswindow.h \
     src/ui/showkeywords.h \
-    src/ui/signupwindow.h
+    src/ui/signupwindow.h \
+    src/ui/stagewidget.h
     src/backend/security/SecurityManager.h
 
 
@@ -101,7 +104,8 @@ FORMS += \
     ui/playercontrolwidget.ui \
     ui/receivesecurewordswindow.ui \
     ui/showkeywords.ui \
-    ui/signupwindow.ui
+    ui/signupwindow.ui \
+    ui/stagewidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
