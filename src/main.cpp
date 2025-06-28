@@ -1,6 +1,7 @@
 #include "src/backend/security/SecurityManager.h"
 #include <src/backend/core/application.h>
 #include "src/ui/createdialog.h"
+#include "src/ui/deleteplaylist.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -9,8 +10,11 @@ int main(int argc, char *argv[])
 
    // Application::getInstance().Run();
 
-    CreateDialog d;
-    d.show();
+   // CreateDialog d;
+    //d.show();
+
+    DeletePlayList k;
+    k.show();
 
     // SecurityManager sm;
     // qDebug()<< sm.encrypt("Avesta858","Avesta858");

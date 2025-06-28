@@ -24,7 +24,7 @@ CreateDialog::~CreateDialog()
     delete ui;
 }
 
-void CreateDialog::on_pushButton_clicked()
+void CreateDialog::on_pushButton_creat_clicked()
 {
 
 }

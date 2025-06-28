@@ -18,7 +18,7 @@ public:
     ~CreateDialog();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButton_creat_clicked();
 
 private:
     Ui::CreateDialog *ui;
