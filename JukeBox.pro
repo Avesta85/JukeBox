@@ -60,6 +60,7 @@ SOURCES += \
     src/ui/frogotpasswordwindow.cpp \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
+    src/ui/playercontrolwidget.cpp \
     src/ui/receivesecurewordswindow.cpp \
     src/ui/showkeywords.cpp \
     src/ui/signupwindow.cpp
@@ -82,6 +83,7 @@ HEADERS += \
     src/ui/frogotpasswordwindow.h \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
+    src/ui/playercontrolwidget.h \
     src/ui/receivesecurewordswindow.h \
     src/ui/showkeywords.h \
     src/ui/signupwindow.h
@@ -96,6 +98,7 @@ FORMS += \
     ui/frogotpasswordwindow.ui \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
+    ui/playercontrolwidget.ui \
     ui/receivesecurewordswindow.ui \
     ui/showkeywords.ui \
     ui/signupwindow.ui
