@@ -56,6 +56,7 @@ SOURCES += \
     src/main.cpp \
     src/ui/changepasswordwindow.cpp \
     src/ui/choicewindow.cpp \
+    src/ui/createdialog.cpp \
     src/ui/emailverificationwindow.cpp \
     src/ui/frogotpasswordwindow.cpp \
     src/ui/loginwindow.cpp \
@@ -78,6 +79,7 @@ HEADERS += \
     src/backend/security/SecurityManager.h \
     src/ui/changepasswordwindow.h \
     src/ui/choicewindow.h \
+    src/ui/createdialog.h \
     src/ui/emailverificationwindow.h \
     src/ui/frogotpasswordwindow.h \
     src/ui/loginwindow.h \
@@ -92,6 +94,7 @@ HEADERS += \
 FORMS += \
     ui/changepasswordwindow.ui \
     ui/choicewindow.ui \
+    ui/createdialog.ui \
     ui/emailverificationwindow.ui \
     ui/frogotpasswordwindow.ui \
     ui/loginwindow.ui \

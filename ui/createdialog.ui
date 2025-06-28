@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CreateDialog</class>
+ <widget class="QDialog" name="CreateDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1534</width>
+    <height>721</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>120</y>
+     <width>741</width>
+     <height>471</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Creat playlist</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="1" rowspan="2">
+     <widget class="QListWidget" name="listWidget"/>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="inputMask">
+       <string> </string>
+      </property>
+      <property name="placeholderText">
+       <string>Please enter a name for playlist</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Creat</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
