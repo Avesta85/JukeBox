@@ -4,6 +4,8 @@
 #include <QApplication>
 #include <QDebug>
 #include <src/backend/core/application.h>
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 ChoiceWindow::ChoiceWindow(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ChoiceWindow)
@@ -17,6 +19,8 @@ ChoiceWindow::ChoiceWindow(QWidget *parent)
     } else {
         qDebug() << "Could not get primary screen information. Dialog might not be full screen.";
     }
+
+    setWindowIcon(QIcon(":/icone/musicplayer"));
 }
 
 ChoiceWindow::~ChoiceWindow()

@@ -109,4 +109,5 @@ DISTFILES += \
     $$PWD/res/images/157822-concert-fortnite_extended_set-electronic_dance_music-here_with_me-automotive_lighting-3840x2160.jpg
 
 RESOURCES += \
-    $$PWD/res/seoned-resorces.qrc
+    $$PWD/res/seoned-resorces.qrc \
+    res/icones.qrc

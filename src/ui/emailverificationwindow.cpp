@@ -1,6 +1,8 @@
 #include "emailverificationwindow.h"
 #include "src/backend/security/SecurityManager.h"
 #include "ui_emailverificationwindow.h"
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 EmailVerificationWindow::EmailVerificationWindow(QWidget *parent)
     : QDialog(parent)
@@ -8,6 +10,17 @@ EmailVerificationWindow::EmailVerificationWindow(QWidget *parent)
 {
     ui->setupUi(this);
     changePassWindow = new ChangePasswordWindow;
+
+    QRegularExpression rxUsername("^[a-zA-Z0-9_]{3,}$");
+    QRegularExpressionValidator *usernameValidator = new QRegularExpressionValidator(rxUsername, this);
+
+    if (ui->lineEdit_email) {
+        ui->lineEdit_email->setValidator(usernameValidator);
+    } else {
+        qWarning("اخطار: usernameLineEdit در UI یافت نشد. Validator تنظیم نشد.");
+    }
+
+    setWindowIcon(QIcon(":/icone/musicplayer"));
 }
 
 EmailVerificationWindow::~EmailVerificationWindow()
@@ -47,16 +60,23 @@ void EmailVerificationWindow::on_pushButton_coniform_clicked()
 
     if(vrifiCode.isEmpty())
     {
-        QMessageBox::warning(this, "Warning", "You must fill the field!");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "You must fill the field!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
+
     if(vrifiCode == sended_email && sended_email !="..."){
 
         emit passVerification_gotoChangepassword(this->reciver_username);
         ui->lineEdit_email->clear();
     }
     else{
-        QMessageBox::warning(this, "Warning", "code is incorrect");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "code is incorrect", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         emit backToForgetPassWindow();
     }
 }

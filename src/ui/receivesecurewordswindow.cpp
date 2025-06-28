@@ -1,5 +1,7 @@
 #include "receivesecurewordswindow.h"
 #include "ui_receivesecurewordswindow.h"
+#include <QRegularExpression>
+#include <QRegularExpressionValidator>
 
 ReceiveSecureWordsWindow::ReceiveSecureWordsWindow(QWidget *parent)
     : QDialog(parent)
@@ -7,6 +9,41 @@ ReceiveSecureWordsWindow::ReceiveSecureWordsWindow(QWidget *parent)
 {
     ui->setupUi(this);
     changePassWidnow = new ChangePasswordWindow;
+
+    QRegularExpression rxAlpha("^[\u0621-\u0628\u062A-\u063A\u0641-\u0648\u064E-\u0651\u0655\u067E\u0686\u0698\u06AF\u06CC\\sA-Za-z]{2,}$"); // حروف فارسی، انگلیسی و فاصله
+    QRegularExpressionValidator *validatorFirst = new QRegularExpressionValidator(rxAlpha, this);
+    if (ui->lineEdit_first_word) {
+        ui->lineEdit_first_word->setValidator(validatorFirst);
+    } else {
+        qWarning("اخطار: lineEdit_first در UI یافت نشد. Validator تنظیم نشد.");
+        delete validatorFirst;
+    }
+
+    QRegularExpressionValidator *validatorSecond = new QRegularExpressionValidator(rxAlpha, this);
+    if (ui->lineEdit_seconde_word) {
+        ui->lineEdit_seconde_word->setValidator(validatorSecond);
+    } else {
+        qWarning("اخطار: lineEdit_second در UI یافت نشد. Validator تنظیم نشد.");
+        delete validatorSecond;
+    }
+
+    QRegularExpressionValidator *validatorThird = new QRegularExpressionValidator(rxAlpha, this);
+    if (ui->lineEdit_third_word) {
+        ui->lineEdit_third_word->setValidator(validatorThird);
+    } else {
+        qWarning("اخطار: lineEdit_third در UI یافت نشد. Validator تنظیم نشد.");
+        delete validatorThird;
+    }
+
+    QRegularExpressionValidator *validatorFourth = new QRegularExpressionValidator(rxAlpha, this);
+    if (ui->lineEdit_fourth_word) {
+        ui->lineEdit_fourth_word->setValidator(validatorFourth);
+    } else {
+        qWarning("اخطار: lineEdit_third در UI یافت نشد. Validator تنظیم نشد.");
+        delete validatorThird;
+    }
+
+    setWindowIcon(QIcon(":/icone/musicplayer"));
 }
 
 ReceiveSecureWordsWindow::~ReceiveSecureWordsWindow()
@@ -45,7 +82,10 @@ void ReceiveSecureWordsWindow::on_pushButton_coniform_clicked()
 
     if(word1.isEmpty() || word2.isEmpty() || word3.isEmpty() || word4.isEmpty())
     {
-        QMessageBox::warning(this, "Warning", "You must fill the fields!");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "You must fill the fields!", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         return;
     }
 
@@ -59,7 +99,10 @@ void ReceiveSecureWordsWindow::on_pushButton_coniform_clicked()
             word4 !=words[3]
             )
         {
-            QMessageBox::warning(this, "Warning", "Security key incorrect.");
+            QMessageBox msgBox(QMessageBox::Warning, "Warning", "Security key incorrect.", QMessageBox::Ok, this);
+            msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+            msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+            msgBox.exec();
             emit backToForgetPassWindow();
         }
         else{
@@ -74,7 +117,10 @@ void ReceiveSecureWordsWindow::on_pushButton_coniform_clicked()
     }
     catch(...)
     {
-        QMessageBox::warning(this, "Warning", "operation failed.");
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "operation failed.", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
         emit backToForgetPassWindow();
     }
 }
