@@ -17,8 +17,8 @@
    <widget class="StageWidget" name="stackedWidget_video_placholder">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>60</y>
+      <x>310</x>
+      <y>240</y>
       <width>251</width>
       <height>171</height>
      </rect>
@@ -29,8 +29,8 @@
    <widget class="PlayerControlWidget" name="widget_playercontrol_placeholder" native="true">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>280</y>
+      <x>320</x>
+      <y>420</y>
       <width>271</width>
       <height>91</height>
      </rect>
