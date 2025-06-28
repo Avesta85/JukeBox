@@ -62,6 +62,11 @@ public:
     QList<Person> getUserFriend()const;
     QList<Song> getUserFavoriteSongs()const;
 
+
+    //checker
+
+    bool is_loggedin();
+
 private:
     UserManager();
 

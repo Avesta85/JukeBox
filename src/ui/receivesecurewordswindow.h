@@ -18,8 +18,12 @@ public:
     explicit ReceiveSecureWordsWindow(QWidget *parent = nullptr);
     ~ReceiveSecureWordsWindow();
 
+    void setusername(QString username);
+    void setkey(QString key);
+
 signals:
     void backToForgetPassWindow();
+    void passed(QString username);
 
 private slots:
     void on_pushButton_Back_clicked();
@@ -29,6 +33,8 @@ private slots:
 private:
     Ui::ReceiveSecureWordsWindow *ui;
     ChangePasswordWindow* changePassWidnow;
+    QString username;
+    QString key;
 };
 
 

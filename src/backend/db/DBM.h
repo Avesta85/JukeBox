@@ -36,6 +36,7 @@ public:
     ~DBM();
     static DBM& get_instance();
 
+
     //song sync
 
     QMap<QString,QString> scanDiskForSongs(const QString& folder_path) const; // read disk and create {path , songs_name } map
@@ -69,24 +70,12 @@ public:
     QList<Song> getFavoriteSongsForUser(qint64 userId);
     QList<Person> getFriendsForUser(qint64 userId);
 
+    QString getEmailofUser(const QString& username);
+    QString getSKeyofUser(const QString& username);
     // delete
 
     bool deleteUser(const size_t user_id);
-    bool deleteSong(const size_t Song_id)
-    {
-        std::scoped_lock locker(m_db_mutex);
-        QSqlQuery del;
-        del.prepare("DELETE FROM Songs WHERE id = :id");
-        del.bindValue(":id",static_cast<qint64>(Song_id));
-
-        if(!del.exec())
-        {
-            qDebug() << "Failed to delete song:" << del.lastError().text();
-            return false;
-        }
-
-        return del.numRowsAffected() > 0;
-    }
+    bool deleteSong(const size_t Song_id);
     bool deletePlaylist(const size_t playlist_id);
     bool deletePlaylistSong(const size_t playlist_id,const size_t song_id);
     bool deleteFriend(const size_t user_id,const QString& friend_username);
@@ -96,6 +85,7 @@ public:
     //update
 
     bool updateUserPassword(qint64 user_id ,const QString& newPassword );
+    bool updateUserPassword(const QString& userName,const QString& newPassword );
     bool updateUserEmail(qint64 user_id , const QString& newEmail);
     bool updatePlaylistName(const size_t playlist_id,const QString& newPlaylist_Name);
 
@@ -103,7 +93,7 @@ public:
 
     bool isDbOpen();
 
-    bool isUsernameUnique(const QString& Username) ;
+    bool isUsernameUnique(const QString& Username);
 
 private:
     // Static Private Variable
@@ -114,8 +104,9 @@ private:
     static const QString s_db_name;
 
 
-
     // Private Member Variable
+
+    QThread* main_thread;
 
     QString m_db_songs_folder;
 

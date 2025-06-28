@@ -19,7 +19,7 @@ size_t payloadSource(void* ptr, size_t size, size_t nmemb, void* userp)
     return 0;
 }
 
-bool sendMail(char* from, char* to, char* verifiMessage)
+bool sendMail(const char* from, const char* to, const char* verifiMessage)
 {
     CURL* curl = curl_easy_init();
     if (!curl) {

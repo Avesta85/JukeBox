@@ -6,7 +6,8 @@
 #include <botan/aead.h>
 #include <botan/pbkdf.h>
 #include <botan/base64.h>
-
+#include <src/backend/core/SendEmail.h>
+#include <QRandomGenerator>
 SecurityManager::SecurityManager()
     :passphrase("a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6")
 {
@@ -115,5 +116,13 @@ QString SecurityManager::securityKey_gen() const
     }
 
     return keyParts.join('-');
+}
+
+const QString SecurityManager::SendVerification_Code(QString &Email)
+{
+
+    QString code = QString::number(QRandomGenerator::global()->bounded(12345, 100000));
+    sendMail("mohammad1384esf@gmail.com",Email.toStdString().c_str(),code.toStdString().c_str());
+    return code;
 }
 

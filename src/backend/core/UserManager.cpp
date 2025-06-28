@@ -22,7 +22,7 @@ UserManager::~UserManager()
 bool UserManager::attemptLogin(const QString &username, const QString Password)
 {
     try{
-        DBM::get_instance().selectUser(m_local_user,m_security_manager.encrypt(username,username),
+        DBM::get_instance().selectUser(m_local_user,username,
                                    m_security_manager.Hash(Password));
 
         this->m_decoder_key = username;
@@ -44,6 +44,7 @@ bool UserManager::attempSignup(const QString &username, const QString &password,
 {
     try{
 
+        if(DBM::get_instance().isUsernameUnique(username)){
         DBM::get_instance().insertUser(
                                m_security_manager.encrypt(username,username),
                                m_security_manager.Hash(password),
@@ -54,6 +55,10 @@ bool UserManager::attempSignup(const QString &username, const QString &password,
             );
 
         return true;
+        }
+        else{
+            return false;
+        }
     }
     catch(std::exception& e)
     {
@@ -265,4 +270,9 @@ QList<Person> UserManager::getUserFriend() const
 QList<Song> UserManager::getUserFavoriteSongs() const
 {
     return DBM::get_instance().getFavoriteSongsForUser(m_local_user->getID());
+}
+
+bool UserManager::is_loggedin()
+{
+    return m_local_user.has_value();
 }

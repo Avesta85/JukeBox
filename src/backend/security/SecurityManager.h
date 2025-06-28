@@ -22,6 +22,10 @@ public:
 
     QString securityKey_gen()const;
 
+    // send Email verifycation code
+
+    const QString SendVerification_Code(QString& Email);
+
 private:
 
     const std::string passphrase;

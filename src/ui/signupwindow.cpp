@@ -77,21 +77,16 @@ void SignupWindow::on_pushButton_signup_clicked()
         //gen security key;
         SecurityManager sm;
         auto key = sm.securityKey_gen();
+        qDebug()<< key;
+        if(UserManager::getInstance().attempSignup(userName,Password,name,lastName,email,key)){
 
-        UserManager::getInstance().attempSignup(userName,Password,name,lastName,email,key);
+            QMessageBox::information(this,"popup","user signed in");
+            emit showkey(key);
 
-        QPushButton button("Click Me for a Popup!");
-        button.resize(250, 50);
-
-        QObject::connect(&button, &QPushButton::clicked, []() {
-            QMessageBox::information(
-                nullptr,                          // Parent
-                "Popup Title",                    // Title
-                "This is a notification message that appeared suddenly." // Text
-                );
-        });
-
-        button.show();
+        }
+        else{
+            QMessageBox::warning(this, "Warning", "Username already exists");
+        }
     }
 
     // else db check
@@ -107,6 +102,5 @@ void SignupWindow::on_pushButton_signup_clicked()
 
     // meesag box
 
-    emit backToChoiseWindow();
 }
 

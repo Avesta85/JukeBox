@@ -29,11 +29,11 @@ public:
     void show_choiceWindow();
     void show_loginWindow();
     void show_signupWindow();
-    void show_changePasswordWindow();
-    void show_emailVWindow();
+    void show_changePasswordWindow(QString Username);
+    void show_emailVWindow(QString Email ,QString Username);
     void show_forgotPassword_window();
-    void show_receiveSWWindow();
-    void show_showKeyWindow();
+    void show_receiveSWWindow(QString key , QString username);
+    void show_showKeyWindow(QString key);
 
 private:
     explicit Application(QObject *parent = nullptr);

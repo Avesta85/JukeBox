@@ -9,7 +9,7 @@
 
 size_t payloadSource(void* ptr, size_t size, size_t nmemb, void* userp);
 
-bool sendMail(char* from , char* to , char* verifiMessege);
+bool sendMail(const char* from , const char* to , const char* verifiMessege);
 
 
 #endif

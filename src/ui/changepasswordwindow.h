@@ -17,6 +17,7 @@ public:
     explicit ChangePasswordWindow(QWidget *parent = nullptr);
     ~ChangePasswordWindow();
 
+    void set_username(QString Username);
 private slots:
     void on_pushButton_clicked();
 
@@ -25,6 +26,7 @@ signals:
 
 private:
     Ui::ChangePasswordWindow *ui;
+    QString Username;
 };
 
 #endif // CHANGEPASSWORDWINDOW_H

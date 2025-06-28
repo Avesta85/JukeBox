@@ -1,4 +1,5 @@
 #include "loginwindow.h"
+#include "src/backend/core/UserManager.h"
 #include "ui_loginwindow.h"
 
 LoginWindow::LoginWindow(QWidget *parent)
@@ -40,10 +41,18 @@ void LoginWindow::on_pushButton_ok_clicked()
         return;
     }
 
-    // messege...
+    if(!UserManager::getInstance().attemptLogin(userNameField,passField)){
+        QMessageBox::warning(this, "Warning", "operation failed.");
+        return;
+    }
 
-    // databace...
-
+    if(!UserManager::getInstance().is_loggedin()){
+        QMessageBox::warning(this, "Warning", "password or username is incurrect.");
+        return;
+    }
+    else{
+        emit LoggedInsuccessfully();
+    }
 
     ui->lineEdit_username->clear();
     ui->lineEdit_password->clear();

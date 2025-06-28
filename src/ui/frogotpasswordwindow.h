@@ -5,8 +5,6 @@
 #include <QString>
 #include <QRegularExpression>
 #include <QMessageBox>
-#include "emailverificationwindow.h"
-#include "receivesecurewordswindow.h"
 
 namespace Ui {
 class FrogotPasswordWindow;
@@ -22,8 +20,8 @@ public:
 
 signals:
     void backToLoginWindow();
-    void EmailVerification();
-    void SecurityVerification();
+    void EmailVerification(QString Email,QString username);
+    void SecurityVerification(QString key,QString username);
 private slots:
     void on_pushButton_ok_clicked();
 

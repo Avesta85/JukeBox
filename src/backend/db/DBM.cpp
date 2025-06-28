@@ -1,5 +1,6 @@
 #include "./DBM.h"
 #include "QtConcurrent/qtconcurrentrun.h"
+#include "src/backend/security/SecurityManager.h"
 #include <optional>
 
 std::unique_ptr<DBM> DBM::s_instance = nullptr;
@@ -19,14 +20,16 @@ DBM &DBM::get_instance()
 {
     if(!s_instance)
     {
-        s_instance.reset(new DBM());
-    }
 
+        s_instance.reset(new DBM());
+
+    }
     return *s_instance;
 }
 
 DBM::DBM()
 {
+    main_thread = QThread::currentThread();
     try
     {
 
@@ -385,8 +388,7 @@ void DBM::selectUser(std::optional<User>&local_user_holder,const QString &Userna
     QSqlQuery select;
 
     select.prepare("SELECT id , username , firstname,lastname,email,secret_key FROM Users"
-                   " WHERE username = :username AND password = :password ");
-    select.bindValue(":username" ,Username);
+                   " WHERE password = :password ");
     select.bindValue(":password",Password);
 
     if(!select.exec())
@@ -394,20 +396,20 @@ void DBM::selectUser(std::optional<User>&local_user_holder,const QString &Userna
         throw std::runtime_error("cant run user select query");
     }
 
-    if(select.next())
+    while(select.next())
     {
-
-        local_user_holder->setID(select.value(0).toLongLong());
-        local_user_holder->setUserName(select.value(1).toString());
-        local_user_holder->setFirstName(select.value(2).toString());
-        local_user_holder->setLastName(select.value(3).toString());
-        local_user_holder->setEmail(select.value(4).toString());
-
+        SecurityManager sm;
+        if(sm.decrypt(select.value(1).toString(),Username) == Username){
+            local_user_holder.emplace();
+            local_user_holder->setID(select.value(0).toLongLong());
+            local_user_holder->setUserName(select.value(1).toString());
+            local_user_holder->setFirstName(select.value(2).toString());
+            local_user_holder->setLastName(select.value(3).toString());
+            local_user_holder->setEmail(select.value(4).toString());
+            return;
+        }
     }
-    else
-    {
-        local_user_holder = std::nullopt;
-    }
+    local_user_holder = std::nullopt;
 
 }
 
@@ -501,7 +503,7 @@ QList<Person> DBM::getFriendsForUser(qint64 userId)
     QList<Person> holder;
 
     select.prepare(
-        "SELECT friend_username WHERE owner_id = :owner_id "
+        "SELECT friend_username FROM Friends WHERE owner_id = :owner_id "
         );
     select.bindValue(":owner_id",userId);
 
@@ -518,6 +520,58 @@ QList<Person> DBM::getFriendsForUser(qint64 userId)
 
 }
 
+QString DBM::getEmailofUser(const QString &username)
+{
+    std::scoped_lock<QMutex> locker(m_db_mutex);
+
+    QSqlQuery select;
+
+    select.prepare(
+        "SELECT username , email FROM Users"
+        );
+
+    if(!select.exec())
+    {
+        throw std::runtime_error("cant select friend from db");
+    }
+    while(select.next())
+    {
+        SecurityManager sm;
+        if(sm.decrypt(select.value(0).toString(),username) == username)
+        {
+            return sm.decrypt(select.value(1).toString(),username);
+        }
+    }
+
+    return "";
+}
+
+QString DBM::getSKeyofUser(const QString &username)
+{
+    std::scoped_lock<QMutex> locker(m_db_mutex);
+
+    QSqlQuery select;
+
+    select.prepare(
+        "SELECT username , secret_key FROM Users"
+        );
+
+    if(!select.exec())
+    {
+        throw std::runtime_error("cant select friend from db");
+    }
+    while(select.next())
+    {
+        SecurityManager sm;
+        if(sm.decrypt(select.value(0).toString(),username) == username)
+        {
+            return sm.decrypt(select.value(1).toString(),username);
+        }
+    }
+
+    return "";
+}
+
 // delete
 bool DBM::deleteUser(const size_t user_id)
 {
@@ -529,6 +583,22 @@ bool DBM::deleteUser(const size_t user_id)
     if(!del.exec())
     {
         qDebug() << "Failed to delete user:" << del.lastError().text();
+        return false;
+    }
+
+    return del.numRowsAffected() > 0;
+}
+
+bool DBM::deleteSong(const size_t Song_id)
+{
+    std::scoped_lock locker(m_db_mutex);
+    QSqlQuery del;
+    del.prepare("DELETE FROM Songs WHERE id = :id");
+    del.bindValue(":id",static_cast<qint64>(Song_id));
+
+    if(!del.exec())
+    {
+        qDebug() << "Failed to delete song:" << del.lastError().text();
         return false;
     }
 
@@ -626,6 +696,50 @@ bool DBM::updateUserPassword(qint64 user_id, const QString &newPassword)
     }
 }
 
+bool DBM::updateUserPassword(const QString &userName, const QString &newPassword)
+{
+    std::scoped_lock locker(m_db_mutex);
+    qint64 user_id =-1;
+    SecurityManager sm;
+    QSqlQuery find_id ;
+    find_id.prepare("SELECT id, username FROM Users");
+
+    if (!find_id.exec()) {
+        qDebug() << "Failed to find  user id :" << find_id.lastError().text();
+        return false;
+    }
+    while(find_id.next())
+    {
+        if(sm.decrypt(find_id.value(1).toString(),userName) == userName){
+            user_id = find_id.value(0).toLongLong();
+        }
+    }
+
+
+    if(user_id == -1){
+        return false;
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE Users SET password = :password WHERE id = :id");
+
+    query.bindValue(":password", newPassword);
+    query.bindValue(":id", user_id);
+
+    if (!query.exec()) {
+        qDebug() << "Failed to update user password:" << query.lastError().text();
+        return false;
+    }
+
+    if (query.numRowsAffected() > 0) {
+        qDebug() << "Password for user id" << user_id << "updated successfully.";
+        return true;
+    } else {
+        qDebug() << "Update password failed: User with id" << user_id << "not found.";
+        return false;
+    }
+}
+
 bool DBM::updateUserEmail(qint64 user_id, const QString &newEmail)
 {
 
@@ -686,8 +800,8 @@ bool DBM::isUsernameUnique(const QString& Username)
     std::scoped_lock<QMutex>lock(m_db_mutex);
 
     QSqlQuery search;
-
-    search.prepare("SELECT EXISTS(SELECT 1 FROM Users WHERE username = :username");
+    SecurityManager sm;
+    search.prepare("SELECT username FROM Users");
     search.bindValue(":username",Username);
 
     if(!search.exec())
@@ -697,12 +811,12 @@ bool DBM::isUsernameUnique(const QString& Username)
     }
     if(search.next())
     {
-        bool exi = search.value(0).toBool();
-
-        return !exi;
+        if(sm.decrypt(search.value(0).toString(),Username) == Username){
+            return false;
+        }
     }
 
-    return false;
+    return true;
 }
 
 bool DBM::verifySongsPath(const QString& path)

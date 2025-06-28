@@ -20,7 +20,7 @@ public:
 
 signals:
     void backToChoiseWindow();
-    void signUpsuccessfuly();
+    void showkey(QString key);
 
 private slots:
     void on_pushButton_cancel_clicked();

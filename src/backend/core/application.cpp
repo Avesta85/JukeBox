@@ -27,17 +27,10 @@ Application &Application::getInstance()
 
 void Application::Run()
 {
-    QThread* startDB = QThread::create([](){
-                          DBM::get_instance();
-    });
-    QThread* startUM  = QThread::create([](){
-        UserManager::getInstance();
-    });
-    startUM->start();
-    startDB->start();
+
+    DBM::get_instance();
     this->show_choiceWindow();
-    startDB->wait();
-    startUM->wait();
+    UserManager::getInstance();
 }
 //ok
 void Application::show_choiceWindow()
@@ -69,25 +62,32 @@ void Application::show_signupWindow()
     if(!w_signUp_window){
         w_signUp_window = new SignupWindow();
 
+        connect(w_signUp_window,&SignupWindow::backToChoiseWindow,this,&Application::show_choiceWindow);
+        connect(w_signUp_window,&SignupWindow::showkey,this,&Application::show_showKeyWindow);
     }
     switchWindow(w_signUp_window);
 }
 //ok
-void Application::show_changePasswordWindow()
+void Application::show_changePasswordWindow(QString Username)
 {
     if(!w_change_password_window){
         w_change_password_window = new ChangePasswordWindow();
-
+        connect(w_change_password_window,&ChangePasswordWindow::goToLoginWindow,this,&Application::show_loginWindow);
     }
+    w_change_password_window->set_username(Username);
     switchWindow(w_change_password_window);
 }
 
-void Application::show_emailVWindow()
+void Application::show_emailVWindow(QString Email, QString Username)
 {
     if(!w_email_verification_window){
         w_email_verification_window = new EmailVerificationWindow();
 
+        connect(w_email_verification_window,&EmailVerificationWindow::backToForgetPassWindow,this,&Application::show_forgotPassword_window);
+        connect(w_email_verification_window,&EmailVerificationWindow::passVerification_gotoChangepassword,this,&Application::show_changePasswordWindow);
     }
+    w_email_verification_window->setResiverUsername(Username);
+    w_email_verification_window->Emailsender(Email);
     switchWindow(w_email_verification_window);
 }
 //ok
@@ -103,28 +103,33 @@ void Application::show_forgotPassword_window()
     switchWindow(w_forgot_password_window);
 }
 
-void Application::show_receiveSWWindow()
+void Application::show_receiveSWWindow(QString key, QString username)
 {
     if(!w_receive_secureWords_window){
         w_receive_secureWords_window = new ReceiveSecureWordsWindow();
+        connect(w_receive_secureWords_window ,&ReceiveSecureWordsWindow::backToForgetPassWindow,this,&Application::show_forgotPassword_window);
+        connect(w_receive_secureWords_window ,&ReceiveSecureWordsWindow::passed,this,&Application::show_changePasswordWindow);
 
     }
+    w_receive_secureWords_window->setkey(key);
+    w_receive_secureWords_window->setusername(username);
     switchWindow(w_receive_secureWords_window);
 }
 
-void Application::show_showKeyWindow()
+void Application::show_showKeyWindow(QString key)
 {
     if(!w_showKey_Window){
         w_showKey_Window = new ShowKeyWords();
-
+        connect(w_showKey_Window ,&ShowKeyWords::signup_successfully,this,&Application::show_loginWindow);
     }
+    w_showKey_Window->set_key(key);
     switchWindow(w_showKey_Window);
 }
 
 Application::Application(QObject *parent)
     :QObject(parent),m_currentWindow(nullptr),w_change_password_window(nullptr)
     ,w_choice_window(nullptr),w_email_verification_window(nullptr),w_forgot_password_window(nullptr)
-    ,w_login_window(nullptr),w_receive_secureWords_window(nullptr),w_signUp_window(nullptr)
+    ,w_login_window(nullptr),w_receive_secureWords_window(nullptr),w_signUp_window(nullptr),w_showKey_Window(nullptr)
 {
     ;
 }

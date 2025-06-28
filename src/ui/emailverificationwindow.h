@@ -16,9 +16,13 @@ class EmailVerificationWindow : public QDialog
 public:
     explicit EmailVerificationWindow(QWidget *parent = nullptr);
     ~EmailVerificationWindow();
+    void Emailsender(QString email);
+    void setResiverUsername(QString username);
 
 signals:
     void backToForgetPassWindow();
+    void passVerification_gotoChangepassword(QString Username);
+
 
 private slots:
     void on_pushButton_Back_clicked();
@@ -26,6 +30,8 @@ private slots:
     void on_pushButton_coniform_clicked();
 
 private:
+    QString reciver_username;
+    QString sended_email;
     Ui::EmailVerificationWindow *ui;
     ChangePasswordWindow* changePassWindow;
 };

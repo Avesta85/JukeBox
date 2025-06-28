@@ -14,9 +14,17 @@ class ShowKeyWords : public QDialog
 public:
     explicit ShowKeyWords(QWidget *parent = nullptr);
     ~ShowKeyWords();
+    void set_key(QString key);
 
 private:
     Ui::ShowKeyWords *ui;
+    QString key;
+
+signals:
+    void signup_successfully();
+
+private slots:
+    void on_pushButton_clicked();
 };
 
 #endif // SHOWKEYWORDS_H

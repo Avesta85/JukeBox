@@ -3,7 +3,7 @@ QT +=network
 QT += sql
 QT += concurrent
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
 CONFIG += c++20
 
@@ -75,6 +75,7 @@ HEADERS += \
     src/backend/core/song.h \
     src/backend/core/user.h \
     src/backend/db/DBM.h \
+    src/backend/security/SecurityManager.h \
     src/ui/changepasswordwindow.h \
     src/ui/choicewindow.h \
     src/ui/emailverificationwindow.h \
