@@ -64,6 +64,7 @@ SOURCES += \
     src/ui/moviemanagementwindow.cpp \
     src/ui/playercontrolwidget.cpp \
     src/ui/playlistchoicewindow.cpp \
+    src/ui/playmusicwindow.cpp \
     src/ui/receivesecurewordswindow.cpp \
     src/ui/settingwindow.cpp \
     src/ui/showkeywords.cpp \
@@ -92,6 +93,7 @@ HEADERS += \
     src/ui/moviemanagementwindow.h \
     src/ui/playercontrolwidget.h \
     src/ui/playlistchoicewindow.h \
+    src/ui/playmusicwindow.h \
     src/ui/receivesecurewordswindow.h \
     src/ui/settingwindow.h \
     src/ui/showkeywords.h \
@@ -115,6 +117,7 @@ FORMS += \
     ui/moviemanagementwindow.ui \
     ui/playercontrolwidget.ui \
     ui/playlistchoicewindow.ui \
+    ui/playmusicwindow.ui \
     ui/receivesecurewordswindow.ui \
     ui/settingwindow.ui \
     ui/showkeywords.ui \
