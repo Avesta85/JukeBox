@@ -31,7 +31,7 @@ void PlayerManager::play()
     {
         if(m_currentIndex != -1 && !m_playlist.isEmpty())
         {
-            //playAtIndex(m_currentindex);
+            playIndex(m_currentIndex);
         }
         else if(currentMedia != nullptr)
         {
