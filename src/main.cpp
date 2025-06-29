@@ -2,6 +2,7 @@
 #include <src/backend/core/application.h>
 #include "src/ui/createdialog.h"
 #include "src/ui/deleteplaylist.h"
+#include "src/ui/playercontrolwidget.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -12,9 +13,10 @@ int main(int argc, char *argv[])
 
    // CreateDialog d;
     //d.show();
-
-    DeletePlayList k;
-    k.show();
+    PlayerControlWidget q;
+    q.show();
+  //  DeletePlayList k;
+   // k.show();
 
     // SecurityManager sm;
     // qDebug()<< sm.encrypt("Avesta858","Avesta858");
