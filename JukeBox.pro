@@ -99,7 +99,6 @@ HEADERS += \
 
 
 FORMS += \
-    src/ui/settingwindow.ui \
     ui/changepasswordwindow.ui \
     ui/choicewindow.ui \
     ui/emailverificationwindow.ui \
@@ -108,6 +107,7 @@ FORMS += \
     ui/mainwindow.ui \
     ui/playercontrolwidget.ui \
     ui/receivesecurewordswindow.ui \
+    ui/settingwindow.ui \
     ui/showkeywords.ui \
     ui/signupwindow.ui \
     ui/stagewidget.ui \
