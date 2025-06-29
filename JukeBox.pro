@@ -65,7 +65,8 @@ SOURCES += \
     src/ui/receivesecurewordswindow.cpp \
     src/ui/showkeywords.cpp \
     src/ui/signupwindow.cpp \
-    src/ui/stagewidget.cpp
+    src/ui/stagewidget.cpp \
+    src/ui/toolboxwidget.cpp
 
 HEADERS += \
     src/backend/core/SendEmail.h \
@@ -89,7 +90,8 @@ HEADERS += \
     src/ui/receivesecurewordswindow.h \
     src/ui/showkeywords.h \
     src/ui/signupwindow.h \
-    src/ui/stagewidget.h
+    src/ui/stagewidget.h \
+    src/ui/toolboxwidget.h
     src/backend/security/SecurityManager.h
 
 
@@ -105,7 +107,8 @@ FORMS += \
     ui/receivesecurewordswindow.ui \
     ui/showkeywords.ui \
     ui/signupwindow.ui \
-    ui/stagewidget.ui
+    ui/stagewidget.ui \
+    ui/toolboxwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
