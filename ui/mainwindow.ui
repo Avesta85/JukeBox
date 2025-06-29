@@ -7,25 +7,32 @@
     <x>0</x>
     <y>0</y>
     <width>980</width>
-    <height>653</height>
+    <height>694</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="ToolBoxWidget" name="widget_toolbox_placeholder" native="true"/>
-    </item>
-    <item>
-     <widget class="StageWidget" name="stackedWidget_video_placholder">
-      <widget class="QWidget" name="page"/>
-      <widget class="QWidget" name="page_2"/>
-     </widget>
-    </item>
-    <item>
-     <widget class="PlayerControlWidget" name="widget_playercontrol_placeholder" native="true"/>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="ToolBoxWidget" name="widget_toolbox_placeholder" native="true"/>
+      </item>
+      <item>
+       <widget class="StageWidget" name="stackedWidget_video_placholder">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="page"/>
+        <widget class="QWidget" name="page_2"/>
+       </widget>
+      </item>
+      <item>
+       <widget class="PlayerControlWidget" name="widget_playercontrol_placeholder" native="true"/>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -40,6 +47,12 @@
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="JukeBoxSessionWidget" name="dockWidget_juckbox_session_placeholder">
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_3"/>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -58,6 +71,12 @@
    <class>ToolBoxWidget</class>
    <extends>QWidget</extends>
    <header location="global">src/ui/toolboxwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>JukeBoxSessionWidget</class>
+   <extends>QDockWidget</extends>
+   <header>jukeboxsessionwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
