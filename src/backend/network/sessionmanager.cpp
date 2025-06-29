@@ -116,7 +116,7 @@ void SessionManager::processNetworkCommand(NetworkCommand command, const QVarian
             broadcastParticipantList();
             emit showInfoMessage(QString("%1 has joined the session.").arg(newUsername));
         }
-        else if(command==NetworkCommand::CheckSongRequest)
+        else if(command==NetworkCommand::CheckSongResponse)
         {
             QVariantMap map = payload.toMap();
             QString responseSongName = map.value("songName").toString();
