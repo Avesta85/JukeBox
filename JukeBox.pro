@@ -1,5 +1,5 @@
 QT += core gui
-QT +=network
+QT += network
 QT += sql
 QT += concurrent
 QT += widgets multimedia multimediawidgets
@@ -111,8 +111,8 @@ HEADERS += \
 
 
 FORMS += \
-    src/ui/playlistchoicewindow.ui \
-    src/ui/playlistchoicewindow.ui \
+    ui/playlistchoicewindow.ui \
+    ui/playlistchoicewindow.ui \
     ui/changepasswordwindow.ui \
     ui/choicewindow.ui \
     ui/createdialog.ui \

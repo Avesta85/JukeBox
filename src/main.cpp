@@ -3,6 +3,8 @@
 #include "src/ui/createdialog.h"
 #include "src/ui/deleteplaylist.h"
 #include "src/ui/playercontrolwidget.h"
+#include "src/ui/playlistchoicewindow.h"
+#include "src/ui/playmusicwindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -11,8 +13,11 @@ int main(int argc, char *argv[])
 
    // Application::getInstance().Run();
 
-    CreateDialog d;
-    d.show();
+    //CreateDialog d;
+    //d.show();
+
+    playmusicwindow h;
+    h.show();
     //PlayerControlWidget q;
     //q.show();
   //  DeletePlayList k;
