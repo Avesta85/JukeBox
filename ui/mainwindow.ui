@@ -36,6 +36,16 @@
      </rect>
     </property>
    </widget>
+   <widget class="ToolBoxWidget" name="widget_toolbox_placeholder" native="true">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>70</y>
+      <width>120</width>
+      <height>80</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -53,13 +63,19 @@
   <customwidget>
    <class>StageWidget</class>
    <extends>QStackedWidget</extends>
-   <header location="global">stagewidget.h</header>
+   <header location="global">src/ui/stagewidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>PlayerControlWidget</class>
    <extends>QWidget</extends>
-   <header>playercontrolwidget.h</header>
+   <header location="global">src/ui/playercontrolwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ToolBoxWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">src/ui/toolboxwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
