@@ -6,26 +6,61 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>980</width>
+    <height>653</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="ToolBoxWidget" name="widget_toolbox_placeholder" native="true"/>
+    </item>
+    <item>
+     <widget class="StageWidget" name="stackedWidget_video_placholder">
+      <widget class="QWidget" name="page"/>
+      <widget class="QWidget" name="page_2"/>
+     </widget>
+    </item>
+    <item>
+     <widget class="PlayerControlWidget" name="widget_playercontrol_placeholder" native="true"/>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>25</height>
+     <width>980</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>StageWidget</class>
+   <extends>QStackedWidget</extends>
+   <header location="global">src/ui/stagewidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PlayerControlWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">src/ui/playercontrolwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ToolBoxWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">src/ui/toolboxwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

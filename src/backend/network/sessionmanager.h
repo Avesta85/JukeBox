@@ -7,7 +7,8 @@
 #include <QObject>
 #include <Qstring>
 #include <QHostAddress>
-
+#include <QTimer>
+#include <QMap>
 
 
 
@@ -47,6 +48,7 @@ public slots:
 private slots:
 
      void processNetworkCommand(NetworkCommand command, const QVariant& payload, const QHostAddress& sender, quint16 senderPort);
+     void onCheckSongResponseTimeout();
 signals:
 
     void participantListChanged(const QList<Person>& participants);
@@ -68,6 +70,10 @@ private :
     QList<Participant> m_participants;
     QHostAddress m_hostAddress;
     Participant m_localUser;
+
+    QMap<QString,QStringList>m_pendingSongRequest;
+
+    QTimer* m_checkSongResponseTimer;
 
 
     QString findUsernameByAddress(const QHostAddress& address)const;

@@ -1,6 +1,7 @@
 #include "sessionmanager.h"
-
+#include <QDir>
 #include "ConnectionManager.h"
+#include "qstandardpaths.h"
 
 std::unique_ptr<SessionManager> SessionManager::s_instance = nullptr;
 
@@ -61,10 +62,33 @@ void SessionManager::onPlaySongRequested(const Song &song)
     if(!m_isSessionActive || !m_isHost) return;
 
     qDebug() << "Host requested to play song:" << song.getName();
-    // TODO: پیاده‌سازی منطق چک کردن وجود آهنگ در کلاینت‌ها
-    // برای سادگی فعلا فرض می‌کنیم همه آهنگ را دارند
-    // emit ui_play();
-     broadcastCommand(NetworkCommand::CheckSongRequest, song.getName());
+
+    QString songname = song.getName();
+
+    m_pendingSongRequest.remove(songname);
+
+
+    QStringList needingUsers;
+
+    for(const auto& p : m_participants){
+        if(p.username != m_localUser.username){
+            needingUsers.append(p.username);
+        }
+    }
+
+    if (needingUsers.isEmpty()){
+        qDebug() << "No other participants. Playing song directly.";
+        // TODO: فرمان پخش نهایی را اینجا ارسال کن
+        // broadcastCommand(NetworkCommand::Play, songName);
+        return;
+    }
+    m_pendingSongRequest.insert(songname,needingUsers);
+
+
+    broadcastCommand(NetworkCommand::CheckSongRequest,songname);
+
+    m_checkSongResponseTimer->start();
+    emit showInfoMessage("Asking others if they have the song: " + songname);
 
 }
 
@@ -92,6 +116,26 @@ void SessionManager::processNetworkCommand(NetworkCommand command, const QVarian
             broadcastParticipantList();
             emit showInfoMessage(QString("%1 has joined the session.").arg(newUsername));
         }
+        else if(command==NetworkCommand::CheckSongRequest)
+        {
+            QVariantMap map = payload.toMap();
+            QString responseSongName = map.value("songName").toString();
+            bool hasSong = map.value("hasSong").toBool();
+            QString senderUsername = findUsernameByAddress(sender);
+
+            if(hasSong)
+            {
+                if(m_pendingSongRequest.contains(responseSongName))
+                {
+                    m_pendingSongRequest[responseSongName].removeAll(senderUsername);
+                }
+            }
+            else
+            {
+                // stay in list
+            }
+
+        }
     }
     else
     {
@@ -105,11 +149,76 @@ void SessionManager::processNetworkCommand(NetworkCommand command, const QVarian
             }
             emit participantListChanged(participantsAsPersonList());
         }
-    }
+        else if(command==NetworkCommand::CheckSongRequest)
+        {
+            QString songName = payload.toString();
+
+            bool hasSong = false;
+
+            //filechecking;
+
+
+
+            //asking
+
+
+
+            // send
+
+            QVariantMap responsePayload;
+            responsePayload["songName"] = songName;
+            responsePayload["hasSong"] = hasSong;
+
+            ConnectionManager::getInstance().sendCommand(m_hostAddress, UDP_PORT, NetworkCommand::CheckSongResponse, responsePayload);
+        }
+        }
+
     if (command == NetworkCommand::ChatMessage) {
         QString message = payload.toString();
         QString senderUsername = findUsernameByAddress(sender);
         emit newChatMessageForUI(QString("%1: %2").arg(senderUsername, message));
+    }
+}
+
+void SessionManager::onCheckSongResponseTimeout()
+{
+    if (m_pendingSongRequest.isEmpty()) return;
+
+    // اولین آهنگ در لیست انتظار را برمی‌داریم
+    QString songName = m_pendingSongRequest.firstKey();
+    QStringList usersToSync = m_pendingSongRequest.first();
+
+    m_pendingSongRequest.remove(songName); // درخواست را از لیست انتظار حذف کن
+
+    if (usersToSync.isEmpty()) {
+        qDebug() << "Everyone has the song. Ready to play.";
+        // TODO: حالا فرمان نهایی پخش را برای همه ارسال کن
+        // broadcastCommand(NetworkCommand::Play, songName);
+    } else {
+        for (const QString& username : usersToSync) {
+
+            Participant targetParticipant;
+            bool found = false;
+            for(const auto& p : m_participants) {
+                if (p.username == username) {
+                    targetParticipant = p;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+
+                QString filePath = QStandardPaths::writableLocation(QStandardPaths::MusicLocation)+"/" + songName;
+
+                qDebug() << "Starting direct file transfer of" << filePath << "to" << username;
+                ConnectionManager::getInstance().sendFile(filePath, targetParticipant.address, TCP_PORT);
+            } else {
+                qDebug() << "Could not find participant" << username << "to send file.";
+            }
+        }
+        // پس از اتمام ارسال همه فایل‌ها، باید فرمان Play ارسال شود.
+        // مدیریت این بخش کمی پیچیده‌تر است و نیاز به یک سیستم صف برای ارسال فایل دارد.
     }
 }
 
@@ -120,6 +229,12 @@ SessionManager::SessionManager(QObject *parent)
 {
     connect(&ConnectionManager::getInstance(), &ConnectionManager::commandReceived,
             this, &SessionManager::processNetworkCommand);
+
+
+    m_checkSongResponseTimer = new QTimer(this);
+    m_checkSongResponseTimer->setSingleShot(true);
+    m_checkSongResponseTimer->setInterval(12000);
+    connect(m_checkSongResponseTimer, &QTimer::timeout, this, &SessionManager::onCheckSongResponseTimeout);
 }
 
 QString SessionManager::findUsernameByAddress(const QHostAddress &address) const

@@ -4,7 +4,10 @@
 #include <QUdpSocket>
 #include <QNetworkDatagram>
 #include <QTcpServer>
+#include <QDir>
 #include <src/backend/network/filetransferworker.h>
+#include <src/backend/network/filereceiverworker.h>
+#include <QStandardPaths>
 
 std::unique_ptr<ConnectionManager> ConnectionManager::s_instance = nullptr;
 
@@ -105,5 +108,38 @@ void ConnectionManager::onNewFileConnection()
 {
     QTcpSocket* receivingSocket = m_tcpserver->nextPendingConnection();
 
+    if(!receivingSocket)
+    {
+        qDebug() << "Error: could not get pending connection.";
+        return;
+    }
     qDebug() << "New file transfer connection request received!";
+
+    QString savePath = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
+
+    if (savePath.isEmpty()) {
+        qDebug() << "Could not find standard music location, falling back to temp directory.";
+        savePath = QDir::tempPath();
+    }
+
+    QDir dir(savePath);
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+    QThread* thread = new QThread(this);
+    FileReceiverWorker* worker = new FileReceiverWorker(receivingSocket, savePath);
+    worker->moveToThread(thread);
+
+    connect(thread, &QThread::started, worker, &FileReceiverWorker::startReceiving);
+
+    connect(worker, &FileReceiverWorker::finished, thread, &QThread::quit);
+    connect(worker, &FileReceiverWorker::error, thread, &QThread::quit);
+    connect(worker, &FileReceiverWorker::finished, worker, &FileReceiverWorker::deleteLater);
+    connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+
+    // connect(worker, &FileReceiverWorker::progress, this, &ConnectionManager::fileTransferProgress);
+
+    thread->start();
+
+    qDebug() << "FileReceiverWorker in a new thread started to handle the incoming file.";
 }
