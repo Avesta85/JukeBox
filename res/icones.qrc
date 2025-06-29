@@ -3,5 +3,14 @@
     <file>icone/warning.png</file>
 	<file>icone/warning2.png</file>
 	<file>icone/musicplayer.png</file>
+	<file>icone/play.png</file>
+	<file>icone/pause.png</file>
+	<file>icone/next.png</file>
+	<file>icone/previous.png</file>
+	<file>icone/volume.png</file>
+	<file>icone/mute.png</file>
+	<file>icone/repeat.png</file>
+	<file>icone/repeatone.png</file>
+	<file>icone/shuffle.png</file>
   </qresource>
 </RCC>

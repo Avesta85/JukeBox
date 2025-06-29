@@ -59,35 +59,55 @@
        <item>
         <widget class="QPushButton" name="pushButton_playing_type">
          <property name="text">
-          <string>Shufle/repeatS/repeatP</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../res/icones.qrc">
+           <normaloff>:/icone/repeatone.png</normaloff>:/icone/repeatone.png</iconset>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_previous">
          <property name="text">
-          <string>Previous</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../res/icones.qrc">
+           <normaloff>:/icone/previous.png</normaloff>:/icone/previous.png</iconset>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_play_pause">
+        <widget class="QPushButton" name="pushButton_play">
          <property name="text">
-          <string>Pause/Play</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../res/icones.qrc">
+           <normaloff>:/icone/play.png</normaloff>:/icone/play.png</iconset>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_next">
          <property name="text">
-          <string>Next</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../res/icones.qrc">
+           <normaloff>:/icone/next.png</normaloff>:/icone/next.png</iconset>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="pushButton_mute">
          <property name="text">
-          <string>Mute</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../res/icones.qrc">
+           <normaloff>:/icone/volume.png</normaloff>:/icone/volume.png</iconset>
          </property>
         </widget>
        </item>
@@ -128,6 +148,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res/icones.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -14,38 +14,20 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="StageWidget" name="stackedWidget_video_placholder">
-    <property name="geometry">
-     <rect>
-      <x>310</x>
-      <y>240</y>
-      <width>251</width>
-      <height>171</height>
-     </rect>
-    </property>
-    <widget class="QWidget" name="page"/>
-    <widget class="QWidget" name="page_2"/>
-   </widget>
-   <widget class="PlayerControlWidget" name="widget_playercontrol_placeholder" native="true">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>420</y>
-      <width>271</width>
-      <height>91</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="ToolBoxWidget" name="widget_toolbox_placeholder" native="true">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>70</y>
-      <width>120</width>
-      <height>80</height>
-     </rect>
-    </property>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="ToolBoxWidget" name="widget_toolbox_placeholder" native="true"/>
+    </item>
+    <item>
+     <widget class="StageWidget" name="stackedWidget_video_placholder">
+      <widget class="QWidget" name="page"/>
+      <widget class="QWidget" name="page_2"/>
+     </widget>
+    </item>
+    <item>
+     <widget class="PlayerControlWidget" name="widget_playercontrol_placeholder" native="true"/>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -53,7 +35,7 @@
      <x>0</x>
      <y>0</y>
      <width>980</width>
-     <height>24</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

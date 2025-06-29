@@ -5,6 +5,7 @@
 #include "src/ui/playercontrolwidget.h"
 #include "src/ui/playlistchoicewindow.h"
 #include "src/ui/playmusicwindow.h"
+#include "src/ui/mainwindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
@@ -16,8 +17,8 @@ int main(int argc, char *argv[])
     //CreateDialog d;
     //d.show();
 
-    playmusicwindow h;
-    h.show();
+    MainWindow m;
+    m.showMaximized();
     //PlayerControlWidget q;
     //q.show();
   //  DeletePlayList k;
