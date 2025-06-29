@@ -2,6 +2,7 @@ QT += core gui
 QT +=network
 QT += sql
 QT += concurrent
+QT += widgets multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
@@ -63,9 +64,13 @@ SOURCES += \
     src/ui/frogotpasswordwindow.cpp \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
+    src/ui/playercontrolwidget.cpp \
     src/ui/receivesecurewordswindow.cpp \
+    src/ui/settingwindow.cpp \
     src/ui/showkeywords.cpp \
-    src/ui/signupwindow.cpp
+    src/ui/signupwindow.cpp \
+    src/ui/stagewidget.cpp \
+    src/ui/toolboxwidget.cpp
 
 HEADERS += \
     src/backend/core/SendEmail.h \
@@ -88,14 +93,19 @@ HEADERS += \
     src/ui/frogotpasswordwindow.h \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
+    src/ui/playercontrolwidget.h \
     src/ui/receivesecurewordswindow.h \
+    src/ui/settingwindow.h \
     src/ui/showkeywords.h \
-    src/ui/signupwindow.h
+    src/ui/signupwindow.h \
+    src/ui/stagewidget.h \
+    src/ui/toolboxwidget.h
     src/backend/security/SecurityManager.h
 
 
 
 FORMS += \
+    src/ui/settingwindow.ui \
     ui/changepasswordwindow.ui \
     ui/choicewindow.ui \
     ui/createdialog.ui \
@@ -105,9 +115,12 @@ FORMS += \
     ui/frogotpasswordwindow.ui \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
+    ui/playercontrolwidget.ui \
     ui/receivesecurewordswindow.ui \
     ui/showkeywords.ui \
-    ui/signupwindow.ui
+    ui/signupwindow.ui \
+    ui/stagewidget.ui \
+    ui/toolboxwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
