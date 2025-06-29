@@ -59,6 +59,7 @@ SOURCES += \
     src/ui/choicewindow.cpp \
     src/ui/emailverificationwindow.cpp \
     src/ui/frogotpasswordwindow.cpp \
+    src/ui/jukeboxsessionwidget.cpp \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
     src/ui/moviemanagementwindow.cpp \
@@ -88,6 +89,7 @@ HEADERS += \
     src/ui/choicewindow.h \
     src/ui/emailverificationwindow.h \
     src/ui/frogotpasswordwindow.h \
+    src/ui/jukeboxsessionwidget.h \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
     src/ui/moviemanagementwindow.h \
@@ -111,6 +113,7 @@ FORMS += \
     ui/choicewindow.ui \
     ui/emailverificationwindow.ui \
     ui/frogotpasswordwindow.ui \
+    ui/jukeboxsessionwidget.ui \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
     ui/moviemanagementwindow.ui \
