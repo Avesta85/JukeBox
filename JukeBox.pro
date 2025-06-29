@@ -64,7 +64,10 @@ SOURCES += \
     src/ui/frogotpasswordwindow.cpp \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
+    src/ui/moviemanagementwindow.cpp \
     src/ui/playercontrolwidget.cpp \
+    src/ui/playlistchoicewindow.cpp \
+    src/ui/playmusicwindow.cpp \
     src/ui/receivesecurewordswindow.cpp \
     src/ui/settingwindow.cpp \
     src/ui/showkeywords.cpp \
@@ -93,7 +96,10 @@ HEADERS += \
     src/ui/frogotpasswordwindow.h \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
+    src/ui/moviemanagementwindow.h \
     src/ui/playercontrolwidget.h \
+    src/ui/playlistchoicewindow.h \
+    src/ui/playmusicwindow.h \
     src/ui/receivesecurewordswindow.h \
     src/ui/settingwindow.h \
     src/ui/showkeywords.h \
@@ -105,7 +111,8 @@ HEADERS += \
 
 
 FORMS += \
-    src/ui/settingwindow.ui \
+    src/ui/playlistchoicewindow.ui \
+    src/ui/playlistchoicewindow.ui \
     ui/changepasswordwindow.ui \
     ui/choicewindow.ui \
     ui/createdialog.ui \
@@ -115,8 +122,13 @@ FORMS += \
     ui/frogotpasswordwindow.ui \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
+    ui/moviemanagementwindow.ui \
+    ui/moviemanagementwindow.ui \
     ui/playercontrolwidget.ui \
+    ui/playlistchoicewindow.ui \
+    ui/playmusicwindow.ui \
     ui/receivesecurewordswindow.ui \
+    ui/settingwindow.ui \
     ui/showkeywords.ui \
     ui/signupwindow.ui \
     ui/stagewidget.ui \
