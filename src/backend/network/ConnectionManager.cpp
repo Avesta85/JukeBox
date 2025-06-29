@@ -40,33 +40,17 @@ void ConnectionManager::sendFile(const QString &filePath, const QHostAddress &ta
     thread->start();
 }
 
-void ConnectionManager::sendPlayCommand(const QHostAddress &targetAddress, quint16 targetPort)
+void ConnectionManager::startListening()
 {
-    sendCommand(targetAddress,targetPort , NetworkCommand::Play,QVariant());
-}
-
-void ConnectionManager::sendPauseCommand(const QHostAddress& targetAddress, quint16 targetPort)
-{
-
-    sendCommand(targetAddress, targetPort, NetworkCommand::Pause, QVariant());
-}
-
-void ConnectionManager::sendSeekCommand(const QHostAddress& targetAddress, quint16 targetPort, qint64 position)
-{
-
-    sendCommand(targetAddress, targetPort, NetworkCommand::Seek, QVariant::fromValue(position));
-}
-void ConnectionManager::startListening(quint64 port)
-{
-    if(m_udpSocket->bind(QHostAddress::Any , port)){
-        qDebug()<< "successfully start listening on port"<<port;
+    if(m_udpSocket->bind(QHostAddress::Any ,UDP_PORT)){
+        qDebug()<< "successfully start listening on port"<<UDP_PORT;
     }
     else{
-        qDebug() << "Error: Could not bind to port" << port << m_udpSocket->errorString();
+        qDebug() << "Error: Could not bind to port" << UDP_PORT << m_udpSocket->errorString();
     }
 
-    if (m_tcpserver->listen(QHostAddress::Any, port + 1)) {
-        qDebug() << "TCP Server is now listening for file transfers on port" << port + 1;
+    if (m_tcpserver->listen(QHostAddress::Any, TCP_PORT)) {
+        qDebug() << "TCP Server is now listening for file transfers on port" << TCP_PORT;
     } else {
         qDebug() << "Error: Could not start TCP server.";
     }

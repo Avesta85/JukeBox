@@ -53,6 +53,7 @@ SOURCES += \
     src/backend/core/song.cpp \
     src/backend/core/user.cpp \
     src/backend/network/ConnectionManager.cpp \
+    src/backend/network/filereceiverworker.cpp \
     src/backend/network/filetransferworker.cpp \
     src/backend/network/sessionmanager.cpp \
     src/backend/security/SecurityManager.cpp \
@@ -81,6 +82,7 @@ HEADERS += \
     src/backend/db/DBM.h \
     src/backend/network/ConnectionManager.h \
     src/backend/network/NetworkProtocol.h \
+    src/backend/network/filereceiverworker.h \
     src/backend/network/filetransferworker.h \
     src/backend/network/sessionmanager.h \
     src/backend/security/SecurityManager.h \

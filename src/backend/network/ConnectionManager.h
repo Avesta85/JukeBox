@@ -23,21 +23,18 @@ public:
 
 public slots:
 
-    void startListening(quint64 port = 8585);
+    void startListening();
     void sendCommand(const QHostAddress& targetAddress, quint16 targetPort, NetworkCommand command, const QVariant& payload);
     void sendFile(const QString& filePath, const QHostAddress& targetAddress, quint16 targetPort);
 
 
-    void sendPlayCommand(const QHostAddress& targetAddress, quint16 targetPort);
-    void sendPauseCommand(const QHostAddress& targetAddress, quint16 targetPort);
-    void sendSeekCommand(const QHostAddress& targetAddress, quint16 targetPort, qint64 position);
 signals :
 
     void commandReceived(NetworkCommand command, const QVariant& payload, const QHostAddress& sender);
-    void fileTransferProgress(int percentage);
-    void fileTransferFinished();
+    void fileTransferProgress(const QString& fileName,int percentage);
+    void fileTransferFinished(const QString& fileName);
     void fileTransferError(const QString& errorString);
-    void fileReceiveRequest(const QString& fileName, const QHostAddress& senderAddress, quint16 filePort);
+
 private :
     ConnectionManager(QObject *parent = nullptr);
     static std::unique_ptr<ConnectionManager> s_instance;

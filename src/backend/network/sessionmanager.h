@@ -14,7 +14,7 @@
 struct Participant {
     QString username;
     QHostAddress address;
-
+    quint16 port;
     bool operator==(const Participant& other) const {
         return username == other.username;
     }
@@ -37,25 +37,25 @@ public:
 public slots:
 
 
-    void startNewSession(const QString& hostUsername);
+    void startNewSession(const QString& hostUsername, const QHostAddress& hostAddress, quint16 hostPort);
     void joinSession(const QHostAddress& hostAddress,  quint16 hostPort, const QString& myUsername);
     void leaveSession();
 
-    void sendChatMessage(const QString& message);
-    void requestToPlaySong(const Song& song);
-
-    void processNetworkCommand(NetworkCommand command, const QVariant& payload, const QHostAddress& sender);
-
-
     void onPlaySongRequested(const Song& song);
     void onChatMessageSendRequested(const QString& message);
+    void onFileTransferAccepted(const QString& senderUsername, const QString& fileName);
+private slots:
+
+     void processNetworkCommand(NetworkCommand command, const QVariant& payload, const QHostAddress& sender, quint16 senderPort);
 signals:
 
     void participantListChanged(const QList<Person>& participants);
     void newChatMessageForUI(const QString& formattedMessage);
-    void newSongForPlayback(const Song& song);
-    void showInformation(const QString& message);
-    void requestFileFromPeer(const QString& fileName, const QHostAddress& address);
+    void requestPermissionToReceiveFile(const QString& senderUsername, const QString& fileName);
+    void showInfoMessage(const QString& message);
+
+    // signals for PlayerManager
+
 
 private :
     explicit SessionManager(QObject *parent = nullptr);
@@ -68,10 +68,12 @@ private :
     QList<Participant> m_participants;
     QHostAddress m_hostAddress;
     Participant m_localUser;
-    quint16 m_hostPort;
 
 
     QString findUsernameByAddress(const QHostAddress& address)const;
+    void broadcastCommand(NetworkCommand command, const QVariant& payload, const QHostAddress* exclude = nullptr);
+    void broadcastParticipantList();
+    QList<Person> participantsAsPersonList() const;
 };
 
 #endif // SESSIONMANAGER_H
