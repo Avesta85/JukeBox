@@ -63,6 +63,7 @@ SOURCES += \
     src/ui/mainwindow.cpp \
     src/ui/playercontrolwidget.cpp \
     src/ui/receivesecurewordswindow.cpp \
+    src/ui/settingwindow.cpp \
     src/ui/showkeywords.cpp \
     src/ui/signupwindow.cpp \
     src/ui/stagewidget.cpp \
@@ -88,6 +89,7 @@ HEADERS += \
     src/ui/mainwindow.h \
     src/ui/playercontrolwidget.h \
     src/ui/receivesecurewordswindow.h \
+    src/ui/settingwindow.h \
     src/ui/showkeywords.h \
     src/ui/signupwindow.h \
     src/ui/stagewidget.h \
@@ -97,6 +99,7 @@ HEADERS += \
 
 
 FORMS += \
+    src/ui/settingwindow.ui \
     ui/changepasswordwindow.ui \
     ui/choicewindow.ui \
     ui/emailverificationwindow.ui \
