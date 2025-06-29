@@ -8,15 +8,15 @@ CreateDialog::CreateDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QDir dir("path music folder");
-    QStringList audioFiles = dir.entryList(QStringList() << "*.mp3" << "*.wav", QDir::Files);
+   // QDir dir("path music folder");
+  //  QStringList audioFiles = dir.entryList(QStringList() << "*.mp3" << "*.wav", QDir::Files);
 
-    foreach (const QString &fileName, audioFiles) {
-        QListWidgetItem *item = new QListWidgetItem(fileName);
-        item->setFlags(item->flags() | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
-        item->setCheckState(Qt::Unchecked);
-        ui->listWidget->addItem(item);
-    }
+    //foreach (const QString &fileName, audioFiles) {
+     //   QListWidgetItem *item = new QListWidgetItem(fileName);
+       // item->setFlags(item->flags() | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+       // item->setCheckState(Qt::Unchecked);
+       // ui->listWidget->addItem(item);
+    //}
 }
 
 CreateDialog::~CreateDialog()

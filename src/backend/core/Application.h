@@ -1,11 +1,7 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-
 #include <QObject>
-
-
-
 
 class ChangePasswordWindow;
 class ChoiceWindow;

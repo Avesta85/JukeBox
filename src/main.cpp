@@ -11,10 +11,10 @@ int main(int argc, char *argv[])
 
    // Application::getInstance().Run();
 
-   // CreateDialog d;
-    //d.show();
-    PlayerControlWidget q;
-    q.show();
+    CreateDialog d;
+    d.show();
+    //PlayerControlWidget q;
+    //q.show();
   //  DeletePlayList k;
    // k.show();
 
