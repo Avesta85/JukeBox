@@ -40,6 +40,7 @@ void ConnectionManager::sendFile(const QString &filePath, const QHostAddress &ta
     connect(worker, &FileTransferWorker::finished, this, &ConnectionManager::fileTransferFinished);
     connect(worker, &FileTransferWorker::error, this, &ConnectionManager::fileTransferError);
 
+    kkdks
     thread->start();
 }
 
