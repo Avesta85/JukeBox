@@ -1,7 +1,8 @@
 QT += core gui
-QT +=network
+QT += network
 QT += sql
 QT += concurrent
+QT += widgets multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
@@ -60,13 +61,24 @@ SOURCES += \
     src/main.cpp \
     src/ui/changepasswordwindow.cpp \
     src/ui/choicewindow.cpp \
+    src/ui/createdialog.cpp \
+    src/ui/deleteplaylist.cpp \
+    src/ui/editplaylist.cpp \
     src/ui/emailverificationwindow.cpp \
     src/ui/frogotpasswordwindow.cpp \
+    src/ui/jukeboxsessionwidget.cpp \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
+    src/ui/moviemanagementwindow.cpp \
+    src/ui/playercontrolwidget.cpp \
+    src/ui/playlistchoicewindow.cpp \
+    src/ui/playmusicwindow.cpp \
     src/ui/receivesecurewordswindow.cpp \
+    src/ui/settingwindow.cpp \
     src/ui/showkeywords.cpp \
-    src/ui/signupwindow.cpp
+    src/ui/signupwindow.cpp \
+    src/ui/stagewidget.cpp \
+    src/ui/toolboxwidget.cpp
 
 HEADERS += \
     ConnectionManager.h \
@@ -88,27 +100,50 @@ HEADERS += \
     src/backend/security/SecurityManager.h \
     src/ui/changepasswordwindow.h \
     src/ui/choicewindow.h \
+    src/ui/createdialog.h \
+    src/ui/deleteplaylist.h \
+    src/ui/editplaylist.h \
     src/ui/emailverificationwindow.h \
     src/ui/frogotpasswordwindow.h \
+    src/ui/jukeboxsessionwidget.h \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
+    src/ui/moviemanagementwindow.h \
+    src/ui/playercontrolwidget.h \
+    src/ui/playlistchoicewindow.h \
+    src/ui/playmusicwindow.h \
     src/ui/receivesecurewordswindow.h \
+    src/ui/settingwindow.h \
     src/ui/showkeywords.h \
-    src/ui/signupwindow.h
+    src/ui/signupwindow.h \
+    src/ui/stagewidget.h \
+    src/ui/toolboxwidget.h
     src/backend/security/SecurityManager.h
 
-
-
 FORMS += \
+    ui/playlistchoicewindow.ui \
+    ui/playlistchoicewindow.ui \
     ui/changepasswordwindow.ui \
     ui/choicewindow.ui \
+    ui/createdialog.ui \
+    ui/deleteplaylist.ui \
+    ui/editplaylist.ui \
     ui/emailverificationwindow.ui \
     ui/frogotpasswordwindow.ui \
+    ui/jukeboxsessionwidget.ui \
     ui/loginwindow.ui \
     ui/mainwindow.ui \
+    ui/moviemanagementwindow.ui \
+    ui/moviemanagementwindow.ui \
+    ui/playercontrolwidget.ui \
+    ui/playlistchoicewindow.ui \
+    ui/playmusicwindow.ui \
     ui/receivesecurewordswindow.ui \
+    ui/settingwindow.ui \
     ui/showkeywords.ui \
-    ui/signupwindow.ui
+    ui/signupwindow.ui \
+    ui/stagewidget.ui \
+    ui/toolboxwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
