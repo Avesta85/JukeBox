@@ -11,6 +11,7 @@ class LoginWindow;
 class ReceiveSecureWordsWindow;
 class SignupWindow;
 class ShowKeyWords;
+class MainWindow;
 
 class Application : public QObject
 {
@@ -30,6 +31,8 @@ public:
     void show_forgotPassword_window();
     void show_receiveSWWindow(QString key , QString username);
     void show_showKeyWindow(QString key);
+
+    void showMainWindow();
 
 private:
     explicit Application(QObject *parent = nullptr);
@@ -52,6 +55,8 @@ private:
     SignupWindow* w_signUp_window;
     ShowKeyWords* w_showKey_Window;
 
+
+    class MainWindow* w_main_window;
     // function
     void switchWindow(QWidget* nextWindow);
 

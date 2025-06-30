@@ -10,6 +10,8 @@
 #include "src/ui/emailverificationwindow.h"
 #include "src/ui/frogotpasswordwindow.h"
 #include "src/ui/receivesecurewordswindow.h"
+#include "src/ui/stagewidget.h"
+#include "src/ui/toolboxwidget.h"
 
 #include <QThread>
 
@@ -154,6 +156,13 @@ void Application::showMainWindow()
     if(!w_main_window)
     {
         w_main_window = new MainWindow();
+        
+        ToolBoxWidget* toolbox = w_main_window->getToolBox();
+        StageWidget* stage = w_main_window->getStage();
+        
+        connect(toolbox, &ToolBoxWidget::playlistManagementClicked, stage, &StageWidget::showMusicManagementPage);
+        connect(toolbox, &ToolBoxWidget::movieManagementClicked, stage, &StageWidget::showMovieManagementPage);
+        
     }
 
     switchWindow(w_main_window);
