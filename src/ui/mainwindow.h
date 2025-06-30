@@ -1,7 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "src/backend/core/song.h"
 #include <QMainWindow>
+
+
+
+class PlayerControlWidget;
+class ToolBoxWidget;
+class StageWidget;
+class JukeBoxSessionWidget;
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -16,6 +24,13 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+    PlayerControlWidget* getPlayerControls() const;
+    ToolBoxWidget* getToolBox() const;
+    StageWidget* getStage() const;
+    JukeBoxSessionWidget* getJukeBoxSession() const;
+public slots:
+    void updateSongInfo(const Song& song);
 
 private:
     Ui::MainWindow *ui;

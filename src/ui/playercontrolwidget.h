@@ -15,6 +15,28 @@ public:
     explicit PlayerControlWidget(QWidget *parent = nullptr);
     ~PlayerControlWidget();
 
+
+
+public slots:
+    void updatePlaybackState(bool isPlaying);
+    void updateVolume(int volume);
+    void updatePosition(qint64 position);
+    void updateDuration(qint64 duration);
+    void setMuted(bool isMuted);
+
+
+signals:
+
+    void playClicked();
+    void pauseClicked();
+    void nextClicked();
+    void previousClicked();
+    void volumeChanged(int volume);
+    void seeked(qint64 position);
+    void shuffleClicked();
+    void repeatModeClicked();
+    void muteClicked(bool isMuted);
+
 private slots:
     void on_pushButton_play_clicked();
 
@@ -24,9 +46,15 @@ private slots:
 
     void on_horizontalSlider_volume_valueChanged(int value);
 
+    void on_pushButton_next_clicked();
+    void on_pushButton_previous_clicked();
+    void on_horizontalSlider_timeline_sliderMoved(int position);
+
 private:
     Ui::PlayerControlWidget *ui;
 
+    bool m_isplaying;
+    bool m_isMuted;
     enum PlayOrPause
     {
         play,
