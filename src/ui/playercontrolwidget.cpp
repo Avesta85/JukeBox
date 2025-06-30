@@ -26,6 +26,7 @@ PlayerControlWidget::~PlayerControlWidget()
 
 void PlayerControlWidget::updatePlaybackState(bool isPlaying)
 {
+     m_isplaying = isPlaying;
     if(m_isplaying)
     {
         ui->pushButton_play->setIcon(QIcon(":/icone/pause.png"));

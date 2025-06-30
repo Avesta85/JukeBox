@@ -5,6 +5,8 @@
 class playmusicwindow;
 class MovieManagementWindow;
 
+class QWidget;
+
 namespace Ui {
 class StageWidget;
 }
@@ -17,6 +19,7 @@ public:
     explicit StageWidget(QWidget *parent = nullptr);
     ~StageWidget();
 
+    playmusicwindow* getMusicManagementPage();
 
 public slots:
     void showMusicManagementPage();
@@ -28,6 +31,10 @@ private:
 
     playmusicwindow* m_musicManagementPage;
     MovieManagementWindow* m_movieManagementPage;
+
+    QWidget* m_musicPageContainer;
+    QWidget* m_moviePageContainer;
+
 };
 
 #endif // STAGEWIDGET_H

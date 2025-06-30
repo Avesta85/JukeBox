@@ -26,12 +26,19 @@ public:
     void operator=(const PlayerManager&) = delete;
 
 public slots:
+
+    void playSingleMedia(const QString & filepath);
+
+    void loadSongPlaylist(const QList<Song*>& songPlaylist);
+    void playFromPlaylist(int index);
+    void next();
+    void previous();
+
     void play();
     void pause();
     void stop();
 
-    void next();
-    void previous();
+
     void seek(qint64 position);
     void setVolume(float volume);
     void setMuted(bool muted);
@@ -43,7 +50,13 @@ public slots:
     void setVideoOutput(QWidget* videoWidget);
     void clearPlaylist();
 
+    void addSong(const QString& filePath);
+
 signals:
+
+
+    void playlistChanged(const QList<Song>& playlist);
+    void currentMediaChanged(Media* media);
 
     void playbackStateChanged(QMediaPlayer::PlaybackState state);
     void positionChanged(qint64 position);
@@ -64,7 +77,9 @@ private:
     Media * currentMedia;
 
     //playlist
+
     QList<Song> m_playlist;
+
     QList<int>m_shuffledIndices;
     int m_currentIndex;
     bool m_isShuffled;
@@ -73,9 +88,11 @@ private:
 
 
     void playIndex(int index);
+    void cleanupCurrentMedia();
 
 private slots:
     void handleMediaStatusChanged(QMediaPlayer::MediaStatus status);
+    void onMetaDataChanged();
 };
 
 #endif // PLAYERMANAGER_H

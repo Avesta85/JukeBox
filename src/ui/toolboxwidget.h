@@ -19,12 +19,15 @@ public:
 signals:
 
     void playlistManagementClicked();
+    void SongManagementClicked();
     void movieManagementClicked();
     void settingsClicked();
     void aboutUsClicked();
 
 
 private slots:
+
+    void on_pushButton_clicked();
 
 private:
 

@@ -1,8 +1,11 @@
 #include "src/backend/core/playermanager.h"
+#include "qeventloop.h"
+#include "qfileinfo.h"
 #include "qrandom.h"
 #include <QAudioOutput>
 #include <QWidget>
 #include <QDebug>
+#include <QMediaMetaData>
 
 std::unique_ptr<PlayerManager> PlayerManager::s_instance = nullptr;
 
@@ -11,6 +14,24 @@ PlayerManager& PlayerManager::getInstance() {
         s_instance.reset(new PlayerManager());
     }
     return *s_instance;
+}
+
+void PlayerManager::playSingleMedia(const QString &filepath)
+{
+    stop();
+    clearPlaylist();
+    cleanupCurrentMedia();
+
+    m_currentIndex = -1;
+
+    // TODO: اینجا باید تشخیص دهید فایل ورودی آهنگ است یا فیلم
+    // فعلاً فرض می‌کنیم آهنگ است
+    currentMedia = new Song();
+    currentMedia->setPath(filepath);
+    currentMedia->setName(QFileInfo(filepath).baseName());
+
+    m_player->setSource(QUrl::fromLocalFile(filepath));
+    play();
 }
 
 void PlayerManager::play()
@@ -23,6 +44,7 @@ void PlayerManager::play()
 
     if(m_player->playbackState() == QMediaPlayer::PlayingState)
     {
+        m_player->pause();
         return;
     }
 
@@ -132,11 +154,10 @@ void PlayerManager::loadPlaylist(const QList<Song> &Songlist)
 {
     stop();
     m_playlist.clear();
+    cleanupCurrentMedia();
 
-    for(const Song& song:Songlist)
-    {
-        m_playlist.append(song);
-    }
+    m_playlist = Songlist;
+    emit playlistChanged(m_playlist);
     m_currentIndex = m_playlist.isEmpty() ? -1 : 0;
 
     if (m_isShuffled) {
@@ -152,10 +173,16 @@ void PlayerManager::setVideoOutput(QWidget *videoWidget)
 
 void PlayerManager::clearPlaylist()
 {
-    stop();
     m_playlist.clear();
-    m_shuffledIndices.clear();
-    m_currentIndex = -1;
+}
+
+void PlayerManager::addSong(const QString &filePath)
+{
+    m_player->setSource(QUrl::fromLocalFile(filePath));
+
+    current_song = Song();
+    current_song.setPath(filePath);
+    current_song.setName(QFileInfo(filePath).baseName());
 }
 
 
@@ -180,7 +207,7 @@ PlayerManager::PlayerManager(QObject *parent)
     connect(m_player, &QMediaPlayer::errorOccurred, this, &PlayerManager::errorOccurred);
     connect(m_audioOutput, &QAudioOutput::volumeChanged, this, &PlayerManager::volumeChanged);
     connect(m_audioOutput, &QAudioOutput::mutedChanged, this, &PlayerManager::mutedChanged);
-
+    connect(m_player, &QMediaPlayer::metaDataChanged, this, &PlayerManager::onMetaDataChanged);
 
     connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &PlayerManager::handleMediaStatusChanged);
 }
@@ -195,13 +222,19 @@ void PlayerManager::playIndex(int index)
 
     m_currentIndex = index;
 
+
+    // if(currentMedia)
+    // {
+    //     delete currentMedia;
+    // }
     const int playlistIndex = m_isShuffled ? m_shuffledIndices.at(index) : index;
-    const Song& currentSong = m_playlist.at(playlistIndex);
-
-    m_player->setSource(QUrl::fromLocalFile(currentSong.getPath()));
-    emit currentSongChanged(currentSong);
-
-    m_player->play();
+    currentMedia = new Song(m_playlist.at(playlistIndex));
+    if(currentMedia)
+    {
+        m_player->setSource(QUrl::fromLocalFile(currentMedia->getPath()));
+        emit currentMediaChanged(currentMedia);
+        play();
+    }
 }
 
 void PlayerManager::handleMediaStatusChanged(QMediaPlayer::MediaStatus status)
@@ -219,5 +252,17 @@ void PlayerManager::handleMediaStatusChanged(QMediaPlayer::MediaStatus status)
             next();
         }
     }
+}
+
+void PlayerManager::onMetaDataChanged()
+{
+    qDebug() << "Meta-data is now available!";
+    QString title = m_player->metaData().value(QMediaMetaData::Title).toString();
+    if (!title.isEmpty()) {
+        currentMedia->setName(title);
+    }
+    currentMedia->setDuration(m_player->duration());
+
+    emit currentMediaChanged(currentMedia);
 }
 

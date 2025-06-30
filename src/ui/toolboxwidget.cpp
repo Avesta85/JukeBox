@@ -32,3 +32,9 @@ void ToolBoxWidget::on_pushButton_about_us_clicked()
 {
     emit aboutUsClicked();
 }
+
+void ToolBoxWidget::on_pushButton_clicked()
+{
+    emit SongManagementClicked();
+}
+

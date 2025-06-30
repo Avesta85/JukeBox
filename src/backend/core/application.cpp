@@ -1,15 +1,20 @@
 #include "application.h"
 #include "src/backend/core/UserManager.h"
+#include "src/backend/core/playermanager.h"
 #include "src/backend/db/DBM.h"
 #include "src/ui/changepasswordwindow.h"
 #include "src/ui/choicewindow.h"
 #include "src/ui/loginwindow.h"
 #include "src/ui/mainwindow.h"
+#include "src/ui/playercontrolwidget.h"
+#include "src/ui/playmusicwindow.h"
 #include "src/ui/showkeywords.h"
 #include "src/ui/signupwindow.h"
 #include "src/ui/emailverificationwindow.h"
 #include "src/ui/frogotpasswordwindow.h"
 #include "src/ui/receivesecurewordswindow.h"
+#include "src/ui/stagewidget.h"
+#include "src/ui/toolboxwidget.h"
 
 #include <QThread>
 
@@ -154,6 +159,48 @@ void Application::showMainWindow()
     if(!w_main_window)
     {
         w_main_window = new MainWindow();
+
+        ToolBoxWidget* toolbox = w_main_window->getToolBox();
+        StageWidget* stage = w_main_window->getStage();
+
+        connect(toolbox, &ToolBoxWidget::SongManagementClicked, stage, &StageWidget::showMusicManagementPage);
+        connect(toolbox, &ToolBoxWidget::movieManagementClicked, stage, &StageWidget::showMovieManagementPage);
+
+
+        PlayerManager& PlayerManager = PlayerManager::getInstance();
+        PlayerControlWidget* playerControls = w_main_window->getPlayerControls();
+
+        connect(playerControls, &PlayerControlWidget::playClicked, &PlayerManager, &PlayerManager::play);
+        connect(playerControls, &PlayerControlWidget::pauseClicked, &PlayerManager, &PlayerManager::pause);
+        connect(playerControls, &PlayerControlWidget::nextClicked, &PlayerManager, &PlayerManager::next);
+        connect(playerControls, &PlayerControlWidget::previousClicked, &PlayerManager, &PlayerManager::previous);
+        connect(playerControls, &PlayerControlWidget::seeked, &PlayerManager, &PlayerManager::seek);
+
+        connect(playerControls, &PlayerControlWidget::volumeChanged, &PlayerManager, [&PlayerManager](int volume){
+            PlayerManager.setVolume(static_cast<float>(volume) / 100.0f);
+        });
+
+        connect(playerControls, &PlayerControlWidget::muteClicked, &PlayerManager, &PlayerManager::setMuted);
+
+
+
+        connect(&PlayerManager, &PlayerManager::positionChanged, playerControls, &PlayerControlWidget::updatePosition);
+        connect(&PlayerManager, &PlayerManager::durationChanged, playerControls, &PlayerControlWidget::updateDuration);
+
+
+        connect(&PlayerManager, &PlayerManager::playbackStateChanged, playerControls, [playerControls](QMediaPlayer::PlaybackState state){
+            playerControls->updatePlaybackState(state == QMediaPlayer::PlayingState);
+        });
+
+
+        connect(&PlayerManager, &PlayerManager::currentSongChanged, w_main_window, &MainWindow::updateSongInfo);
+
+
+
+        playmusicwindow* musicWindow = stage->getMusicManagementPage();
+
+        connect(musicWindow, &playmusicwindow::songFileSelected, &PlayerManager, &PlayerManager::addSong);
+        //setting dialog
     }
 
     switchWindow(w_main_window);
