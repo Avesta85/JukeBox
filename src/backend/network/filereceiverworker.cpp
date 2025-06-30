@@ -5,6 +5,7 @@
 #include <qdebug.h>
 
 
+
 FileReceiverWorker::FileReceiverWorker(QTcpSocket* socket, const QString& savePath, QObject *parent)
     : QObject{parent},
     m_socket(socket),
@@ -80,7 +81,6 @@ void FileReceiverWorker::onReadyRead()
         qDebug() << "FileReceiverWorker: File received successfully. Saved at" << m_file.fileName();
         m_file.close();
         emit finished(m_file.fileName());
-
     }
 }
 

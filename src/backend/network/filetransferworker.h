@@ -19,8 +19,8 @@ public slots:
     void startTransfer();
 
 signals:
-    void progress(int percentage);
-    void finished();
+    void progress(const QString fileName, int percentage);
+    void finished(const QString fileName);
     void error(const QString& errormessage);
 
 private slots :

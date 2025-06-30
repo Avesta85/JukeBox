@@ -11,8 +11,8 @@ void Song::setArtist(const QString& NewArtist)
 void Song::setID(const size_t& NewID)
 {this->id = NewID; }
 
-const QString& Song::getArtist()
+const QString& Song::getArtist() const
 {return this->artist; }
 
-const size_t& Song::getID()
+const size_t& Song::getID() const
 {return this->id; }

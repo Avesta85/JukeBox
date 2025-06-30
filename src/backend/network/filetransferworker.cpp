@@ -13,6 +13,7 @@ FileTransferWorker::FileTransferWorker(const QString &filePath, const QHostAddre
     m_socket(nullptr),
     m_totalBytes(0),
     m_bytesWritten(0)
+
 {
     ;
 }
@@ -71,17 +72,18 @@ void FileTransferWorker::onConnected()
 void FileTransferWorker::onByteWritten(qint64 bytes)
 {
     m_bytesWritten += bytes;
+    QFileInfo fp;
 
     if (m_totalBytes > 0) {
         int percentage = (m_bytesWritten * 100) / (m_totalBytes + m_socket->bytesToWrite() + 100); // +100 to avoid division by zero and include header
-        emit progress(percentage);
+        emit progress(fp.fileName(), percentage);
     }
 
     if (m_bytesWritten >= m_totalBytes) {
         if (m_socket->bytesToWrite() == 0) {
             qDebug() << "FileTransferWorker: Transfer finished.";
             m_socket->disconnectFromHost();
-            emit finished();
+            emit finished(fp.fileName());
         }
     }
 }

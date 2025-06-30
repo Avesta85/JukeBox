@@ -24,7 +24,6 @@ ConnectionManager &ConnectionManager::getInstance()
 
 void ConnectionManager::sendFile(const QString &filePath, const QHostAddress &targetAddress, quint16 targetPort)
 {
-
     QThread* thread = new QThread(this);
     FileTransferWorker* worker = new FileTransferWorker(filePath,targetAddress,targetPort);
 
@@ -39,8 +38,6 @@ void ConnectionManager::sendFile(const QString &filePath, const QHostAddress &ta
     connect(worker, &FileTransferWorker::progress, this, &ConnectionManager::fileTransferProgress);
     connect(worker, &FileTransferWorker::finished, this, &ConnectionManager::fileTransferFinished);
     connect(worker, &FileTransferWorker::error, this, &ConnectionManager::fileTransferError);
-
-    kkdks
     thread->start();
 }
 
@@ -101,7 +98,7 @@ void ConnectionManager::onUdpDataReceived()
         NetworkCommand command = static_cast<NetworkCommand>(commandInt);
         QHostAddress senderAddress = datagram.senderAddress();
 
-        emit commandReceived(command, payload , senderAddress);
+        emit commandReceived(command, payload , senderAddress , commandInt);
     }
 }
 

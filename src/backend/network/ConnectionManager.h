@@ -30,7 +30,7 @@ public slots:
 
 signals :
 
-    void commandReceived(NetworkCommand command, const QVariant& payload, const QHostAddress& sender);
+    void commandReceived(NetworkCommand command, const QVariant& payload, const QHostAddress& sender, quint16 senderPort);
     void fileTransferProgress(const QString& fileName,int percentage);
     void fileTransferFinished(const QString& fileName);
     void fileTransferError(const QString& errorString);
