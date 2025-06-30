@@ -106,6 +106,7 @@ void ConnectionManager::onNewFileConnection()
 {
     QTcpSocket* receivingSocket = m_tcpserver->nextPendingConnection();
 
+
     if(!receivingSocket)
     {
         qDebug() << "Error: could not get pending connection.";
@@ -113,12 +114,15 @@ void ConnectionManager::onNewFileConnection()
     }
     qDebug() << "New file transfer connection request received!";
 
+
     QString savePath = QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
 
     if (savePath.isEmpty()) {
         qDebug() << "Could not find standard music location, falling back to temp directory.";
         savePath = QDir::tempPath();
     }
+
+    qDebug() << "📁 File will be saved to path:" << savePath;
 
     QDir dir(savePath);
     if (!dir.exists()) {
@@ -141,3 +145,6 @@ void ConnectionManager::onNewFileConnection()
 
     qDebug() << "FileReceiverWorker in a new thread started to handle the incoming file.";
 }
+
+ConnectionManager::~ConnectionManager()
+{}

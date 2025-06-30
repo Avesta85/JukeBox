@@ -72,7 +72,7 @@ void FileTransferWorker::onConnected()
 void FileTransferWorker::onByteWritten(qint64 bytes)
 {
     m_bytesWritten += bytes;
-    QFileInfo fp;
+    QFileInfo fp(m_filePath);
 
     if (m_totalBytes > 0) {
         int percentage = (m_bytesWritten * 100) / (m_totalBytes + m_socket->bytesToWrite() + 100); // +100 to avoid division by zero and include header

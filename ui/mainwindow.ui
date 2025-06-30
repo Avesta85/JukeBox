@@ -7,31 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>980</width>
-<<<<<<< HEAD
-    <height>653</height>
-=======
     <height>694</height>
->>>>>>> di-editPlayList
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-<<<<<<< HEAD
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="ToolBoxWidget" name="widget_toolbox_placeholder" native="true"/>
-    </item>
-    <item>
-     <widget class="StageWidget" name="stackedWidget_video_placholder">
-      <widget class="QWidget" name="page"/>
-      <widget class="QWidget" name="page_2"/>
-     </widget>
-    </item>
-    <item>
-     <widget class="PlayerControlWidget" name="widget_playercontrol_placeholder" native="true"/>
-=======
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -51,7 +33,6 @@
        <widget class="PlayerControlWidget" name="widget_playercontrol_placeholder" native="true"/>
       </item>
      </layout>
->>>>>>> di-editPlayList
     </item>
    </layout>
   </widget>
@@ -61,11 +42,7 @@
      <x>0</x>
      <y>0</y>
      <width>980</width>
-<<<<<<< HEAD
-     <height>21</height>
-=======
      <height>25</height>
->>>>>>> di-editPlayList
     </rect>
    </property>
   </widget>
@@ -96,15 +73,12 @@
    <header location="global">src/ui/toolboxwidget.h</header>
    <container>1</container>
   </customwidget>
-<<<<<<< HEAD
-=======
   <customwidget>
    <class>JukeBoxSessionWidget</class>
    <extends>QDockWidget</extends>
    <header>jukeboxsessionwidget.h</header>
    <container>1</container>
   </customwidget>
->>>>>>> di-editPlayList
  </customwidgets>
  <resources/>
  <connections/>
