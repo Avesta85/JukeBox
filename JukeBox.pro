@@ -4,6 +4,7 @@ QT += sql
 QT += concurrent
 QT += widgets multimedia multimediawidgets
 
+
 greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
 CONFIG += c++20
@@ -46,6 +47,7 @@ SOURCES += \
     src/backend/core/SendEmail.cpp \
     src/backend/core/UserManager.cpp \
     src/backend/core/application.cpp \
+    src/backend/core/playermanager.cpp \
     src/backend/db/DBM.cpp \
     src/backend/core/person.cpp \
     src/backend/core/media.cpp \
@@ -83,6 +85,7 @@ HEADERS += \
     src/backend/core/media.h \
     src/backend/core/movie.h \
     src/backend/core/person.h \
+    src/backend/core/playermanager.h \
     src/backend/core/playlist.h \
     src/backend/core/song.h \
     src/backend/core/user.h \
