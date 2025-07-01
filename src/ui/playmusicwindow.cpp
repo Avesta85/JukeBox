@@ -7,15 +7,8 @@ playmusicwindow::playmusicwindow(QWidget *parent)
     , ui(new Ui::playmusicwindow)
 {
     ui->setupUi(this);
-
-
-
-    ui->tableWidget_playlist_names->setColumnCount(1);
-    ui->tableWidget_playlist_names->setHorizontalHeaderLabels({"Title"});
-    ui->tableWidget_playlist_names->setSelectionBehavior(QAbstractItemView::SelectRows);
-    ui->tableWidget_playlist_names->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    connect(ui->tableWidget_playlist_names, &QTableWidget::cellDoubleClicked, this, &playmusicwindow::onSongDoubleClicked);
+    connect(ui->tableWidget_songs_of_playlist, &QTableWidget::cellDoubleClicked, this, &playmusicwindow::onSongDoubleClicked);
+    connect(ui->pushButton, &QPushButton::clicked, this, &playmusicwindow::onSearchSongClicked);
 }
 
 playmusicwindow::~playmusicwindow()
@@ -25,17 +18,29 @@ playmusicwindow::~playmusicwindow()
 
 void playmusicwindow::updateSongList(const QList<Song> &songs)
 {
-    ;
+    m_allSongsOriginal = songs;
+    m_allSongs = songs;
+    ui->tableWidget_songs_of_playlist->setRowCount(0);
+    ui->tableWidget_songs_of_playlist->setColumnCount(1);
+    ui->tableWidget_songs_of_playlist->setHorizontalHeaderLabels(QStringList() << "Song Name");
+    for (int i = 0; i < songs.size(); ++i) {
+        ui->tableWidget_songs_of_playlist->insertRow(i);
+        QTableWidgetItem* item = new QTableWidgetItem(songs[i].getName());
+        item->setData(Qt::UserRole, songs[i].getPath());
+        item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+        ui->tableWidget_songs_of_playlist->setItem(i, 0, item);
+    }
 }
 
 void playmusicwindow::onSongDoubleClicked(int row, int column)
 {
-    ;
-}
-
-void playmusicwindow::on_pushButton_select_song_clicked()
-{
-    ;
+    QTableWidgetItem* item = ui->tableWidget_songs_of_playlist->item(row, 0);
+    if (!item) return;
+    QString filePath = item->data(Qt::UserRole).toString();
+    if (!filePath.isEmpty()) {
+        emit songFileSelected(filePath);
+    }
+    this->hide();
 }
 
 void playmusicwindow::on_pushButton_select_clicked()
@@ -52,6 +57,30 @@ void playmusicwindow::on_pushButton_select_clicked()
     if (!filePath.isEmpty()) {
 
         emit songFileSelected(filePath);
+    }
+    this->hide();
+}
+
+void playmusicwindow::onSearchSongClicked()
+{
+    QString searchText = ui->lineEdit_search_song->text().trimmed();
+    QList<Song> filtered;
+    if (searchText.isEmpty()) {
+        filtered = m_allSongsOriginal;
+    } else {
+        for (const Song& s : m_allSongsOriginal) {
+            if (s.getName().startsWith(searchText, Qt::CaseInsensitive)) {
+                filtered.append(s);
+            }
+        }
+    }
+    ui->tableWidget_songs_of_playlist->setRowCount(0);
+    for (int i = 0; i < filtered.size(); ++i) {
+        ui->tableWidget_songs_of_playlist->insertRow(i);
+        QTableWidgetItem* item = new QTableWidgetItem(filtered[i].getName());
+        item->setData(Qt::UserRole, filtered[i].getPath());
+        item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+        ui->tableWidget_songs_of_playlist->setItem(i, 0, item);
     }
 }
 

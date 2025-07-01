@@ -37,7 +37,7 @@ public:
     //adder -> ok
 
     bool addFriend(const QString& Friend_Username);
-    bool addPlaylist(const Playlist& newPlaylist);
+    qint64 addPlaylist(const Playlist& newPlaylist);
     bool addSongToPlaylist(qint64 Song_id , qint64 Playlist_id);
     bool addFavoriteSong(qint64 Song_id);
 

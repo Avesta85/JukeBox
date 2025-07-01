@@ -1,14 +1,191 @@
 #include "src/backend/core/playermanager.h"
-#include "qeventloop.h"
 #include "qfileinfo.h"
-#include "qrandom.h"
 #include <QAudioOutput>
 #include <QWidget>
 #include <QDebug>
 #include <QMediaMetaData>
+#include <QVideoWidget>
+#include <algorithm>
+#include <random>
 
 std::unique_ptr<PlayerManager> PlayerManager::s_instance = nullptr;
 
+
+PlayerManager::PlayerManager(QObject *parent)
+    : QObject(parent),
+    m_player(new QMediaPlayer(this)),
+    m_audioOutput(new QAudioOutput(this)),
+    m_currentMedia(nullptr),
+    m_playMode(PlayMode::SingleMedia),
+    m_repeatMode(RepeatMode::RepeatOne),
+    m_currentIndex(-1)
+{
+    m_player->setAudioOutput(m_audioOutput);
+    // اتصال سیگنال‌های داخلی به سیگنال‌های عمومی
+    connect(m_player, &QMediaPlayer::playbackStateChanged, this, &PlayerManager::playbackStateChanged);
+    connect(m_player, &QMediaPlayer::positionChanged, this, &PlayerManager::positionChanged);
+    connect(m_player, &QMediaPlayer::durationChanged, this, &PlayerManager::durationChanged);
+    connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &PlayerManager::onMediaStatusChanged);
+    connect(m_player, &QMediaPlayer::errorOccurred, this, [](QMediaPlayer::Error error, const QString &errorString) {
+        qDebug() << "PlayerManager Error:" << error << "-" << errorString;
+    });
+    m_volumeBeforeMute = m_audioOutput->volume();
+}
+
+PlayerManager::~PlayerManager() {
+    cleanupCurrentMedia();
+    m_player->play();
+}
+
+PlayerManager::RepeatMode PlayerManager::getRepeatMode()
+{
+    return this->m_repeatMode;
+}
+
+void PlayerManager::cleanupCurrentMedia() {
+    if (m_currentMedia) {
+        delete m_currentMedia;
+        m_currentMedia = nullptr;
+    }
+}
+
+// === پیاده‌سازی منطق جدید ===
+
+void PlayerManager::loadSingleMedia(const QString& filePath) {
+    cleanupCurrentMedia();
+    m_playlist.clear();
+    m_currentIndex = -1;
+    m_playMode = PlayMode::SingleMedia;
+
+    m_currentMedia = new Song();
+    m_currentMedia->setPath(filePath);
+    m_currentMedia->setName(QFileInfo(filePath).baseName());
+
+    m_player->setSource(QUrl::fromLocalFile(filePath));
+    emit currentSongChanged(*m_currentMedia);
+
+    // Automatically play the media once it's loaded.
+    // QMediaPlayer will wait for the media to be ready before playing.
+    m_player->play();
+}
+
+void PlayerManager::generateShuffleIndexes() {
+    m_shuffleIndexes.clear();
+    int n = m_playlist.size();
+    m_shuffleIndexes.reserve(n);
+    for (int i = 0; i < n; ++i) m_shuffleIndexes.push_back(i);
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(m_shuffleIndexes.begin(), m_shuffleIndexes.end(), g);
+    m_currentShuffleIndex = 0;
+}
+
+void PlayerManager::loadPlaylist(const QList<Song>& playlist) {
+    cleanupCurrentMedia();
+    m_playlist = playlist;
+    m_currentIndex = m_playlist.isEmpty() ? -1 : 0;
+    m_playMode = PlayMode::Playlist;
+    if (m_repeatMode == RepeatMode::Shuffle && !m_playlist.isEmpty()) {
+        generateShuffleIndexes();
+        playSongAtIndex(m_shuffleIndexes[m_currentShuffleIndex]);
+    } else if (!m_playlist.isEmpty()) {
+        playSongAtIndex(0);
+    }
+}
+
+void PlayerManager::togglePlayPause()
+{
+    qDebug() << "[PlayerManager] togglePlayPause() called";
+    if (m_player->playbackState() == QMediaPlayer::PlayingState) {
+        pause();
+    } else {
+        play();
+    }
+}
+
+void PlayerManager::play() {
+    qDebug() << "[PlayerManager] play() called";
+    m_player->play();
+}
+
+void PlayerManager::pause() {
+    qDebug() << "[PlayerManager] pause() called";
+    m_player->pause();
+}
+
+void PlayerManager::playSongAtIndex(int index) {
+    if (index < 0 || index >= m_playlist.size()) return;
+
+    m_currentIndex = index;
+    const Song& songToPlay = m_playlist.at(index);
+
+
+    m_player->setSource(QUrl::fromLocalFile(songToPlay.getPath()));
+    emit currentSongChanged(songToPlay);
+    m_player->play();
+}
+
+void PlayerManager::next() {
+    if (m_playMode != PlayMode::Playlist || m_playlist.isEmpty()) return;
+    if (m_repeatMode == RepeatMode::Shuffle) {
+        m_currentShuffleIndex++;
+        if (m_currentShuffleIndex >= m_shuffleIndexes.size()) {
+            generateShuffleIndexes();
+        }
+        playSongAtIndex(m_shuffleIndexes[m_currentShuffleIndex % m_shuffleIndexes.size()]);
+    } else {
+        m_currentIndex = (m_currentIndex + 1) % m_playlist.size();
+        playSongAtIndex(m_currentIndex);
+    }
+}
+
+void PlayerManager::previous() {
+    if (m_playMode != PlayMode::Playlist || m_playlist.isEmpty()) return;
+    if (m_repeatMode == RepeatMode::Shuffle) {
+        m_currentShuffleIndex--;
+        if (m_currentShuffleIndex < 0) {
+            m_currentShuffleIndex = m_shuffleIndexes.size() - 1;
+        }
+        playSongAtIndex(m_shuffleIndexes[m_currentShuffleIndex]);
+    } else {
+        m_currentIndex = (m_currentIndex - 1 + m_playlist.size()) % m_playlist.size();
+        playSongAtIndex(m_currentIndex);
+    }
+}
+
+void PlayerManager::setMuted(bool muted) {
+    qDebug() << "[PlayerManager] setMuted(" << muted << ") called";
+    if (muted) {
+        if (!m_audioOutput->isMuted()) {
+            m_volumeBeforeMute = m_audioOutput->volume();
+            setVolume(0);
+        }
+    } else {
+        setVolume(m_volumeBeforeMute);
+    }
+    m_audioOutput->setMuted(muted);
+    emit mutedChanged(muted);
+    qDebug() << "[PlayerManager] mutedChanged(" << muted << ") emitted";
+}
+
+void PlayerManager::changeRepeatMode() {
+    // Cycle: Shuffle -> RepeatOne -> RepeatAll -> Shuffle ...
+    if (m_repeatMode == RepeatMode::Shuffle) {
+        m_repeatMode = RepeatMode::RepeatOne;
+        // TODO: به UI خبر بده که آیکون را به RepeatOne تغییر دهد
+        m_currentShuffleIndex = 0; // Reset shuffle index
+    } else if (m_repeatMode == RepeatMode::RepeatOne) {
+        m_repeatMode = RepeatMode::RepeatAll;
+        // TODO: به UI خبر بده که آیکون را به RepeatAll تغییر دهد
+        m_currentShuffleIndex = 0; // Reset shuffle index
+    } else if (m_repeatMode == RepeatMode::RepeatAll) {
+        m_repeatMode = RepeatMode::Shuffle;
+        // TODO: به UI خبر بده که آیکون را به Shuffle تغییر دهد
+        if (!m_playlist.isEmpty()) {
+            generateShuffleIndexes();
+        }
+    }
+}
 PlayerManager& PlayerManager::getInstance() {
     if (!s_instance) {
         s_instance.reset(new PlayerManager());
@@ -16,253 +193,59 @@ PlayerManager& PlayerManager::getInstance() {
     return *s_instance;
 }
 
-void PlayerManager::playSingleMedia(const QString &filepath)
-{
-    stop();
-    clearPlaylist();
-    cleanupCurrentMedia();
-
-    m_currentIndex = -1;
-
-    // TODO: اینجا باید تشخیص دهید فایل ورودی آهنگ است یا فیلم
-    // فعلاً فرض می‌کنیم آهنگ است
-    currentMedia = new Song();
-    currentMedia->setPath(filepath);
-    currentMedia->setName(QFileInfo(filepath).baseName());
-
-    m_player->setSource(QUrl::fromLocalFile(filepath));
-    play();
-}
-
-void PlayerManager::play()
-{
-    if(m_player->playbackState() == QMediaPlayer::PausedState)
-    {
-        m_player->play();
-        return;
-    }
-
-    if(m_player->playbackState() == QMediaPlayer::PlayingState)
-    {
-        m_player->pause();
-        return;
-    }
-
-
-    if(m_player->playbackState() == QMediaPlayer::StoppedState)
-    {
-        if(m_currentIndex != -1 && !m_playlist.isEmpty())
-        {
-            playIndex(m_currentIndex);
-        }
-        else if(currentMedia != nullptr)
-        {
-            m_player->setSource(QUrl::fromLocalFile(currentMedia->getPath()));
-            m_player->play();
-        }
-    }
-}
-
-void PlayerManager::pause()
-{
-
-    m_player->pause();
-}
-
-void PlayerManager::stop()
-{
-
-    m_player->stop();
-}
-
-void PlayerManager::next()
-{
-    if(m_playlist.isEmpty()) return;
-
-    if(m_currentIndex >= m_playlist.size()-1)
-    {
-        if(m_repeatMode == RepeatMode::RepeatAll)
-        {
-            playIndex(0);
-        }
-        else{
-            stop();
-        }
-    }else{
-        playIndex(m_currentIndex+1);
-    }
-}
-
-void PlayerManager::previous()
-{
-    if (m_playlist.isEmpty()) return;
-
-
-    if (m_currentIndex <= 0) {
-        if (m_repeatMode == RepeatMode::RepeatAll) {
-
-            playIndex(m_playlist.size() - 1);
-        } else {
-
-            playIndex(0);
-        }
-    } else {
-        playIndex(m_currentIndex - 1);
-    }
-}
-
 void PlayerManager::seek(qint64 position)
 {
-
+    qDebug() << "[PlayerManager] seek(" << position << ") called";
     m_player->setPosition(position);
 }
 
 void PlayerManager::setVolume(float volume)
 {
-    if(volume >=0.0f && volume <=1.0f){
+    qDebug() << "[PlayerManager] setVolume(" << volume << ") called";
+    if(volume >= 0.0f && volume <= 1.0f){
         m_audioOutput->setVolume(volume);
+        emit volumeChanged(static_cast<int>(volume * 100));
+        qDebug() << "[PlayerManager] volumeChanged(" << static_cast<int>(volume * 100) << ") emitted";
+        if (volume == 0.0f && !m_audioOutput->isMuted()) {
+            m_audioOutput->setMuted(true);
+            emit mutedChanged(true);
+            qDebug() << "[PlayerManager] mutedChanged(true) emitted (from setVolume, slider to 0)";
+        } else if (volume > 0.0f && m_audioOutput->isMuted()) {
+            m_audioOutput->setMuted(false);
+            emit mutedChanged(false);
+            qDebug() << "[PlayerManager] mutedChanged(false) emitted (from setVolume, slider up)";
+        }
     }
 }
 
-void PlayerManager::setMuted(bool muted)
-{
-
-    m_audioOutput->setMuted(muted);
-}
-
-void PlayerManager::setShuffle(bool shuffle)
-{
-    m_isShuffled = shuffle;
-    if(m_isShuffled && !m_playlist.isEmpty())
-    {
-        m_shuffledIndices.resize(m_playlist.size());
-        std::iota(m_shuffledIndices.begin(),m_shuffledIndices.end(),0);
-
-        std::shuffle(m_shuffledIndices.begin(),m_shuffledIndices.end(),*QRandomGenerator::global());
-    }
-    else{
-        m_shuffledIndices.clear();
-    }
-}
-
-void PlayerManager::setRepeatMode(RepeatMode mode)
-{
-    m_repeatMode = mode;
-}
-
-void PlayerManager::loadPlaylist(const QList<Song> &Songlist)
-{
-    stop();
-    m_playlist.clear();
-    cleanupCurrentMedia();
-
-    m_playlist = Songlist;
-    emit playlistChanged(m_playlist);
-    m_currentIndex = m_playlist.isEmpty() ? -1 : 0;
-
-    if (m_isShuffled) {
-        setShuffle(true);
-    }
-
-}
-
-void PlayerManager::setVideoOutput(QWidget *videoWidget)
-{
+void PlayerManager::loadSingleVideo(const QString& filePath, QVideoWidget* videoWidget) {
+    if (!videoWidget) return;
     m_player->setVideoOutput(videoWidget);
-}
-
-void PlayerManager::clearPlaylist()
-{
-    m_playlist.clear();
-}
-
-void PlayerManager::addSong(const QString &filePath)
-{
     m_player->setSource(QUrl::fromLocalFile(filePath));
-
-    current_song = Song();
-    current_song.setPath(filePath);
-    current_song.setName(QFileInfo(filePath).baseName());
+    // اطلاعات ویدیو را به UI بفرست
+    Song temp;
+    temp.setPath(filePath);
+    temp.setName(QFileInfo(filePath).baseName());
+    emit currentSongChanged(temp);
+    m_player->play();
 }
 
-
-
-
-PlayerManager::~PlayerManager() {}
-
-PlayerManager::PlayerManager(QObject *parent)
-    : QObject(parent),
-    m_currentIndex(-1),
-    m_isShuffled(false),
-    m_repeatMode(RepeatMode::NoRepeat)
-{
-
-    m_player = new QMediaPlayer(this);
-    m_audioOutput = new QAudioOutput(this);
-    m_player->setAudioOutput(m_audioOutput);
-
-    connect(m_player, &QMediaPlayer::playbackStateChanged, this, &PlayerManager::playbackStateChanged);
-    connect(m_player, &QMediaPlayer::positionChanged, this, &PlayerManager::positionChanged);
-    connect(m_player, &QMediaPlayer::durationChanged, this, &PlayerManager::durationChanged);
-    connect(m_player, &QMediaPlayer::errorOccurred, this, &PlayerManager::errorOccurred);
-    connect(m_audioOutput, &QAudioOutput::volumeChanged, this, &PlayerManager::volumeChanged);
-    connect(m_audioOutput, &QAudioOutput::mutedChanged, this, &PlayerManager::mutedChanged);
-    connect(m_player, &QMediaPlayer::metaDataChanged, this, &PlayerManager::onMetaDataChanged);
-
-    connect(m_player, &QMediaPlayer::mediaStatusChanged, this, &PlayerManager::handleMediaStatusChanged);
-}
-
-void PlayerManager::playIndex(int index)
-{
-    if(index <0 || index >=m_playlist.size())
-    {
-        stop();
-        return;
-    }
-
-    m_currentIndex = index;
-
-
-    // if(currentMedia)
-    // {
-    //     delete currentMedia;
-    // }
-    const int playlistIndex = m_isShuffled ? m_shuffledIndices.at(index) : index;
-    currentMedia = new Song(m_playlist.at(playlistIndex));
-    if(currentMedia)
-    {
-        m_player->setSource(QUrl::fromLocalFile(currentMedia->getPath()));
-        emit currentMediaChanged(currentMedia);
-        play();
-    }
-}
-
-void PlayerManager::handleMediaStatusChanged(QMediaPlayer::MediaStatus status)
-{
-    emit mediaStatusChanged(status);
-
-    if(status == QMediaPlayer::EndOfMedia)
-    {
-        if(m_repeatMode == RepeatMode::RepeatOne)
-        {
-            m_player->setPosition(0);
-            m_player->play();
-        }
-        else{
-            next();
+void PlayerManager::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
+    if (status == QMediaPlayer::EndOfMedia) {
+        if (m_playMode == PlayMode::Playlist && !m_playlist.isEmpty()) {
+            if (m_repeatMode == RepeatMode::RepeatOne) {
+                playSongAtIndex(m_currentIndex);
+            } else if (m_repeatMode == RepeatMode::RepeatAll) {
+                next();
+            } else if (m_repeatMode == RepeatMode::Shuffle) {
+                m_currentShuffleIndex++;
+                if (m_currentShuffleIndex >= m_shuffleIndexes.size()) {
+                    generateShuffleIndexes();
+                }
+                playSongAtIndex(m_shuffleIndexes[m_currentShuffleIndex % m_shuffleIndexes.size()]);
+            }
         }
     }
 }
 
-void PlayerManager::onMetaDataChanged()
-{
-    qDebug() << "Meta-data is now available!";
-    QString title = m_player->metaData().value(QMediaMetaData::Title).toString();
-    if (!title.isEmpty()) {
-        currentMedia->setName(title);
-    }
-    currentMedia->setDuration(m_player->duration());
-
-    emit currentMediaChanged(currentMedia);
-}
 

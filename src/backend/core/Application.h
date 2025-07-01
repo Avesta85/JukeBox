@@ -1,6 +1,12 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#include "src/backend/core/playlist.h"
+#include "src/backend/core/song.h"
+#include "src/ui/createdialog.h"
+#include "src/ui/editplaylist.h"
+#include "src/ui/playlistchoicewindow.h"
+#include "src/ui/playmusicwindow.h"
 #include <QObject>
 
 class ChangePasswordWindow;
@@ -31,8 +37,29 @@ public:
     void show_forgotPassword_window();
     void show_receiveSWWindow(QString key , QString username);
     void show_showKeyWindow(QString key);
-
+    void show_playlistWindow();
     void showMainWindow();
+    void show_playlistCreateWindow();
+    void show_playlistEditWindow(qint64 playlistID);
+    void show_playMusicWindow();
+signals:
+    void Playlist_view_updated(const QList<Playlist> playlist_list);
+    void Song_view_update(const QList<Song>Songlist);
+    void Song_view_updated();
+    void edit_Playlist_Song_view(const QList<Song>allSong , const QList<Song>playlistSong, qint64 playlistId, const QString& playlistName);
+    void music_updateSong(const QList<Song>allSong);
+    void play_from_playlist(const QList<Song> songs);
+public slots:
+
+    void preparetoPlay_playList(qint64 playlistID);
+
+
+
+    void Create_PlayList(const QString name , const QList<qint64>songs);
+    void Delete_PlayList(qint64 Playlistid);
+    void ADD_Songs(const QString& pahts);
+    void Edit_PlaylistName(qint64 playListId,const QString& newName);
+    void edite_update_playlistSongs(qint64 playListId,const QList<qint64>& newSongsId,const QList<qint64>& rmSongsId);
 
 private:
     explicit Application(QObject *parent = nullptr);
@@ -54,13 +81,16 @@ private:
     ReceiveSecureWordsWindow* w_receive_secureWords_window;
     SignupWindow* w_signUp_window;
     ShowKeyWords* w_showKey_Window;
-
-
+    PlaylistChoiceWindow* w_playlist_choicewindow;
+    CreateDialog* w_playlist_createWindow;
+    EditPlayList* w_playlist_editWindow;
+    playmusicwindow* w_playMusic_window;
     class MainWindow* w_main_window;
     // function
     void switchWindow(QWidget* nextWindow);
 
 private slots:
+    void onVideoFileSelected(const QString& filePath);
 
 };
 

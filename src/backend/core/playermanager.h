@@ -1,98 +1,74 @@
 #ifndef PLAYERMANAGER_H
 #define PLAYERMANAGER_H
+
+#include "qvideowidget.h"
 #include "src/backend/core/song.h"
 #include <QObject>
 #include <QMediaPlayer>
 #include <QList>
-#include <QUrl>
-#include <src/backend/core/media.h>
+#include <QVector>
 
 class QAudioOutput;
-class QUrl;
-class QWidget;
 
 class PlayerManager : public QObject
 {
     Q_OBJECT
 
 public:
-
-    enum class RepeatMode{ NoRepeat,RepeatOne,RepeatAll};
+    enum class PlayMode { SingleMedia, Playlist };
+    enum class RepeatMode { Shuffle , RepeatOne, RepeatAll };
     Q_ENUM(RepeatMode);
-    // Singleton
-    ~PlayerManager();
-    static PlayerManager& getInstance();
-    PlayerManager(const PlayerManager&) = delete;
-    void operator=(const PlayerManager&) = delete;
 
+    static PlayerManager& getInstance();
+    ~PlayerManager();
+    PlayerManager::RepeatMode getRepeatMode();
 public slots:
 
-    void playSingleMedia(const QString & filepath);
-
-    void loadSongPlaylist(const QList<Song*>& songPlaylist);
-    void playFromPlaylist(int index);
-    void next();
-    void previous();
-
+    void loadSingleMedia(const QString& filePath);
+    void loadSingleVideo(const QString& filePath, QVideoWidget* videoWidget);
+    void loadPlaylist(const QList<Song>& playlist);
     void play();
     void pause();
-    void stop();
-
-
-    void seek(qint64 position);
+    void next();
+    void previous();
+    void changeRepeatMode();
     void setVolume(float volume);
     void setMuted(bool muted);
-
-    void setShuffle(bool shuffle);
-    void setRepeatMode(RepeatMode mode);
-
-    void loadPlaylist(const QList<Song>& Songlist);
-    void setVideoOutput(QWidget* videoWidget);
-    void clearPlaylist();
-
-    void addSong(const QString& filePath);
+    void seek(qint64 position);
+    void togglePlayPause();
+    void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
 
 signals:
-
-
-    void playlistChanged(const QList<Song>& playlist);
-    void currentMediaChanged(Media* media);
 
     void playbackStateChanged(QMediaPlayer::PlaybackState state);
     void positionChanged(qint64 position);
     void durationChanged(qint64 duration);
-    void mediaStatusChanged(QMediaPlayer::MediaStatus status);
-    void volumeChanged(float volume);
-    void mutedChanged(bool muted);
     void currentSongChanged(const Song& song);
-    void errorOccurred(QMediaPlayer::Error error, const QString& errorString);
+    void volumeChanged(int volume);
+    void mutedChanged(bool isMuted);
 
 private:
     explicit PlayerManager(QObject *parent = nullptr);
+
     static std::unique_ptr<PlayerManager> s_instance;
 
-    QMediaPlayer *m_player;
-    QAudioOutput *m_audioOutput;
-    // current media
-    Media * currentMedia;
+    void playSongAtIndex(int index);
+    void cleanupCurrentMedia();
+    void generateShuffleIndexes();
 
-    //playlist
+    QMediaPlayer* m_player;
+    QAudioOutput* m_audioOutput;
 
+    Song* m_currentMedia;
     QList<Song> m_playlist;
 
-    QList<int>m_shuffledIndices;
-    int m_currentIndex;
-    bool m_isShuffled;
+    PlayMode m_playMode;
     RepeatMode m_repeatMode;
+    int m_currentIndex;
+    float m_volumeBeforeMute;
 
-
-
-    void playIndex(int index);
-    void cleanupCurrentMedia();
-
-private slots:
-    void handleMediaStatusChanged(QMediaPlayer::MediaStatus status);
-    void onMetaDataChanged();
+    QVector<int> m_shuffleIndexes;
+    int m_currentShuffleIndex = 0;
 };
 
 #endif // PLAYERMANAGER_H

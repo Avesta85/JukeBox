@@ -5,14 +5,14 @@ Song::Song(QString Name , QString Path , size_t Duration , QString Artist , size
 Song::Song(const Song& OtherSong) : Media(OtherSong) , artist(OtherSong.artist) , id(OtherSong.id) {}
 Song::~Song(){}
 
-void Song::setArtist(const QString& NewArtist)
+void Song::setArtist(QString& NewArtist)
 {this->artist = NewArtist; }
 
-void Song::setID(const size_t& NewID)
+void Song::setID( size_t& NewID)
 {this->id = NewID; }
 
-const QString& Song::getArtist()
+const QString& Song::getArtist()const
 {return this->artist; }
 
-const size_t& Song::getID()
+const size_t& Song::getID()const
 {return this->id; }

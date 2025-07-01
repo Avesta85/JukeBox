@@ -23,12 +23,11 @@ public slots:
     void updatePosition(qint64 position);
     void updateDuration(qint64 duration);
     void setMuted(bool isMuted);
+    void setRepeatIcon(const QIcon& icon);
 
 
 signals:
-
-    void playClicked();
-    void pauseClicked();
+    void playPauseClicked();
     void nextClicked();
     void previousClicked();
     void volumeChanged(int volume);
@@ -38,11 +37,12 @@ signals:
     void muteClicked(bool isMuted);
 
 private slots:
-    void on_pushButton_play_clicked();
+    void handlePlayClicked();
+    void handleMuteClicked();
 
     void on_pushButton_playing_type_clicked();
 
-    void on_pushButton_mute_clicked();
+    //void on_pushButton_mute_clicked();
 
     void on_horizontalSlider_volume_valueChanged(int value);
 

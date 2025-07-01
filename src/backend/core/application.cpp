@@ -7,7 +7,6 @@
 #include "src/ui/loginwindow.h"
 #include "src/ui/mainwindow.h"
 #include "src/ui/playercontrolwidget.h"
-#include "src/ui/playmusicwindow.h"
 #include "src/ui/showkeywords.h"
 #include "src/ui/signupwindow.h"
 #include "src/ui/emailverificationwindow.h"
@@ -133,13 +132,32 @@ void Application::show_showKeyWindow(QString key)
     switchWindow(w_showKey_Window);
 }
 
+void Application::show_playlistWindow()
+{
+    if(!w_playlist_choicewindow){
+        w_playlist_choicewindow = new PlaylistChoiceWindow();
+
+        connect(w_playlist_choicewindow,&PlaylistChoiceWindow::deletePlaylistRequested,this,&Application::Delete_PlayList);
+        connect(this,&Application::Playlist_view_updated,w_playlist_choicewindow,&PlaylistChoiceWindow::updatePlaylistView);
+        connect(w_playlist_choicewindow,&PlaylistChoiceWindow::createPlaylistRequested,this,&Application::show_playlistCreateWindow);
+        connect(w_playlist_choicewindow,&PlaylistChoiceWindow::editPlaylistRequested,this,&Application::show_playlistEditWindow);
+
+        connect(w_playlist_choicewindow,&PlaylistChoiceWindow::playPlaylistRequested,this,&Application::preparetoPlay_playList);
+    }
+
+
+    emit Playlist_view_updated(UserManager::getInstance().getUserPLaylist());
+    w_playlist_choicewindow->show();
+}
+
 Application::Application(QObject *parent)
     :QObject(parent),m_currentWindow(nullptr),w_change_password_window(nullptr)
     ,w_choice_window(nullptr),w_email_verification_window(nullptr),w_forgot_password_window(nullptr)
     ,w_login_window(nullptr),w_receive_secureWords_window(nullptr),w_signUp_window(nullptr),w_showKey_Window(nullptr),
-    w_main_window(nullptr)
+    w_main_window(nullptr),w_playlist_choicewindow(nullptr),w_playlist_createWindow(nullptr),w_playlist_editWindow(nullptr),
+    w_playMusic_window(nullptr)
 {
-    ;
+
 }
 
 void Application::switchWindow(QWidget *nextWindow)
@@ -153,6 +171,15 @@ void Application::switchWindow(QWidget *nextWindow)
     m_currentWindow = nextWindow;
 }
 
+void Application::onVideoFileSelected(const QString &filePath)
+{
+    if (!w_main_window) return;
+    StageWidget* stage = w_main_window->getStage();
+    QVideoWidget* videoWidget = stage->getVideoManagementWidget();
+    if (!videoWidget) return;
+    PlayerManager::getInstance().loadSingleVideo(filePath, videoWidget);
+}
+
 
 void Application::showMainWindow()
 {
@@ -163,45 +190,168 @@ void Application::showMainWindow()
         ToolBoxWidget* toolbox = w_main_window->getToolBox();
         StageWidget* stage = w_main_window->getStage();
 
-        connect(toolbox, &ToolBoxWidget::SongManagementClicked, stage, &StageWidget::showMusicManagementPage);
         connect(toolbox, &ToolBoxWidget::movieManagementClicked, stage, &StageWidget::showMovieManagementPage);
-
-
-        PlayerManager& PlayerManager = PlayerManager::getInstance();
+        connect(toolbox, &ToolBoxWidget::videoManagementClicked, stage, &StageWidget::showVideoManagementPage);
+        connect(toolbox, &ToolBoxWidget::playlistManagementClicked, this, &Application::show_playlistWindow);
+        connect(toolbox, &ToolBoxWidget::SongManagementClicked, this, &Application::show_playMusicWindow);
+        PlayerManager& playerManager = PlayerManager::getInstance();
         PlayerControlWidget* playerControls = w_main_window->getPlayerControls();
 
-        connect(playerControls, &PlayerControlWidget::playClicked, &PlayerManager, &PlayerManager::play);
-        connect(playerControls, &PlayerControlWidget::pauseClicked, &PlayerManager, &PlayerManager::pause);
-        connect(playerControls, &PlayerControlWidget::nextClicked, &PlayerManager, &PlayerManager::next);
-        connect(playerControls, &PlayerControlWidget::previousClicked, &PlayerManager, &PlayerManager::previous);
-        connect(playerControls, &PlayerControlWidget::seeked, &PlayerManager, &PlayerManager::seek);
+        connect(playerControls, &PlayerControlWidget::playPauseClicked, &playerManager, &PlayerManager::togglePlayPause);
+        connect(playerControls, &PlayerControlWidget::nextClicked, &playerManager, &PlayerManager::next);
+        connect(playerControls, &PlayerControlWidget::previousClicked, &playerManager, &PlayerManager::previous);
+        connect(playerControls, &PlayerControlWidget::seeked, &playerManager, &PlayerManager::seek);
 
-        connect(playerControls, &PlayerControlWidget::volumeChanged, &PlayerManager, [&PlayerManager](int volume){
-            PlayerManager.setVolume(static_cast<float>(volume) / 100.0f);
+        connect(playerControls, &PlayerControlWidget::volumeChanged, &playerManager, [&playerManager](int volume){
+            playerManager.setVolume(static_cast<float>(volume) / 100.0f);
         });
 
-        connect(playerControls, &PlayerControlWidget::muteClicked, &PlayerManager, &PlayerManager::setMuted);
+        connect(playerControls, &PlayerControlWidget::muteClicked, &playerManager, &PlayerManager::setMuted);
 
+        connect(&playerManager, &PlayerManager::positionChanged, playerControls, &PlayerControlWidget::updatePosition);
+        connect(&playerManager, &PlayerManager::durationChanged, playerControls, &PlayerControlWidget::updateDuration);
+        connect(&playerManager, &PlayerManager::mutedChanged, playerControls, &PlayerControlWidget::setMuted);
 
-
-        connect(&PlayerManager, &PlayerManager::positionChanged, playerControls, &PlayerControlWidget::updatePosition);
-        connect(&PlayerManager, &PlayerManager::durationChanged, playerControls, &PlayerControlWidget::updateDuration);
-
-
-        connect(&PlayerManager, &PlayerManager::playbackStateChanged, playerControls, [playerControls](QMediaPlayer::PlaybackState state){
+        connect(&playerManager, &PlayerManager::playbackStateChanged, playerControls, [playerControls](QMediaPlayer::PlaybackState state){
             playerControls->updatePlaybackState(state == QMediaPlayer::PlayingState);
         });
+        connect(&playerManager, &PlayerManager::volumeChanged, playerControls, &PlayerControlWidget::updateVolume);
+        connect(&playerManager, &PlayerManager::currentSongChanged, w_main_window, &MainWindow::updateSongInfo);
 
+        connect(stage, &StageWidget::videoFileSelected, this, &Application::onVideoFileSelected);
 
-        connect(&PlayerManager, &PlayerManager::currentSongChanged, w_main_window, &MainWindow::updateSongInfo);
+        connect(this,&Application::play_from_playlist,&playerManager,&PlayerManager::loadPlaylist);
 
-
-
-        playmusicwindow* musicWindow = stage->getMusicManagementPage();
-
-        connect(musicWindow, &playmusicwindow::songFileSelected, &PlayerManager, &PlayerManager::addSong);
-        //setting dialog
+        connect(playerControls, &PlayerControlWidget::repeatModeClicked, this, [playerControls]() {
+            PlayerManager::getInstance().changeRepeatMode();
+            // Update icon based on new mode
+            auto mode = PlayerManager::getInstance().getRepeatMode();
+            QIcon icon;
+            switch (mode) {
+                case PlayerManager::RepeatMode::Shuffle:
+                    icon = QIcon(":/icone/shuffle.png");
+                    break;
+                case PlayerManager::RepeatMode::RepeatOne:
+                    icon = QIcon(":/icone/repeatone.png");
+                    break;
+                case PlayerManager::RepeatMode::RepeatAll:
+                    icon = QIcon(":/icone/repeat.png");
+                    break;
+            }
+            playerControls->setRepeatIcon(icon);
+        });
     }
 
     switchWindow(w_main_window);
+}
+
+void Application::show_playlistCreateWindow()
+{
+
+    if(!w_playlist_createWindow){
+        w_playlist_createWindow = new CreateDialog();
+
+        connect(w_playlist_createWindow,&CreateDialog::CreatePlaylist,this,&Application::Create_PlayList);
+        connect(this,&Application::Song_view_update,w_playlist_createWindow,&CreateDialog::update_songsList);
+    }
+
+    emit Song_view_update(DBM::get_instance().getAllSongs());
+    w_playlist_createWindow->show();
+}
+
+void Application::show_playlistEditWindow(qint64 playlistID)
+{
+    if(!w_playlist_editWindow){
+        w_playlist_editWindow = new EditPlayList();
+
+        connect(w_playlist_editWindow,&EditPlayList::update_playlistName,this,&Application::Edit_PlaylistName);
+        connect(w_playlist_editWindow,&EditPlayList::update_songToPlaylist,this,&::Application::edite_update_playlistSongs);
+        connect(this,&Application::edit_Playlist_Song_view,w_playlist_editWindow,&EditPlayList::update_SongView);
+
+
+        connect(w_playlist_editWindow,&EditPlayList::accepted,this,[this](){
+            emit Playlist_view_updated(UserManager::getInstance().getUserPLaylist());
+            w_playlist_editWindow->close();
+        });
+        connect(w_playlist_editWindow,&EditPlayList::rejected,this,[this](){
+            w_playlist_editWindow->close();
+        });
+    }
+
+    Playlist tmp = DBM::get_instance().selectPlaylist(playlistID);
+
+
+    emit edit_Playlist_Song_view(DBM::get_instance().getAllSongs(),DBM::get_instance().getSongsInPlaylist(playlistID),playlistID,tmp.getName());
+    w_playlist_editWindow->show();
+
+}
+
+void Application::show_playMusicWindow()
+{
+    if(!w_playMusic_window){
+        w_playMusic_window = new playmusicwindow();
+
+        connect(this,&Application::music_updateSong,w_playMusic_window,&playmusicwindow::updateSongList);
+        connect(w_playMusic_window,&playmusicwindow::songFileSelected,&PlayerManager::getInstance(),&PlayerManager::loadSingleMedia);
+    }
+
+    emit music_updateSong(DBM::get_instance().getAllSongs());
+    w_playMusic_window->show();
+}
+
+void Application::preparetoPlay_playList(qint64 playlistID)
+{
+
+    auto songs = UserManager::getInstance().getUserPlaylistSong(playlistID);
+
+    emit play_from_playlist(songs);
+
+}
+
+void Application::Create_PlayList(const QString name , const QList<qint64>songs)
+{
+    qint64 playlistID = UserManager::getInstance().addPlaylist(Playlist(name));
+    if(playlistID != -1){
+        for (const qint64& id : songs){
+            UserManager::getInstance().addSongToPlaylist(id,playlistID);
+        }
+        emit Playlist_view_updated(UserManager::getInstance().getUserPLaylist());
+    }
+}
+
+void Application::Delete_PlayList(qint64 Playlistid)
+{
+    UserManager::getInstance().deletePlaylist(Playlistid);
+    emit Playlist_view_updated(UserManager::getInstance().getUserPLaylist());
+}
+
+void Application::ADD_Songs(const QString &pahts)
+{
+    ;
+}
+
+void Application::Edit_PlaylistName(qint64 playListId, const QString &newName)
+{
+    UserManager::getInstance().UpdatePlaylistName(playListId,newName);
+}
+
+void Application::edite_update_playlistSongs(qint64 playListId, const QList<qint64> &newSongsId, const QList<qint64> &rmSongsId)
+{
+    try{
+        auto&& um =UserManager::getInstance();
+
+        for(const auto& id : newSongsId)
+        {
+            um.addSongToPlaylist(id,playListId);
+        }
+        for(const auto& id: rmSongsId)
+        {
+            um.deleteSongfromPlaylist(playListId,id);
+        }
+    }
+    catch(std::exception& e)
+    {
+        qDebug()<<e.what();
+    }
+
 }

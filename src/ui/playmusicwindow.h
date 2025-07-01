@@ -2,7 +2,7 @@
 #define PLAYMUSICWINDOW_H
 
 #include <QWidget>
-#include "qdialog.h"
+#include <QDialog>
 #include "src/backend/core/song.h"
 
 QT_BEGIN_NAMESPACE
@@ -28,12 +28,13 @@ public slots:
 
 private slots:
 
-    void on_pushButton_select_song_clicked();
-
     void on_pushButton_select_clicked();
+    void onSearchSongClicked();
 
 private:
     Ui::playmusicwindow *ui;
+    QList<Song> m_allSongs;
+    QList<Song> m_allSongsOriginal;
 };
 
 #endif // PLAYMUSICWINDOW_H

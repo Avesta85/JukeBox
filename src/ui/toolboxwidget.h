@@ -23,6 +23,7 @@ signals:
     void movieManagementClicked();
     void settingsClicked();
     void aboutUsClicked();
+    void videoManagementClicked();
 
 
 private slots:

@@ -1,5 +1,6 @@
 #ifndef STAGEWIDGET_H
 #define STAGEWIDGET_H
+#include "qvideowidget.h"
 #include <QStackedWidget>
 
 class playmusicwindow;
@@ -19,21 +20,25 @@ public:
     explicit StageWidget(QWidget *parent = nullptr);
     ~StageWidget();
 
-    playmusicwindow* getMusicManagementPage();
+    QVideoWidget* getVideoManagementWidget();
 
 public slots:
-    void showMusicManagementPage();
     void showMovieManagementPage();
     void showCoverArtPage();
     void showVideoPage();
+    void showVideoManagementPage();
+
+signals:
+    void videoFileSelected(const QString& filePath);
+
 private:
     Ui::StageWidget *ui;
 
-    playmusicwindow* m_musicManagementPage;
     MovieManagementWindow* m_movieManagementPage;
 
-    QWidget* m_musicPageContainer;
-    QWidget* m_moviePageContainer;
+private slots:
+    void onFilterChanged(int index);
+    void onOpenButtonClicked();
 
 };
 

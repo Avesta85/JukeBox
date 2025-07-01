@@ -17,21 +17,21 @@
    <item>
     <widget class="QPushButton" name="pushButton_playlist_management">
      <property name="text">
-      <string>Playlist Managment</string>
+      <string>PlayList</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QPushButton" name="pushButton">
      <property name="text">
-      <string>Music Managment</string>
+      <string>Music</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QPushButton" name="pushButton_movie_managment">
      <property name="text">
-      <string>Movie Managment</string>
+      <string>Movie</string>
      </property>
     </widget>
    </item>

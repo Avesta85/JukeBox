@@ -54,7 +54,7 @@ public:
     bool insertUser(const QString& Username,const QString& Password , const QString& first_name ,
                     const QString& last_name , const QString& email , const QString& secret_Key);
 
-    bool insertPlaylist(const QString& Playlist_Name , const size_t User_id);
+    qint64 insertPlaylist(const QString& Playlist_Name , const size_t User_id);
 
     bool insertPlaylistSongs(const size_t Playlist_id , const size_t Song_id);
 
@@ -69,9 +69,10 @@ public:
     QList<Song> getSongsInPlaylist(qint64 playlistId);
     QList<Song> getFavoriteSongsForUser(qint64 userId);
     QList<Person> getFriendsForUser(qint64 userId);
-
+    QList<Song> getAllSongs();
     QString getEmailofUser(const QString& username);
     QString getSKeyofUser(const QString& username);
+    Playlist selectPlaylist(qint64 playlistId);
     // delete
 
     bool deleteUser(const size_t user_id);

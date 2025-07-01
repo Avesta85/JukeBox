@@ -2,10 +2,12 @@ QT += core gui
 QT += network
 QT += sql
 QT += concurrent
-QT += widgets multimedia multimediawidgets
+QT += widgets multimediawidgets
+QT += multimedia
 
 
-greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
+
+greaterThan(QT_MAJOR_VERSION, 6): QT += widgets
 
 CONFIG += c++20
 
@@ -44,6 +46,7 @@ win32 {
 }
 
 SOURCES += \
+    build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/dialog_playlist.cpp \
     src/backend/core/SendEmail.cpp \
     src/backend/core/UserManager.cpp \
     src/backend/core/application.cpp \
@@ -79,6 +82,7 @@ SOURCES += \
     src/ui/toolboxwidget.cpp
 
 HEADERS += \
+    build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/dialog_playlist.h \
     src/backend/core/SendEmail.h \
     src/backend/core/UserManager.h \
     src/backend/core/application.h \
@@ -114,6 +118,7 @@ HEADERS += \
     src/backend/security/SecurityManager.h
 
 FORMS += \
+    build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/dialog_playlist.ui \
     ui/playlistchoicewindow.ui \
     ui/playlistchoicewindow.ui \
     ui/changepasswordwindow.ui \

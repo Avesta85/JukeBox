@@ -305,7 +305,7 @@ bool DBM::insertUser(const QString &Username, const QString &Password, const QSt
 
 }
 
-bool DBM::insertPlaylist(const QString &Playlist_Name, const size_t User_id)
+qint64 DBM::insertPlaylist(const QString &Playlist_Name, const size_t User_id)
 {
     std::scoped_lock<QMutex>lock(m_db_mutex);
     QSqlQuery insert ;
@@ -316,11 +316,12 @@ bool DBM::insertPlaylist(const QString &Playlist_Name, const size_t User_id)
 
     if (!insert.exec()) {
         qDebug() << "Failed to insert playlist:" << insert.lastError().text();
-        return false;
+        return -1;
     }
 
-    qDebug() << "Playlist" << Playlist_Name << "inserted successfully.";
-    return true;
+    qint64 newId = insert.lastInsertId().toLongLong();
+    qDebug() << "Playlist" << Playlist_Name << "inserted successfully with id:" << newId;
+    return newId;
 }
 
 bool DBM::insertPlaylistSongs(const size_t Playlist_id, const size_t Song_id)
@@ -518,6 +519,29 @@ QList<Person> DBM::getFriendsForUser(qint64 userId)
 
     return holder;
 
+}
+
+QList<Song> DBM::getAllSongs()
+{
+    std::scoped_lock<QMutex> locker(m_db_mutex);
+
+    QSqlQuery select;
+    QList<Song> holder;
+
+    select.prepare(
+        "SELECT id , name ,path FROM Songs "
+        );
+
+    if(!select.exec())
+    {
+        throw std::runtime_error("cant select Favorite songs from db");
+    }
+
+    while(select.next())
+    {
+        holder.append(Song(select.value(1).toString(),select.value(2).toString(),0,"",select.value(0).toLongLong()));
+    }
+    return holder;
 }
 
 QString DBM::getEmailofUser(const QString &username)
@@ -900,4 +924,20 @@ void DBM::applyVerifySongsPath()
 
 
 
+}
+
+Playlist DBM::selectPlaylist(qint64 playlistId)
+{
+    std::scoped_lock<QMutex> locker(m_db_mutex);
+    QSqlQuery select;
+    select.prepare("SELECT id, name, user_id FROM Playlists WHERE id = :id");
+    select.bindValue(":id", playlistId);
+    if (!select.exec()) {
+        throw std::runtime_error("Failed to execute select query for playlist");
+    }
+    if (select.next()) {
+        return Playlist(select.value(1).toString(), select.value(0).toLongLong(), select.value(2).toLongLong());
+    } else {
+        throw std::runtime_error("Playlist not found");
+    }
 }

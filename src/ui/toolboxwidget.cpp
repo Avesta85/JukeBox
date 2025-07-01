@@ -1,11 +1,20 @@
 #include "toolboxwidget.h"
 #include "ui_toolboxwidget.h"
+#include "playmusicwindow.h"
+#include "src/backend/core/playermanager.h"
 
 ToolBoxWidget::ToolBoxWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ToolBoxWidget)
 {
     ui->setupUi(this);
+
+    connect(ui->pushButton_movie_managment, &QPushButton::clicked, this, [this]() {
+        emit videoManagementClicked();
+    });
+    connect(ui->pushButton_playlist_management, &QPushButton::clicked, this, [this]() {
+        emit playlistManagementClicked();
+    });
 }
 
 ToolBoxWidget::~ToolBoxWidget()

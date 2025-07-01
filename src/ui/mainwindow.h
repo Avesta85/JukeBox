@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "src/backend/core/song.h"
+#include "src/ui/playmusicwindow.h"
 #include <QMainWindow>
 
 
@@ -29,6 +30,7 @@ public:
     ToolBoxWidget* getToolBox() const;
     StageWidget* getStage() const;
     JukeBoxSessionWidget* getJukeBoxSession() const;
+
 public slots:
     void updateSongInfo(const Song& song);
 

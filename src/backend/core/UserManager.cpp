@@ -137,7 +137,7 @@ bool UserManager::addFriend(const QString &Friend_Username)
     }
 }
 
-bool UserManager::addPlaylist(const Playlist &newPlaylist)
+qint64 UserManager::addPlaylist(const Playlist &newPlaylist)
 {
     try{
         return DBM::get_instance().insertPlaylist(newPlaylist.getName(),m_local_user->getID());
@@ -145,7 +145,7 @@ bool UserManager::addPlaylist(const Playlist &newPlaylist)
     }
     catch(std::exception e){
         qDebug()<<e.what();
-        return false;
+        return -1;
     }
 }
 

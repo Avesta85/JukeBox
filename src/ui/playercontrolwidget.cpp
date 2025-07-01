@@ -1,5 +1,6 @@
 #include "playercontrolwidget.h"
 #include "ui_playercontrolwidget.h"
+#include <QDebug>
 
 PlayerControlWidget::PlayerControlWidget(QWidget *parent)
     : QWidget(parent)
@@ -10,10 +11,10 @@ PlayerControlWidget::PlayerControlWidget(QWidget *parent)
     ui->setupUi(this);
     ui->horizontalSlider_volume->setValue(100);
 
-    connect(ui->pushButton_play, &QPushButton::clicked, this, &PlayerControlWidget::on_pushButton_play_clicked);
+    connect(ui->pushButton_play, &QPushButton::clicked, this, &PlayerControlWidget::handlePlayClicked);
     connect(ui->pushButton_next, &QPushButton::clicked, this, &PlayerControlWidget::on_pushButton_next_clicked);
     connect(ui->pushButton_previous, &QPushButton::clicked, this, &PlayerControlWidget::on_pushButton_previous_clicked);
-    connect(ui->pushButton_mute, &QPushButton::clicked, this, &PlayerControlWidget::on_pushButton_mute_clicked);
+    connect(ui->pushButton_mute, &QPushButton::clicked, this, &PlayerControlWidget::handleMuteClicked);
     connect(ui->pushButton_playing_type, &QPushButton::clicked, this, &PlayerControlWidget::on_pushButton_playing_type_clicked);
     connect(ui->horizontalSlider_volume, &QSlider::valueChanged, this, &PlayerControlWidget::on_horizontalSlider_volume_valueChanged);
     connect(ui->horizontalSlider_timeline, &QSlider::sliderMoved, this, &PlayerControlWidget::on_horizontalSlider_timeline_sliderMoved);
@@ -82,43 +83,55 @@ void PlayerControlWidget::setMuted(bool isMuted)
 }
 
 
-void PlayerControlWidget::on_pushButton_play_clicked()
+void PlayerControlWidget::handlePlayClicked()
 {
-    if (m_isplaying) {
-        emit pauseClicked();
-    } else {
-        emit playClicked();
-    }
+    qDebug() << "[UI] handlePlayClicked() called";
+    emit playPauseClicked();
+    qDebug() << "[UI] playPauseClicked() emitted";
 }
 
 void PlayerControlWidget::on_pushButton_next_clicked()
 {
+    qDebug() << "[UI] on_pushButton_next_clicked() called";
     emit nextClicked();
+    qDebug() << "[UI] nextClicked() emitted";
 }
 
 void PlayerControlWidget::on_pushButton_previous_clicked()
 {
+    qDebug() << "[UI] on_pushButton_previous_clicked() called";
     emit previousClicked();
+    qDebug() << "[UI] previousClicked() emitted";
 }
 
 void PlayerControlWidget::on_pushButton_playing_type_clicked()
 {
-
+    qDebug() << "[UI] on_pushButton_playing_type_clicked() called";
     emit repeatModeClicked();
+    qDebug() << "[UI] repeatModeClicked() emitted";
 }
 
-void PlayerControlWidget::on_pushButton_mute_clicked()
+void PlayerControlWidget::handleMuteClicked()
 {
-
+    qDebug() << "[UI] handleMuteClicked() called";
     emit muteClicked(!m_isMuted);
+    qDebug() << "[UI] muteClicked() emitted";
 }
 
 void PlayerControlWidget::on_horizontalSlider_volume_valueChanged(int value)
 {
+    qDebug() << "[UI] on_horizontalSlider_volume_valueChanged() called";
     emit volumeChanged(value);
+    qDebug() << "[UI] volumeChanged() emitted";
 }
 
 void PlayerControlWidget::on_horizontalSlider_timeline_sliderMoved(int position)
 {
+    qDebug() << "[UI] on_horizontalSlider_timeline_sliderMoved() called";
     emit seeked(position);
+    qDebug() << "[UI] seeked() emitted";
+}
+
+void PlayerControlWidget::setRepeatIcon(const QIcon& icon) {
+    ui->pushButton_playing_type->setIcon(icon);
 }
