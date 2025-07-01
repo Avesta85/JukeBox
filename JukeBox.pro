@@ -58,6 +58,7 @@ SOURCES += \
     src/backend/network/filetransferworker.cpp \
     src/backend/network/sessionmanager.cpp \
     src/backend/security/SecurityManager.cpp \
+    src/backend/core/visualizer.cpp \
     src/main.cpp \
     src/ui/changepasswordwindow.cpp \
     src/ui/choicewindow.cpp \
@@ -86,11 +87,14 @@ HEADERS += \
     src/backend/core/UserManager.h \
     src/backend/core/application.h \
     src/backend/core/media.h \
+    src/backend/core/miniaudio.h \
     src/backend/core/movie.h \
     src/backend/core/person.h \
     src/backend/core/playlist.h \
     src/backend/core/song.h \
     src/backend/core/user.h \
+    src/backend/core/miniaudo.h \
+    src/backend/core/visualizer.h \
     src/backend/db/DBM.h \
     src/backend/network/ConnectionManager.h \
     src/backend/network/NetworkProtocol.h \
@@ -117,7 +121,7 @@ HEADERS += \
     src/ui/showkeywords.h \
     src/ui/signupwindow.h \
     src/ui/stagewidget.h \
-    src/ui/toolboxwidget.h
+    src/ui/toolboxwidget.h \
     src/backend/security/SecurityManager.h
 
 FORMS += \
