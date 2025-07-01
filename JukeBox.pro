@@ -46,7 +46,6 @@ win32 {
 }
 
 SOURCES += \
-    build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/dialog_playlist.cpp \
     src/backend/core/SendEmail.cpp \
     src/backend/core/UserManager.cpp \
     src/backend/core/application.cpp \
@@ -82,7 +81,6 @@ SOURCES += \
     src/ui/toolboxwidget.cpp
 
 HEADERS += \
-    build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/dialog_playlist.h \
     src/backend/core/SendEmail.h \
     src/backend/core/UserManager.h \
     src/backend/core/application.h \
@@ -118,7 +116,6 @@ HEADERS += \
     src/backend/security/SecurityManager.h
 
 FORMS += \
-    build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/dialog_playlist.ui \
     ui/playlistchoicewindow.ui \
     ui/playlistchoicewindow.ui \
     ui/changepasswordwindow.ui \
