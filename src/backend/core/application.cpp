@@ -155,7 +155,7 @@ Application::Application(QObject *parent)
     ,w_choice_window(nullptr),w_email_verification_window(nullptr),w_forgot_password_window(nullptr)
     ,w_login_window(nullptr),w_receive_secureWords_window(nullptr),w_signUp_window(nullptr),w_showKey_Window(nullptr),
     w_main_window(nullptr),w_playlist_choicewindow(nullptr),w_playlist_createWindow(nullptr),w_playlist_editWindow(nullptr),
-    w_playMusic_window(nullptr)
+    w_playMusic_window(nullptr),w_FavoritSongs(nullptr),w_Friend_Window(nullptr)
 {
 
 }
@@ -194,6 +194,8 @@ void Application::showMainWindow()
         connect(toolbox, &ToolBoxWidget::videoManagementClicked, stage, &StageWidget::showVideoManagementPage);
         connect(toolbox, &ToolBoxWidget::playlistManagementClicked, this, &Application::show_playlistWindow);
         connect(toolbox, &ToolBoxWidget::SongManagementClicked, this, &Application::show_playMusicWindow);
+        connect(toolbox, &ToolBoxWidget::FavoriteSongsClicked, this, &Application::show_FavoriteSongWindow);
+        connect(toolbox, &ToolBoxWidget::FriendsListClicked, this, &Application::show_FriendWindow);
         PlayerManager& playerManager = PlayerManager::getInstance();
         PlayerControlWidget* playerControls = w_main_window->getPlayerControls();
 
@@ -240,6 +242,7 @@ void Application::showMainWindow()
             }
             playerControls->setRepeatIcon(icon);
         });
+
     }
 
     switchWindow(w_main_window);
@@ -299,6 +302,34 @@ void Application::show_playMusicWindow()
     w_playMusic_window->show();
 }
 
+void Application::show_FavoriteSongWindow()
+{
+    if(!w_FavoritSongs){
+        w_FavoritSongs = new Dialog_FavoriteSongs();
+
+        connect(this,&Application::update_view_favoriteSongs,w_FavoritSongs,&Dialog_FavoriteSongs::update_favoriteSongs);
+        connect(w_FavoritSongs,&Dialog_FavoriteSongs::playSongsRequest,&PlayerManager::getInstance(),&PlayerManager::loadSingleMedia);
+    }
+
+    emit update_view_favoriteSongs(UserManager::getInstance().getUserFavoriteSongs());
+    w_FavoritSongs->show();
+}
+
+void Application::show_FriendWindow()
+{
+    if(!w_Friend_Window){
+        w_Friend_Window = new Dialog_Friends();
+
+        connect(this,&Application::update_Friend_view,w_Friend_Window,&Dialog_Friends::update_friend_view);
+        connect(w_Friend_Window,&Dialog_Friends::delete_Friend,this,&Application::delete_friend_fromList);
+    }
+
+    emit update_Friend_view(UserManager::getInstance().getUserFriend());
+    w_Friend_Window->show();
+}
+
+
+
 void Application::preparetoPlay_playList(qint64 playlistID)
 {
 
@@ -306,6 +337,22 @@ void Application::preparetoPlay_playList(qint64 playlistID)
 
     emit play_from_playlist(songs);
 
+}
+
+void Application::delete_friend_fromList(const QList<Person> deletedFriend)
+{
+    try{
+        auto&& UM= UserManager::getInstance();
+        for(auto& p : deletedFriend)
+        {
+            UM.deleteFriend(p.getUserName());
+        }
+        emit update_Friend_view(UserManager::getInstance().getUserFriend());
+    }
+    catch(std::exception& e)
+    {
+        qDebug() << e.what();
+    }
 }
 
 void Application::Create_PlayList(const QString name , const QList<qint64>songs)

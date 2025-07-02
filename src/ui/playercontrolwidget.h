@@ -35,6 +35,8 @@ signals:
     void shuffleClicked();
     void repeatModeClicked();
     void muteClicked(bool isMuted);
+    void addFavorit(qint64 songsID);
+    void deleteFavorite(qint64 songsID);
 
 private slots:
     void handlePlayClicked();

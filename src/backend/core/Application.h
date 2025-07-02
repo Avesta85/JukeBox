@@ -4,6 +4,8 @@
 #include "src/backend/core/playlist.h"
 #include "src/backend/core/song.h"
 #include "src/ui/createdialog.h"
+#include "src/ui/dialog_favoritesongs.h"
+#include "src/ui/dialog_friends.h"
 #include "src/ui/editplaylist.h"
 #include "src/ui/playlistchoicewindow.h"
 #include "src/ui/playmusicwindow.h"
@@ -42,8 +44,12 @@ public:
     void show_playlistCreateWindow();
     void show_playlistEditWindow(qint64 playlistID);
     void show_playMusicWindow();
+    void show_FavoriteSongWindow();
+    void show_FriendWindow();
 signals:
+    void update_Friend_view(const QList<Person> FriendsList);
     void Playlist_view_updated(const QList<Playlist> playlist_list);
+    void update_view_favoriteSongs(const QList<Song> FavoroteSongs);
     void Song_view_update(const QList<Song>Songlist);
     void Song_view_updated();
     void edit_Playlist_Song_view(const QList<Song>allSong , const QList<Song>playlistSong, qint64 playlistId, const QString& playlistName);
@@ -52,7 +58,7 @@ signals:
 public slots:
 
     void preparetoPlay_playList(qint64 playlistID);
-
+    void delete_friend_fromList(const QList<Person> deletedFriend);
 
 
     void Create_PlayList(const QString name , const QList<qint64>songs);
@@ -85,7 +91,9 @@ private:
     CreateDialog* w_playlist_createWindow;
     EditPlayList* w_playlist_editWindow;
     playmusicwindow* w_playMusic_window;
-    class MainWindow* w_main_window;
+    MainWindow* w_main_window;
+    Dialog_FavoriteSongs* w_FavoritSongs;
+    Dialog_Friends* w_Friend_Window;
     // function
     void switchWindow(QWidget* nextWindow);
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>614</width>
+    <width>775</width>
     <height>51</height>
    </rect>
   </property>
@@ -29,9 +29,23 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="pushButton_favorite">
+     <property name="text">
+      <string>Favorite Songs</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="pushButton_movie_managment">
      <property name="text">
       <string>Movie</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton_3">
+     <property name="text">
+      <string>Friends</string>
      </property>
     </widget>
    </item>

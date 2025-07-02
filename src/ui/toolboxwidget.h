@@ -19,6 +19,8 @@ public:
 signals:
 
     void playlistManagementClicked();
+    void FavoriteSongsClicked();
+    void FriendsListClicked();
     void SongManagementClicked();
     void movieManagementClicked();
     void settingsClicked();
@@ -29,6 +31,10 @@ signals:
 private slots:
 
     void on_pushButton_clicked();
+
+    void on_pushButton_favorite_clicked();
+
+    void on_pushButton_3_clicked();
 
 private:
 

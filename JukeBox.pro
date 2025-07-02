@@ -67,6 +67,8 @@ SOURCES += \
     src/ui/choicewindow.cpp \
     src/ui/createdialog.cpp \
     src/ui/deleteplaylist.cpp \
+    src/ui/dialog_favoritesongs.cpp \
+    src/ui/dialog_friends.cpp \
     src/ui/editplaylist.cpp \
     src/ui/emailverificationwindow.cpp \
     src/ui/frogotpasswordwindow.cpp \
@@ -82,7 +84,7 @@ SOURCES += \
     src/ui/showkeywords.cpp \
     src/ui/signupwindow.cpp \
     src/ui/stagewidget.cpp \
-    src/ui/toolboxwidget.cpp
+    src/ui/toolboxwidget.cpp \
 
 HEADERS += \
     src/backend/core/SendEmail.h \
@@ -106,6 +108,8 @@ HEADERS += \
     src/ui/choicewindow.h \
     src/ui/createdialog.h \
     src/ui/deleteplaylist.h \
+    src/ui/dialog_favoritesongs.h \
+    src/ui/dialog_friends.h \
     src/ui/editplaylist.h \
     src/ui/emailverificationwindow.h \
     src/ui/frogotpasswordwindow.h \
@@ -121,12 +125,13 @@ HEADERS += \
     src/ui/showkeywords.h \
     src/ui/signupwindow.h \
     src/ui/stagewidget.h \
-    src/ui/toolboxwidget.h
+    src/ui/toolboxwidget.h \
+    ui/dialog_favoritesongs.h
     src/backend/security/SecurityManager.h
 
 FORMS += \
-    ui/playlistchoicewindow.ui \
-    ui/playlistchoicewindow.ui \
+    ui/dialog_friends.ui \
+    ui/dialog_favoritesongs.ui \
     ui/changepasswordwindow.ui \
     ui/choicewindow.ui \
     ui/createdialog.ui \

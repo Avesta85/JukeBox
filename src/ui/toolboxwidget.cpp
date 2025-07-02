@@ -1,7 +1,5 @@
 #include "toolboxwidget.h"
 #include "ui_toolboxwidget.h"
-#include "playmusicwindow.h"
-#include "src/backend/core/playermanager.h"
 
 ToolBoxWidget::ToolBoxWidget(QWidget *parent)
     : QWidget(parent)
@@ -45,5 +43,17 @@ void ToolBoxWidget::on_pushButton_about_us_clicked()
 void ToolBoxWidget::on_pushButton_clicked()
 {
     emit SongManagementClicked();
+}
+
+
+void ToolBoxWidget::on_pushButton_favorite_clicked()
+{
+    emit FavoriteSongsClicked();
+}
+
+
+void ToolBoxWidget::on_pushButton_3_clicked()
+{
+    emit FriendsListClicked();
 }
 
