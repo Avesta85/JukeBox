@@ -69,6 +69,7 @@ SOURCES += \
     src/ui/deleteplaylist.cpp \
     src/ui/dialog_favoritesongs.cpp \
     src/ui/dialog_friends.cpp \
+    src/ui/dialog_queue.cpp \
     src/ui/editplaylist.cpp \
     src/ui/emailverificationwindow.cpp \
     src/ui/frogotpasswordwindow.cpp \
@@ -110,6 +111,7 @@ HEADERS += \
     src/ui/deleteplaylist.h \
     src/ui/dialog_favoritesongs.h \
     src/ui/dialog_friends.h \
+    src/ui/dialog_queue.h \
     src/ui/editplaylist.h \
     src/ui/emailverificationwindow.h \
     src/ui/frogotpasswordwindow.h \
@@ -130,6 +132,7 @@ HEADERS += \
     src/backend/security/SecurityManager.h
 
 FORMS += \
+    ui/dialog_queue.ui \
     ui/dialog_friends.ui \
     ui/dialog_favoritesongs.ui \
     ui/changepasswordwindow.ui \

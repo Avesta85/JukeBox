@@ -6,6 +6,7 @@
 #include "src/ui/createdialog.h"
 #include "src/ui/dialog_favoritesongs.h"
 #include "src/ui/dialog_friends.h"
+#include "src/ui/dialog_queue.h"
 #include "src/ui/editplaylist.h"
 #include "src/ui/playlistchoicewindow.h"
 #include "src/ui/playmusicwindow.h"
@@ -46,6 +47,7 @@ public:
     void show_playMusicWindow();
     void show_FavoriteSongWindow();
     void show_FriendWindow();
+    void show_QueueWindow();
 signals:
     void update_Friend_view(const QList<Person> FriendsList);
     void Playlist_view_updated(const QList<Playlist> playlist_list);
@@ -56,9 +58,11 @@ signals:
     void music_updateSong(const QList<Song>allSong);
     void play_from_playlist(const QList<Song> songs);
     void control_setSongInfo(qint64 songID,bool isLiked);
+    void Queue_update_Window(const QList<Song> allSong);
 public slots:
 
     void preparetoPlay_playList(qint64 playlistID);
+    void preparetoPlay_Queue(const QList<qint64> playlistID);
     void delete_friend_fromList(const QList<Person> deletedFriend);
     void Create_PlayList(const QString name , const QList<qint64>songs);
     void Delete_PlayList(qint64 Playlistid);
@@ -93,6 +97,7 @@ private:
     MainWindow* w_main_window;
     Dialog_FavoriteSongs* w_FavoritSongs;
     Dialog_Friends* w_Friend_Window;
+    Dialog_Queue* w_Queue_window;
     // function
     void switchWindow(QWidget* nextWindow);
 

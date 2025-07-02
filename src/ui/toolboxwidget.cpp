@@ -57,3 +57,8 @@ void ToolBoxWidget::on_pushButton_3_clicked()
     emit FriendsListClicked();
 }
 
+void ToolBoxWidget::on_pushButton_Queue_clicked()
+{
+    emit QueueClicked();
+}
+

@@ -942,7 +942,7 @@ Playlist DBM::selectPlaylist(qint64 playlistId)
     }
 }
 
-size_t DBM::getSongIdFromPath(const QString& path)
+size_t DBM::getSongIdFromPath(const QString &path)
 {
     std::scoped_lock<QMutex> lock(m_db_mutex);
     QSqlQuery query;
@@ -957,3 +957,23 @@ size_t DBM::getSongIdFromPath(const QString& path)
     }
     return 0;
 }
+
+Song DBM::getSongFromID(qint64 id)
+{
+    std::scoped_lock<QMutex> lock(m_db_mutex);
+    QSqlQuery query;
+    query.prepare("SELECT name, path FROM Songs WHERE id = :id");
+    query.bindValue(":id", id);
+    if (!query.exec()) {
+        qDebug() << "getSongFromID query failed:" << query.lastError().text();
+        return Song("", "", 0, "", 0);
+    }
+    if (query.next()) {
+        QString name = query.value(0).toString();
+        QString path = query.value(1).toString();
+        return Song(name, path, 0, "", id);
+    }
+    return Song("", "", 0, "", 0);
+}
+
+

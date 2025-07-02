@@ -155,7 +155,7 @@ Application::Application(QObject *parent)
     ,w_choice_window(nullptr),w_email_verification_window(nullptr),w_forgot_password_window(nullptr)
     ,w_login_window(nullptr),w_receive_secureWords_window(nullptr),w_signUp_window(nullptr),w_showKey_Window(nullptr),
     w_main_window(nullptr),w_playlist_choicewindow(nullptr),w_playlist_createWindow(nullptr),w_playlist_editWindow(nullptr),
-    w_playMusic_window(nullptr),w_FavoritSongs(nullptr),w_Friend_Window(nullptr)
+    w_playMusic_window(nullptr),w_FavoritSongs(nullptr),w_Friend_Window(nullptr),w_Queue_window(nullptr)
 {
 
 }
@@ -196,6 +196,7 @@ void Application::showMainWindow()
         connect(toolbox, &ToolBoxWidget::SongManagementClicked, this, &Application::show_playMusicWindow);
         connect(toolbox, &ToolBoxWidget::FavoriteSongsClicked, this, &Application::show_FavoriteSongWindow);
         connect(toolbox, &ToolBoxWidget::FriendsListClicked, this, &Application::show_FriendWindow);
+        connect(toolbox, &ToolBoxWidget::QueueClicked, this, &Application::show_QueueWindow);
         PlayerManager& playerManager = PlayerManager::getInstance();
         PlayerControlWidget* playerControls = w_main_window->getPlayerControls();
 
@@ -347,6 +348,19 @@ void Application::show_FriendWindow()
     w_Friend_Window->show();
 }
 
+void Application::show_QueueWindow()
+{
+    if(!w_Queue_window){
+        w_Queue_window = new Dialog_Queue();
+
+        connect(this,&Application::Queue_update_Window,w_Queue_window,&Dialog_Queue::show_songs_list);
+        connect(w_Queue_window,&Dialog_Queue::play_Queue,this,&Application::preparetoPlay_Queue);
+    }
+
+    emit Queue_update_Window(DBM::get_instance().getAllSongs());
+    w_Queue_window->show();
+}
+
 
 
 void Application::preparetoPlay_playList(qint64 playlistID)
@@ -356,6 +370,19 @@ void Application::preparetoPlay_playList(qint64 playlistID)
 
     emit play_from_playlist(songs);
 
+}
+
+void Application::preparetoPlay_Queue(const QList<qint64> SongsId)
+{
+    QList<Song> tmp;
+
+    for(const auto& id : SongsId){
+        Song themp;
+        if((themp = DBM::get_instance().getSongFromID(id)).getName() !=""){
+            tmp.append(themp);
+        }
+    }
+    emit play_from_playlist(tmp);
 }
 
 void Application::delete_friend_fromList(const QList<Person> deletedFriend)

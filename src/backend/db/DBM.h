@@ -75,6 +75,7 @@ public:
     Playlist selectPlaylist(qint64 playlistId);
 
     size_t getSongIdFromPath(const QString& path);
+    Song getSongFromID(qint64 id);
 
     // delete
 
