@@ -941,3 +941,19 @@ Playlist DBM::selectPlaylist(qint64 playlistId)
         throw std::runtime_error("Playlist not found");
     }
 }
+
+size_t DBM::getSongIdFromPath(const QString& path)
+{
+    std::scoped_lock<QMutex> lock(m_db_mutex);
+    QSqlQuery query;
+    query.prepare("SELECT id FROM Songs WHERE path = :path");
+    query.bindValue(":path", path);
+    if (!query.exec()) {
+        qDebug() << "getSongIdFromPath query failed:" << query.lastError().text();
+        return -1;
+    }
+    if (query.next()) {
+        return query.value(0).toLongLong();
+    }
+    return 0;
+}

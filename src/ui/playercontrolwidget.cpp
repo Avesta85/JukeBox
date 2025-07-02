@@ -1,6 +1,9 @@
+#include <QWidget>
+#include <QPushButton>
 #include "playercontrolwidget.h"
 #include "ui_playercontrolwidget.h"
 #include <QDebug>
+#include <QIcon>
 
 PlayerControlWidget::PlayerControlWidget(QWidget *parent)
     : QWidget(parent)
@@ -18,6 +21,8 @@ PlayerControlWidget::PlayerControlWidget(QWidget *parent)
     connect(ui->pushButton_playing_type, &QPushButton::clicked, this, &PlayerControlWidget::on_pushButton_playing_type_clicked);
     connect(ui->horizontalSlider_volume, &QSlider::valueChanged, this, &PlayerControlWidget::on_horizontalSlider_volume_valueChanged);
     connect(ui->horizontalSlider_timeline, &QSlider::sliderMoved, this, &PlayerControlWidget::on_horizontalSlider_timeline_sliderMoved);
+    connect(ui->pushButton, &QPushButton::clicked, this, &PlayerControlWidget::onLikeButtonClicked);
+    updateLikeIcon();
 }
 
 PlayerControlWidget::~PlayerControlWidget()
@@ -134,4 +139,30 @@ void PlayerControlWidget::on_horizontalSlider_timeline_sliderMoved(int position)
 
 void PlayerControlWidget::setRepeatIcon(const QIcon& icon) {
     ui->pushButton_playing_type->setIcon(icon);
+}
+
+void PlayerControlWidget::setCurrentSong(qint64 songId, bool isFavorite)
+{
+    m_currentSongId = songId;
+    m_isFavorite = isFavorite;
+    updateLikeIcon();
+}
+
+void PlayerControlWidget::onLikeButtonClicked()
+{
+    if (m_currentSongId < 0) return;
+    m_isFavorite = !m_isFavorite;
+    updateLikeIcon();
+    if (m_isFavorite)
+        emit addFavorit(m_currentSongId);
+    else
+        emit deleteFavorite(m_currentSongId);
+}
+
+void PlayerControlWidget::updateLikeIcon()
+{
+    if (m_isFavorite)
+        ui->pushButton->setIcon(QIcon(":/icone/like.png"));
+    else
+        ui->pushButton->setIcon(QIcon(":/icone/heart.png"));
 }

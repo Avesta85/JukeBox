@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "src/ui/jukeboxsessionwidget.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -38,6 +39,7 @@ JukeBoxSessionWidget* MainWindow::getJukeBoxSession() const
 
 void MainWindow::updateSongInfo(const Song& song)
 {
+
     if (song.getPath() != "") {
 
         this->setWindowTitle(QString("JukeBox - %1 ").arg(song.getName()));

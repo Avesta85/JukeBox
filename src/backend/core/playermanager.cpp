@@ -1,5 +1,6 @@
 #include "src/backend/core/playermanager.h"
 #include "qfileinfo.h"
+#include "src/backend/db/DBM.h"
 #include <QAudioOutput>
 #include <QWidget>
 #include <QDebug>
@@ -60,7 +61,8 @@ void PlayerManager::loadSingleMedia(const QString& filePath) {
     m_currentMedia = new Song();
     m_currentMedia->setPath(filePath);
     m_currentMedia->setName(QFileInfo(filePath).baseName());
-
+    auto num = DBM::get_instance().getSongIdFromPath(filePath);
+    m_currentMedia->setID(num);
     m_player->setSource(QUrl::fromLocalFile(filePath));
     emit currentSongChanged(*m_currentMedia);
 
@@ -222,7 +224,7 @@ void PlayerManager::loadSingleVideo(const QString& filePath, QVideoWidget* video
     if (!videoWidget) return;
     m_player->setVideoOutput(videoWidget);
     m_player->setSource(QUrl::fromLocalFile(filePath));
-    // اطلاعات ویدیو را به UI بفرست
+
     Song temp;
     temp.setPath(filePath);
     temp.setName(QFileInfo(filePath).baseName());

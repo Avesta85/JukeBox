@@ -61,6 +61,10 @@
          <property name="text">
           <string/>
          </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../res/icone/heart.png</normaloff>../res/icone/heart.png</iconset>
+         </property>
         </widget>
        </item>
        <item>

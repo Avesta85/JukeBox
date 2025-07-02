@@ -55,12 +55,11 @@ signals:
     void edit_Playlist_Song_view(const QList<Song>allSong , const QList<Song>playlistSong, qint64 playlistId, const QString& playlistName);
     void music_updateSong(const QList<Song>allSong);
     void play_from_playlist(const QList<Song> songs);
+    void control_setSongInfo(qint64 songID,bool isLiked);
 public slots:
 
     void preparetoPlay_playList(qint64 playlistID);
     void delete_friend_fromList(const QList<Person> deletedFriend);
-
-
     void Create_PlayList(const QString name , const QList<qint64>songs);
     void Delete_PlayList(qint64 Playlistid);
     void ADD_Songs(const QString& pahts);

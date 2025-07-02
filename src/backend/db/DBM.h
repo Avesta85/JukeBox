@@ -73,6 +73,9 @@ public:
     QString getEmailofUser(const QString& username);
     QString getSKeyofUser(const QString& username);
     Playlist selectPlaylist(qint64 playlistId);
+
+    size_t getSongIdFromPath(const QString& path);
+
     // delete
 
     bool deleteUser(const size_t user_id);

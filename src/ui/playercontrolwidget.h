@@ -2,6 +2,8 @@
 #define PLAYERCONTROLWIDGET_H
 
 #include <QWidget>
+#include <QObject>
+#include <QtGlobal>
 
 namespace Ui {
 class PlayerControlWidget;
@@ -24,6 +26,7 @@ public slots:
     void updateDuration(qint64 duration);
     void setMuted(bool isMuted);
     void setRepeatIcon(const QIcon& icon);
+    void setCurrentSong(qint64 songId, bool isFavorite);
 
 
 signals:
@@ -35,8 +38,8 @@ signals:
     void shuffleClicked();
     void repeatModeClicked();
     void muteClicked(bool isMuted);
-    void addFavorit(qint64 songsID);
-    void deleteFavorite(qint64 songsID);
+    void addFavorit(qint64 songId);
+    void deleteFavorite(qint64 songId);
 
 private slots:
     void handlePlayClicked();
@@ -51,6 +54,7 @@ private slots:
     void on_pushButton_next_clicked();
     void on_pushButton_previous_clicked();
     void on_horizontalSlider_timeline_sliderMoved(int position);
+    void onLikeButtonClicked();
 
 private:
     Ui::PlayerControlWidget *ui;
@@ -78,6 +82,10 @@ private:
     PlayOrPause playStatus = pause;
     PlatingType playingTipe = repeatOne;
     ValumeStatus valumeStatus = volume;
+
+    qint64 m_currentSongId = -1;
+    bool m_isFavorite = false;
+    void updateLikeIcon();
 };
 
 #endif // PLAYERCONTROLWIDGET_H

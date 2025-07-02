@@ -203,11 +203,17 @@ void Application::showMainWindow()
         connect(playerControls, &PlayerControlWidget::nextClicked, &playerManager, &PlayerManager::next);
         connect(playerControls, &PlayerControlWidget::previousClicked, &playerManager, &PlayerManager::previous);
         connect(playerControls, &PlayerControlWidget::seeked, &playerManager, &PlayerManager::seek);
-
+        connect(this,&Application::control_setSongInfo,playerControls, &PlayerControlWidget::setCurrentSong);
         connect(playerControls, &PlayerControlWidget::volumeChanged, &playerManager, [&playerManager](int volume){
             playerManager.setVolume(static_cast<float>(volume) / 100.0f);
         });
 
+        connect(playerControls, &PlayerControlWidget::addFavorit,this,[](qint64 songid){
+            qDebug()<<"added to favorite "<<songid <<"=>"<<UserManager::getInstance().addFavoriteSong(songid);
+        });
+        connect(playerControls, &PlayerControlWidget::deleteFavorite,this,[](qint64 songid){
+            qDebug()<<"removed to favorite "<<songid <<"=>"<< UserManager::getInstance().deleteFavoriteSong(songid);
+        });
         connect(playerControls, &PlayerControlWidget::muteClicked, &playerManager, &PlayerManager::setMuted);
 
         connect(&playerManager, &PlayerManager::positionChanged, playerControls, &PlayerControlWidget::updatePosition);
@@ -219,6 +225,19 @@ void Application::showMainWindow()
         });
         connect(&playerManager, &PlayerManager::volumeChanged, playerControls, &PlayerControlWidget::updateVolume);
         connect(&playerManager, &PlayerManager::currentSongChanged, w_main_window, &MainWindow::updateSongInfo);
+        connect(&playerManager, &PlayerManager::currentSongChanged, this , [this](const Song song){
+            auto list = UserManager::getInstance().getUserFavoriteSongs();
+            for(auto& s : list){
+                if(song.getPath() == s.getPath()){
+
+                    emit control_setSongInfo(song.getID(),true);
+                    return;
+                }
+            }
+            emit control_setSongInfo(song.getID(),false);
+
+
+        });
 
         connect(stage, &StageWidget::videoFileSelected, this, &Application::onVideoFileSelected);
 

@@ -12,5 +12,7 @@
 	<file>icone/repeat.png</file>
 	<file>icone/repeatone.png</file>
 	<file>icone/shuffle.png</file>
+    <file>icone/heart.png</file>
+    <file>icone/like.png</file>
   </qresource>
 </RCC>
