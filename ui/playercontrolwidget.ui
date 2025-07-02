@@ -57,6 +57,17 @@
         </spacer>
        </item>
        <item>
+        <widget class="QPushButton" name="pushButton_farvorite">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../res/icones.qrc">
+           <normaloff>:/icone/mute.png</normaloff>:/icone/mute.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="pushButton_playing_type">
          <property name="text">
           <string/>

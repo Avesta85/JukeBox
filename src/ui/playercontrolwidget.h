@@ -52,6 +52,9 @@ private slots:
 
     //void on_pushButton_play_clicked();
 
+
+    void on_pushButton_farvorite_clicked();
+
 private:
     Ui::PlayerControlWidget *ui;
 
@@ -75,9 +78,16 @@ private:
         volume
     };
 
+    enum FatoriteMusic
+    {
+        yes,
+        no
+    };
+
     PlayOrPause playStatus = pause;
     PlatingType playingTipe = repeatOne;
     ValumeStatus valumeStatus = volume;
+    FatoriteMusic favoriteMusic = no;
 };
 
 #endif // PLAYERCONTROLWIDGET_H

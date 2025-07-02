@@ -190,6 +190,7 @@ void Application::showMainWindow()
         ToolBoxWidget* toolbox = w_main_window->getToolBox();
         StageWidget* stage = w_main_window->getStage();
 
+
         connect(toolbox, &ToolBoxWidget::movieManagementClicked, stage, &StageWidget::showMovieManagementPage);
         connect(toolbox, &ToolBoxWidget::videoManagementClicked, stage, &StageWidget::showVideoManagementPage);
         connect(toolbox, &ToolBoxWidget::playlistManagementClicked, this, &Application::show_playlistWindow);

@@ -137,3 +137,18 @@ void PlayerControlWidget::setRepeatIcon(const QIcon& icon) {
 }
 
 
+void PlayerControlWidget::on_pushButton_farvorite_clicked()
+{
+    if(favoriteMusic == no)
+    {
+        ui->pushButton_farvorite->setIcon(QIcon(":/icone/volume.png"));
+        favoriteMusic = yes;
+    }
+
+    else if(favoriteMusic == yes)
+    {
+        ui->pushButton_farvorite->setIcon(QIcon(":/icone/mute.png"));
+        favoriteMusic = no;
+    }
+}
+

@@ -54,8 +54,4 @@ void ToolBoxWidget::on_pushButton_online_clicked()
 }
 
 
-void ToolBoxWidget::on_comboBox_currentIndexChanged(int index)
-{
-
-}
 
