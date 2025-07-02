@@ -7,7 +7,12 @@
 #include "src/ui/editplaylist.h"
 #include "src/ui/playlistchoicewindow.h"
 #include "src/ui/playmusicwindow.h"
+#include "src/ui/jukeboxsessionwidget.h"
+#include "src/backend/network/sessionmanager.h"
 #include <QObject>
+#include <QHostAddress>
+#include <QTimer>
+#include <QMap>
 
 class ChangePasswordWindow;
 class ChoiceWindow;
@@ -42,6 +47,7 @@ public:
     void show_playlistCreateWindow();
     void show_playlistEditWindow(qint64 playlistID);
     void show_playMusicWindow();
+    void show_sessionWindow();
 signals:
     void Playlist_view_updated(const QList<Playlist> playlist_list);
     void Song_view_update(const QList<Song>Songlist);
@@ -85,6 +91,8 @@ private:
     CreateDialog* w_playlist_createWindow;
     EditPlayList* w_playlist_editWindow;
     playmusicwindow* w_playMusic_window;
+    JukeBoxSessionWidget* w_session_window = nullptr;
+
     class MainWindow* w_main_window;
     // function
     void switchWindow(QWidget* nextWindow);

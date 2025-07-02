@@ -135,3 +135,5 @@ void PlayerControlWidget::on_horizontalSlider_timeline_sliderMoved(int position)
 void PlayerControlWidget::setRepeatIcon(const QIcon& icon) {
     ui->pushButton_playing_type->setIcon(icon);
 }
+
+

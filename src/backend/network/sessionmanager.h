@@ -32,7 +32,7 @@ public:
     ~SessionManager();
     SessionManager(const SessionManager&) = delete;
     void operator=(const SessionManager&) = delete;
-
+    bool getSessioonActive();
 
 
 public slots:
@@ -55,6 +55,7 @@ signals:
     void newChatMessageForUI(const QString& formattedMessage);
     void requestPermissionToReceiveFile(const QString& senderUsername, const QString& fileName);
     void showInfoMessage(const QString& message);
+
 
     // signals for PlayerManager
 

@@ -64,10 +64,16 @@ void PlayerManager::loadSingleMedia(const QString& filePath) {
     m_player->setSource(QUrl::fromLocalFile(filePath));
     emit currentSongChanged(*m_currentMedia);
 
+    //if (m_visualizer)
+      //  m_visualizer->loadForAnalysis(filePath);
+
+   // m_visualizer->show();
+
     // Automatically play the media once it's loaded.
     // QMediaPlayer will wait for the media to be ready before playing.
     m_player->play();
 }
+
 
 void PlayerManager::generateShuffleIndexes() {
     m_shuffleIndexes.clear();
@@ -246,6 +252,11 @@ void PlayerManager::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
             }
         }
     }
+}
+
+void PlayerManager::setVisualizer(VisualizerWidget* visualizer)
+{
+    m_visualizer = visualizer;
 }
 
 

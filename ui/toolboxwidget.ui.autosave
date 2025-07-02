@@ -56,6 +56,25 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QComboBox" name="comboBox">
+     <item>
+      <property name="text">
+       <string>cover</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>visualizer1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>visualizer2</string>
+      </property>
+     </item>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

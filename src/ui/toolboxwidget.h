@@ -24,11 +24,14 @@ signals:
     void settingsClicked();
     void aboutUsClicked();
     void videoManagementClicked();
+    void onlineManagmentClicked();
 
 
 private slots:
 
     void on_pushButton_clicked();
+
+    void on_pushButton_online_clicked();
 
 private:
 

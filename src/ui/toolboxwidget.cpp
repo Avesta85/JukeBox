@@ -47,3 +47,15 @@ void ToolBoxWidget::on_pushButton_clicked()
     emit SongManagementClicked();
 }
 
+
+void ToolBoxWidget::on_pushButton_online_clicked()
+{
+    emit onlineManagmentClicked();
+}
+
+
+void ToolBoxWidget::on_comboBox_currentIndexChanged(int index)
+{
+
+}
+

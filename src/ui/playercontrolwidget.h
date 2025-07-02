@@ -50,6 +50,8 @@ private slots:
     void on_pushButton_previous_clicked();
     void on_horizontalSlider_timeline_sliderMoved(int position);
 
+    //void on_pushButton_play_clicked();
+
 private:
     Ui::PlayerControlWidget *ui;
 

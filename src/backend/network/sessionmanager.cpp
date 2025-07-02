@@ -3,6 +3,7 @@
 #include "ConnectionManager.h"
 #include "qstandardpaths.h"
 
+
 std::unique_ptr<SessionManager> SessionManager::s_instance = nullptr;
 
 SessionManager &SessionManager::getInstance()
@@ -281,6 +282,13 @@ QList<Person> SessionManager::participantsAsPersonList() const {
     return personList;
 }
 
+
+
 void SessionManager::onFileTransferAccepted(const QString& senderUsername, const QString& fileName) {
+
+}
+
+ bool SessionManager::getSessioonActive()
+{
 
 }
