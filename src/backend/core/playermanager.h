@@ -25,9 +25,10 @@ public:
     ~PlayerManager();
     PlayerManager::RepeatMode getRepeatMode();
     void setVisualizer(VisualizerWidget* visualizer);
+    QMediaPlayer::PlaybackState getPlaybackState() const;
+    qint64 getCurrentPosition() const;
 
 public slots:
-
     void loadSingleMedia(const QString& filePath);
     void loadSingleVideo(const QString& filePath, QVideoWidget* videoWidget);
     void loadPlaylist(const QList<Song>& playlist);
@@ -41,15 +42,16 @@ public slots:
     void seek(qint64 position);
     void togglePlayPause();
     void onMediaStatusChanged(QMediaPlayer::MediaStatus status);
+    void syncedsussecfully();
 
 signals:
-
     void playbackStateChanged(QMediaPlayer::PlaybackState state);
     void positionChanged(qint64 position);
     void durationChanged(qint64 duration);
     void currentSongChanged(const Song& song);
     void volumeChanged(int volume);
     void mutedChanged(bool isMuted);
+    void RequestForsync(const Song);
 
 private:
     explicit PlayerManager(QObject *parent = nullptr);
@@ -75,6 +77,9 @@ private:
     int m_currentShuffleIndex = 0;
 
     VisualizerWidget* m_visualizer = nullptr;
-};
+
+    bool ismovie;
+    bool synced;
+    };
 
 #endif // PLAYERMANAGER_H

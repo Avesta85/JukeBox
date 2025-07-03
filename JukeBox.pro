@@ -79,6 +79,8 @@ SOURCES += \
     src/ui/mainwindow.cpp \
     src/ui/moviemanagementwindow.cpp \
     src/ui/online_choice.cpp \
+    src/ui/onlinechat.cpp \
+    src/ui/onlinejoin.cpp \
     src/ui/playercontrolwidget.cpp \
     src/ui/playlistchoicewindow.cpp \
     src/ui/playmusicwindow.cpp \
@@ -88,6 +90,7 @@ SOURCES += \
     src/ui/signupwindow.cpp \
     src/ui/stagewidget.cpp \
     src/ui/toolboxwidget.cpp \
+    src/ui/onlinechathost.cpp
 
 HEADERS += \
     src/backend/core/SendEmail.h \
@@ -124,6 +127,8 @@ HEADERS += \
     src/ui/mainwindow.h \
     src/ui/moviemanagementwindow.h \
     src/ui/online_choice.h \
+    src/ui/onlinechat.h \
+    src/ui/onlinejoin.h \
     src/ui/playercontrolwidget.h \
     src/ui/playlistchoicewindow.h \
     src/ui/playmusicwindow.h \
@@ -133,10 +138,14 @@ HEADERS += \
     src/ui/signupwindow.h \
     src/ui/stagewidget.h \
     src/ui/toolboxwidget.h \
-    ui/dialog_favoritesongs.h
+    src/ui/dialog_favoritesongs.h \
+    src/ui/onlinechathost.h
     src/backend/security/SecurityManager.h
 
 FORMS += \
+    ui/onlinechat.ui \
+    ui/onlinechathost.ui \
+    ui/onlinejoin.ui \
     ui/online_choice.ui \
     ui/dialog_queue.ui \
     ui/dialog_friends.ui \

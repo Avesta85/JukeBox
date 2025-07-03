@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "src/ui/jukeboxsessionwidget.h"
 #include "ui_mainwindow.h"
+#include "src/backend/network/sessionmanager.h"
+#include "src/backend/core/playermanager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,7 +12,11 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle("JukeBox");
     this->setWindowIcon(QIcon(":/icone/musicplayer.png"));
 
-    ui->dockWidget_juckbox_session_placeholder->setWindowTitle("JukeBox Session");
+    onlineDock = new QDockWidget("Online", this);
+    onlineStack = new QStackedWidget(onlineDock);
+    onlineDock->setWidget(onlineStack);
+    addDockWidget(Qt::RightDockWidgetArea, onlineDock);
+
 }
 
 MainWindow::~MainWindow()
@@ -32,9 +38,15 @@ StageWidget* MainWindow::getStage() const
     return ui->stackedWidget_video_placholder;
 }
 
-JukeBoxSessionWidget* MainWindow::getJukeBoxSession() const
+
+QDockWidget &MainWindow::getDock() const
 {
-    return ui->dockWidget_juckbox_session_placeholder;
+    return *onlineDock;
+}
+
+QStackedWidget &MainWindow::getStack() const
+{
+    return *onlineStack;
 }
 
 void MainWindow::updateSongInfo(const Song& song)

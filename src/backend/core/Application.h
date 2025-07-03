@@ -1,18 +1,21 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
-
+#include <QObject>
+#include <QHostAddress>
 #include "src/backend/core/playlist.h"
 #include "src/backend/core/song.h"
-#include "src/ui/createdialog.h"
 #include "src/ui/dialog_favoritesongs.h"
 #include "src/ui/dialog_friends.h"
 #include "src/ui/dialog_queue.h"
 #include "src/ui/editplaylist.h"
+#include "src/ui/online_choice.h"
+#include "src/ui/onlinechat.h"
+#include "src/ui/onlinechathost.h"
+#include "src/ui/onlinejoin.h"
 #include "src/ui/playlistchoicewindow.h"
 #include "src/ui/playmusicwindow.h"
 #include "src/ui/jukeboxsessionwidget.h"
-#include <QObject>
-#include <QHostAddress>
+
 #include <QTimer>
 #include <QMap>
 
@@ -25,6 +28,7 @@ class ReceiveSecureWordsWindow;
 class SignupWindow;
 class ShowKeyWords;
 class MainWindow;
+class mycreateDialog;
 
 class Application : public QObject
 {
@@ -53,6 +57,15 @@ public:
     void show_FriendWindow();
     void show_QueueWindow();
     void show_sessionWindow();
+
+
+
+    void show_online_choice();
+    void show_online_join();
+    void show_online_chatHost();
+    void show_online_chat();
+
+
 signals:
     void update_Friend_view(const QList<Person> FriendsList);
     void Playlist_view_updated(const QList<Playlist> playlist_list);
@@ -66,6 +79,7 @@ signals:
     void Queue_update_Window(const QList<Song> allSong);
 public slots:
 
+    void prepertoPlay_RecivedSong(const Song currSong);
     void preparetoPlay_playList(qint64 playlistID);
     void preparetoPlay_Queue(const QList<qint64> playlistID);
     void delete_friend_fromList(const QList<Person> deletedFriend);
@@ -74,6 +88,12 @@ public slots:
     void ADD_Songs(const QString& pahts);
     void Edit_PlaylistName(qint64 playListId,const QString& newName);
     void edite_update_playlistSongs(qint64 playListId,const QList<qint64>& newSongsId,const QList<qint64>& rmSongsId);
+    void onRemotePlay(qint64 position);
+    void onRemotePause();
+    void onRemoteSeek(qint64 position);
+    void onSetCurrentSong(const Song& song);
+    void onPlayPauseClicked();
+    void onSeeked(qint64 position);
 
 private:
     explicit Application(QObject *parent = nullptr);
@@ -96,20 +116,34 @@ private:
     SignupWindow* w_signUp_window;
     ShowKeyWords* w_showKey_Window;
     PlaylistChoiceWindow* w_playlist_choicewindow;
-    CreateDialog* w_playlist_createWindow;
+    mycreateDialog* w_playlist_createWindow;
     EditPlayList* w_playlist_editWindow;
     playmusicwindow* w_playMusic_window;
     MainWindow* w_main_window;
     Dialog_FavoriteSongs* w_FavoritSongs;
     Dialog_Friends* w_Friend_Window;
     Dialog_Queue* w_Queue_window;
-    JukeBoxSessionWidget* w_session_window = nullptr;
+    JukeBoxSessionWidget* w_session_window;
 
+
+
+    /////online part
+    online_choice* w_onlineChoice;
+    onlineJoin* w_onlineJoin;
+    onlinechat* w_onlineChat;
+    onlineChatHost* w_onlicechatHost;
     // function
     void switchWindow(QWidget* nextWindow);
 
+    Song m_sessionSong;
+
+    bool m_songReady = false;
+    bool m_pendingRemotePlay = false;
+    qint64 m_pendingRemotePlayPosition = 0;
+
 private slots:
     void onVideoFileSelected(const QString& filePath);
+
 
 };
 

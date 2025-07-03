@@ -2,21 +2,24 @@
 #include "ui_createdialog.h"
 #include <QTableWidgetItem>
 #include <QMessageBox>
+#include "src/backend/core/song.h"
+#include <QDir>
+#include <QListWidgetItem>
 
-CreateDialog::CreateDialog(QWidget *parent)
+mycreateDialog::mycreateDialog(QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::CreateDialog)
+    , ui(new Ui::mycreateDialog)
 {
     ui->setupUi(this);
-    //connect(ui->pushButton_creat, &QPushButton::clicked, this, &CreateDialog::on_pushButton_creat_clicked);
+    //connect(ui->pushButton_creat, &QPushButton::clicked, this, &mycreateDialog::on_pushButton_creat_clicked);
 }
 
-CreateDialog::~CreateDialog()
+mycreateDialog::~mycreateDialog()
 {
     delete ui;
 }
 
-void CreateDialog::on_pushButton_creat_clicked()
+void mycreateDialog::on_pushButton_creat_clicked()
 {
     QString name = ui->lineEdit->text().trimmed();
     if (name.isEmpty()) {
@@ -34,7 +37,7 @@ void CreateDialog::on_pushButton_creat_clicked()
     this->accept();
 }
 
-void CreateDialog::update_songsList(const QList<Song> songsList)
+void mycreateDialog::update_songsList(const QList<Song> songsList)
 {
     ui->tableWidget->setColumnCount(1);
     ui->tableWidget->setHorizontalHeaderLabels(QStringList() << "Song Name");

@@ -15,6 +15,16 @@ public:
     explicit online_choice(QWidget *parent = nullptr);
     ~online_choice();
 
+
+
+signals:
+    void JoinRequest();
+    void CreateRequest();
+private slots:
+    void on_pushButton_Join_clicked();
+
+    void on_pushButton_Create_clicked();
+
 private:
     Ui::online_choice *ui;
 };

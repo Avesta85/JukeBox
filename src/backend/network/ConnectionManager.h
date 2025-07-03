@@ -23,7 +23,7 @@ public:
 
 public slots:
 
-    void startListening();
+    void startListening(bool isHost);
     void sendCommand(const QHostAddress& targetAddress, quint16 targetPort, NetworkCommand command, const QVariant& payload);
     void sendFile(const QString& filePath, const QHostAddress& targetAddress, quint16 targetPort);
 

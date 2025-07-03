@@ -6,8 +6,10 @@
 #include <QVariant>
 
 
-constexpr quint16 UDP_PORT = 8585;
-constexpr quint16 TCP_PORT = 85856;
+constexpr quint16 UDP_PORT_HOST = 8585;
+constexpr quint16 TCP_PORT_HOST = 8586;
+constexpr quint16 UDP_PORT_CLIENT = 8687;
+constexpr quint16 TCP_PORT_CLIENT = 8688;
 
 enum class NetworkCommand :qint32 {
 
@@ -26,9 +28,20 @@ enum class NetworkCommand :qint32 {
 
     CheckSongRequest,
     CheckSongResponse,
+    SongResponsePositive,
+    SongResponseNegative,
 
     FileTransferRequest,
-    FileTransferResponse
+    FileTransferResponse,
+    FileReceivedAck,
+
+    FileTransferStart,
+    FileTransferProgress,
+    FileTransferFinished,
+    FileTransferError,
+
+    KickUser,
+    UserKicked
 
 };
 

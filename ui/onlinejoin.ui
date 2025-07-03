@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>online_choice</class>
- <widget class="QDialog" name="online_choice">
+ <class>onlineJoin</class>
+ <widget class="QDialog" name="onlineJoin">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>312</width>
-    <height>586</height>
+    <width>314</width>
+    <height>133</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,37 +17,28 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Orientation::Vertical</enum>
+      <widget class="QLineEdit" name="lineEdit_HostIp">
+       <property name="placeholderText">
+        <string>Enter Host IP</string>
        </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Policy::Preferred</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
+      </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_Join">
+      <widget class="QPushButton" name="pushButton_tryJoin">
        <property name="text">
         <string>Join</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_Create">
+      <widget class="QPushButton" name="pushButton_Cancel">
        <property name="text">
-        <string>Create</string>
+        <string>Cancel</string>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="verticalSpacer_2">
+      <spacer name="verticalSpacer">
        <property name="orientation">
         <enum>Qt::Orientation::Vertical</enum>
        </property>

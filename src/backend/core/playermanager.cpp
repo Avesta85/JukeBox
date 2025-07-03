@@ -1,6 +1,7 @@
 #include "src/backend/core/playermanager.h"
 #include "qfileinfo.h"
 #include "src/backend/db/DBM.h"
+#include "src/backend/network/sessionmanager.h"
 #include <QAudioOutput>
 #include <QWidget>
 #include <QDebug>
@@ -65,15 +66,8 @@ void PlayerManager::loadSingleMedia(const QString& filePath) {
     m_currentMedia->setID(num);
     m_player->setSource(QUrl::fromLocalFile(filePath));
     emit currentSongChanged(*m_currentMedia);
-
-    //if (m_visualizer)
-      //  m_visualizer->loadForAnalysis(filePath);
-
-   // m_visualizer->show();
-
-    // Automatically play the media once it's loaded.
-    // QMediaPlayer will wait for the media to be ready before playing.
-    m_player->play();
+    synced = false;
+    // پخش خودکار حذف شد
 }
 
 
@@ -112,7 +106,10 @@ void PlayerManager::togglePlayPause()
 }
 
 void PlayerManager::play() {
-    qDebug() << "[PlayerManager] play() called";
+    if (SessionManager::getInstance().ISHost() && !synced) {
+        emit RequestForsync(*dynamic_cast<Song*>(m_currentMedia));
+        return;
+    }
     m_player->play();
 }
 
@@ -130,7 +127,7 @@ void PlayerManager::playSongAtIndex(int index) {
 
     m_player->setSource(QUrl::fromLocalFile(songToPlay.getPath()));
     emit currentSongChanged(songToPlay);
-    m_player->play();
+    play();
 }
 
 void PlayerManager::next() {
@@ -235,11 +232,14 @@ void PlayerManager::loadSingleVideo(const QString& filePath, QVideoWidget* video
     temp.setPath(filePath);
     temp.setName(QFileInfo(filePath).baseName());
     emit currentSongChanged(temp);
+    synced= false;
+    ismovie = true;
     m_player->play();
 }
 
 void PlayerManager::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
     if (status == QMediaPlayer::EndOfMedia) {
+        synced = false;
         if (m_playMode == PlayMode::Playlist && !m_playlist.isEmpty()) {
             if (m_repeatMode == RepeatMode::RepeatOne) {
                 playSongAtIndex(m_currentIndex);
@@ -259,6 +259,19 @@ void PlayerManager::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
 void PlayerManager::setVisualizer(VisualizerWidget* visualizer)
 {
     m_visualizer = visualizer;
+}
+
+void PlayerManager::syncedsussecfully() {
+    synced = true;
+    m_player->play();
+}
+
+QMediaPlayer::PlaybackState PlayerManager::getPlaybackState() const {
+    return m_player->playbackState();
+}
+
+qint64 PlayerManager::getCurrentPosition() const {
+    return m_player->position();
 }
 
 

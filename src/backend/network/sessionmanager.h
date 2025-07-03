@@ -9,8 +9,11 @@
 #include <QHostAddress>
 #include <QTimer>
 #include <QMap>
-
-
+#include <QString>
+#include <QtGlobal>
+#include <QList>
+#include <QVariant>
+#include <QMetaType>// Dummy struct for linter
 
 struct Participant {
     QString username;
@@ -33,32 +36,54 @@ public:
     SessionManager(const SessionManager&) = delete;
     void operator=(const SessionManager&) = delete;
     bool getSessioonActive();
+    bool ISHost();
 
-
+    void broadcastPlayCommand(qint64 position);
+    void broadcastPauseCommand();
+    void broadcastSeekCommand(qint64 position);
 public slots:
 
+    void RequestsyncSong(const Song& song);
 
     void startNewSession(const QString& hostUsername, const QHostAddress& hostAddress, quint16 hostPort);
-    void joinSession(const QHostAddress& hostAddress,  quint16 hostPort, const QString& myUsername);
+    void joinSession(const QHostAddress& hostAddress,  const QString& myUsername);
     void leaveSession();
 
     void onPlaySongRequested(const Song& song);
     void onChatMessageSendRequested(const QString& message);
+    void sendChatMessageToHost(const QString& message);
     void onFileTransferAccepted(const QString& senderUsername, const QString& fileName);
+    void kickUser(const QString& username);
+    void kickUsers(const QList<Person>& users);
+
+
 private slots:
 
      void processNetworkCommand(NetworkCommand command, const QVariant& payload, const QHostAddress& sender, quint16 senderPort);
      void onCheckSongResponseTimeout();
 signals:
 
+    void songsynced();
+    void joinRequestaccept();
+    void joinRequestReject();
+    void setCurrentSong(Song name);
+    void syncStatusChanged(const QString& status);
+    void syncError(const QString& error);
+
     void participantListChanged(const QList<Person>& participants);
     void newChatMessageForUI(const QString& formattedMessage);
     void requestPermissionToReceiveFile(const QString& senderUsername, const QString& fileName);
     void showInfoMessage(const QString& message);
+    void kickedFromSession(const QString& reason);
+    void systemMessage(const QString& message);
 
 
     // signals for PlayerManager
 
+
+    void remotePlayRequested(qint64 position);
+    void remotePauseRequested();
+    void remoteSeekRequested(qint64 position);
 
 private :
     explicit SessionManager(QObject *parent = nullptr);
@@ -70,6 +95,7 @@ private :
     bool m_isHost;
     QList<Participant> m_participants;
     QHostAddress m_hostAddress;
+    QString m_hostUsername;
     Participant m_localUser;
 
     QMap<QString,QStringList>m_pendingSongRequest;
@@ -81,6 +107,8 @@ private :
     void broadcastCommand(NetworkCommand command, const QVariant& payload, const QHostAddress* exclude = nullptr);
     void broadcastParticipantList();
     QList<Person> participantsAsPersonList() const;
+
+
 };
 
 #endif // SESSIONMANAGER_H

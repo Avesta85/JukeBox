@@ -41,19 +41,35 @@ void ConnectionManager::sendFile(const QString &filePath, const QHostAddress &ta
     thread->start();
 }
 
-void ConnectionManager::startListening()
+void ConnectionManager::startListening(bool isHost)
 {
-    if(m_udpSocket->bind(QHostAddress::Any ,UDP_PORT)){
-        qDebug()<< "successfully start listening on port"<<UDP_PORT;
+    if(isHost){
+    if(m_udpSocket->bind(QHostAddress::Any ,UDP_PORT_HOST)){
+        qDebug()<< "successfully start listening on port"<<UDP_PORT_HOST;
     }
     else{
-        qDebug() << "Error: Could not bind to port" << UDP_PORT << m_udpSocket->errorString();
+        qDebug() << "Error: Could not bind to port" << UDP_PORT_HOST << m_udpSocket->errorString();
     }
 
-    if (m_tcpserver->listen(QHostAddress::Any, TCP_PORT)) {
-        qDebug() << "TCP Server is now listening for file transfers on port" << TCP_PORT;
+    if (m_tcpserver->listen(QHostAddress::Any, TCP_PORT_HOST)) {
+        qDebug() << "TCP Server is now listening for file transfers on port" << TCP_PORT_HOST;
     } else {
         qDebug() << "Error: Could not start TCP server.";
+    }
+    }
+    else{
+        if(m_udpSocket->bind(QHostAddress::Any ,UDP_PORT_CLIENT)){
+            qDebug()<< "successfully start listening on port"<<UDP_PORT_CLIENT;
+        }
+        else{
+            qDebug() << "Error: Could not bind to port" << UDP_PORT_CLIENT << m_udpSocket->errorString();
+        }
+
+        if (m_tcpserver->listen(QHostAddress::Any, TCP_PORT_CLIENT)) {
+            qDebug() << "TCP Server is now listening for file transfers on port" << TCP_PORT_CLIENT;
+        } else {
+            qDebug() << "Error: Could not start TCP server.";
+        }
     }
 }
 

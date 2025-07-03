@@ -1,4 +1,5 @@
 #include "application.h"
+#include "src/ui/createdialog.h"
 #include "src/backend/core/UserManager.h"
 #include "src/backend/core/playermanager.h"
 #include "src/backend/db/DBM.h"
@@ -18,6 +19,7 @@
 #include <QThread>
 
 #include <src/backend/network/sessionmanager.h>
+#include <windows.h>
 
 
 std::unique_ptr<Application> Application::s_instance = nullptr;
@@ -157,7 +159,8 @@ Application::Application(QObject *parent)
     ,w_choice_window(nullptr),w_email_verification_window(nullptr),w_forgot_password_window(nullptr)
     ,w_login_window(nullptr),w_receive_secureWords_window(nullptr),w_signUp_window(nullptr),w_showKey_Window(nullptr),
     w_main_window(nullptr),w_playlist_choicewindow(nullptr),w_playlist_createWindow(nullptr),w_playlist_editWindow(nullptr),
-    w_playMusic_window(nullptr),w_FavoritSongs(nullptr),w_Friend_Window(nullptr),w_Queue_window(nullptr)
+    w_playMusic_window(nullptr),w_FavoritSongs(nullptr),w_Friend_Window(nullptr),w_Queue_window(nullptr),
+    w_onlineChoice(nullptr),w_onlineChat(nullptr),w_onlineJoin(nullptr),w_onlicechatHost(nullptr)
 {
 
 }
@@ -189,6 +192,9 @@ void Application::showMainWindow()
     {
         w_main_window = new MainWindow();
 
+
+
+
         ToolBoxWidget* toolbox = w_main_window->getToolBox();
         StageWidget* stage = w_main_window->getStage();
 
@@ -202,12 +208,13 @@ void Application::showMainWindow()
         connect(toolbox, &ToolBoxWidget::QueueClicked, this, &Application::show_QueueWindow);
         connect(toolbox, &ToolBoxWidget::onlineManagmentClicked, this, &Application::show_sessionWindow);
         PlayerManager& playerManager = PlayerManager::getInstance();
+        SessionManager& sessionManager = SessionManager::getInstance();
         PlayerControlWidget* playerControls = w_main_window->getPlayerControls();
 
-        connect(playerControls, &PlayerControlWidget::playPauseClicked, &playerManager, &PlayerManager::togglePlayPause);
+        connect(playerControls, &PlayerControlWidget::playPauseClicked, this, &Application::onPlayPauseClicked);
+        connect(playerControls, &PlayerControlWidget::seeked, this, &Application::onSeeked);
         connect(playerControls, &PlayerControlWidget::nextClicked, &playerManager, &PlayerManager::next);
         connect(playerControls, &PlayerControlWidget::previousClicked, &playerManager, &PlayerManager::previous);
-        connect(playerControls, &PlayerControlWidget::seeked, &playerManager, &PlayerManager::seek);
         connect(this,&Application::control_setSongInfo,playerControls, &PlayerControlWidget::setCurrentSong);
         connect(playerControls, &PlayerControlWidget::volumeChanged, &playerManager, [&playerManager](int volume){
             playerManager.setVolume(static_cast<float>(volume) / 100.0f);
@@ -266,7 +273,26 @@ void Application::showMainWindow()
             }
             playerControls->setRepeatIcon(icon);
         });
+        this->show_online_choice();
 
+        connect(&playerManager, &PlayerManager::RequestForsync, &sessionManager, &SessionManager::RequestsyncSong);
+        connect(&sessionManager, &SessionManager::songsynced, &playerManager, &PlayerManager::syncedsussecfully);
+
+        connect(&sessionManager, &SessionManager::remotePlayRequested, this, &Application::onRemotePlay);
+        connect(&sessionManager, &SessionManager::remotePauseRequested, this, &Application::onRemotePause);
+        connect(&sessionManager, &SessionManager::remoteSeekRequested, this, &Application::onRemoteSeek);
+        connect(&sessionManager, &SessionManager::setCurrentSong, this, &Application::onSetCurrentSong);
+
+        connect(&sessionManager, &SessionManager::syncStatusChanged, this, [](const QString& status){
+            // نمایش وضعیت همگام‌سازی در UI
+            qDebug() << "[SYNC STATUS]" << status;
+            // اگر UI خاصی دارید، اینجا نمایش دهید
+        });
+        connect(&sessionManager, &SessionManager::syncError, this, [](const QString& error){
+            // نمایش خطا در UI
+            qDebug() << "[SYNC ERROR]" << error;
+            // اگر UI خاصی دارید، اینجا نمایش دهید
+        });
     }
 
     switchWindow(w_main_window);
@@ -276,10 +302,12 @@ void Application::show_playlistCreateWindow()
 {
 
     if(!w_playlist_createWindow){
-        w_playlist_createWindow = new CreateDialog();
+        w_playlist_createWindow = new mycreateDialog();
 
-        connect(w_playlist_createWindow,&CreateDialog::CreatePlaylist,this,&Application::Create_PlayList);
-        connect(this,&Application::Song_view_update,w_playlist_createWindow,&CreateDialog::update_songsList);
+        connect(w_playlist_createWindow, &mycreateDialog::CreatePlaylist, this,
+                &Application::Create_PlayList);
+        connect(this, &Application::Song_view_update, w_playlist_createWindow,
+                &mycreateDialog::update_songsList);
     }
 
     emit Song_view_update(DBM::get_instance().getAllSongs());
@@ -367,61 +395,188 @@ void Application::show_QueueWindow()
 
 void Application::show_sessionWindow()
 {
-    if (!w_session_window)
-    {
-        w_session_window = new JukeBoxSessionWidget();
+    // if (!w_session_window)
+    // {
+    //     w_session_window = new JukeBoxSessionWidget();
 
-        // اتصال یک‌باره به سیگنال Connect
+    //     // اتصال یک‌باره به سیگنال Connect
 
-        connect(w_session_window, &JukeBoxSessionWidget::createSessionClicked,
-                this, [this]() {
-                    SessionManager::getInstance().startNewSession(
-                        UserManager::getInstance().getUserName(),
-                        QHostAddress::Any,  // یا QHostAddress::LocalHost یا IP دلخواه
-                        UDP_PORT
-                        );
+    //     connect(w_session_window, &JukeBoxSessionWidget::createSessionClicked,
+    //             this, [this]() {
+    //                 SessionManager::getInstance().startNewSession(
+    //                     UserManager::getInstance().getUserName(),
+    //                     QHostAddress::Any,  // یا QHostAddress::LocalHost یا IP دلخواه
+    //                     UDP_PORT
+    //                     );
 
 
-                    QStringList list;
-                    list << UserManager::getInstance().getUserName();
-                    w_session_window->updateParticipantList(list);
-                    w_session_window->showParticipantListState();
+    //                 QStringList list;
+    //                 list << UserManager::getInstance().getUserName();
+    //                 w_session_window->updateParticipantList(list);
+    //                 w_session_window->showParticipantListState();
+    //             });
+
+
+    //     disconnect(&SessionManager::getInstance(), nullptr, w_session_window, nullptr);
+
+    //     connect(w_session_window, &JukeBoxSessionWidget::connectToHostClicked,
+    //             this, [this](const QString& ip) {
+
+    //                 SessionManager::getInstance().joinSession(QHostAddress(ip), UDP_PORT,
+    //                                                           UserManager::getInstance().getUserName());
+
+    //                 connect(&SessionManager::getInstance(), &SessionManager::showInfoMessage,
+    //                         w_session_window, [=](const QString& msg) {
+    //                            // w_session_window->setStatusMessage(msg);
+    //                         });
+
+    //                 connect(&SessionManager::getInstance(), &SessionManager::participantListChanged,
+    //                         w_session_window, [=](const QList<Person>& persons) {
+    //                             if (!SessionManager::getInstance().getSessioonActive())
+    //                                 return;
+
+    //                             w_session_window->onConnectionSuccess(persons);
+    //                         });
+
+    //                 // ⛔️ Timeout ایمن: بعد ۱۰ ثانیه اگر اتصال نگرفت، خطا
+    //                 QTimer::singleShot(10000, w_session_window, [=]() {
+    //                     if (!SessionManager::getInstance().getSessioonActive()) {
+    //                         w_session_window->onConnectionFailed();
+    //                     }
+    //                 });
+
+
+    //             });
+    // }
+
+    // w_session_window->show();
+}
+
+void Application::show_online_choice()
+{
+    if(!w_onlineChoice){
+        w_onlineChoice = new online_choice();
+        w_main_window->getStack().addWidget(w_onlineChoice);
+        connect(w_onlineChoice,&online_choice::JoinRequest,this,&Application::show_online_join);
+        connect(w_onlineChoice,&online_choice::CreateRequest,this,&Application::show_online_chatHost);
+    }
+
+    w_main_window->getStack().setCurrentWidget(w_onlineChoice);
+}
+
+void Application::show_online_join()
+{
+    if(!w_onlineJoin){
+        w_onlineJoin = new onlineJoin();
+        w_main_window->getStack().addWidget(w_onlineJoin);
+        connect(w_onlineJoin,&onlineJoin::accepted,this,&Application::show_online_chat);
+        connect(w_onlineJoin,&onlineJoin::cancel,this,&Application::show_online_choice);
+        connect(w_onlineJoin,&onlineJoin::requestJoin,&SessionManager::getInstance(),&SessionManager::joinSession);
+        connect(&SessionManager::getInstance(),&SessionManager::joinRequestaccept,this,[this](){
+            emit w_onlineJoin->accepted();
+        });
+        connect(&SessionManager::getInstance(),&SessionManager::joinRequestReject,this,[this](){
+            emit w_onlineJoin->cancel();
+        });
+    }
+
+    w_main_window->getStack().setCurrentWidget(w_onlineJoin);
+}
+
+void Application::show_online_chatHost()
+{
+    if(!w_onlicechatHost){
+        w_onlicechatHost = new onlineChatHost();
+        w_main_window->getStack().addWidget(w_onlicechatHost);
+
+        auto&& session = SessionManager::getInstance();
+        connect(&session, &SessionManager::newChatMessageForUI,
+                w_onlicechatHost, &onlineChatHost::onNewMessage);
+
+        connect(w_onlicechatHost, &onlineChatHost::sendMessage,
+                &session, &SessionManager::onChatMessageSendRequested);
+
+        connect(&session, &SessionManager::participantListChanged,
+                w_onlicechatHost, [this](const QList<Person>& persons){
+                    w_onlicechatHost->updateParticipants(persons);
                 });
 
+        // پایان جلسه
+        // connect(&session, &SessionManager::showInfoMessage,
+        //         w_onlicechatHost, [this](const QString& msg){
+        //             if (msg.contains("session ended", Qt::CaseInsensitive)) {
+        //                 w_onlicechatHost->onSessionEnded();
+        //                 this->show_online_choice();
+        //             }
+        //         });
 
-        disconnect(&SessionManager::getInstance(), nullptr, w_session_window, nullptr);
+        // اخراج کاربران - از UI به SessionManager
+        connect(w_onlicechatHost, &onlineChatHost::disconnectUsers,
+                &session, &SessionManager::kickUsers);
 
-        connect(w_session_window, &JukeBoxSessionWidget::connectToHostClicked,
-                this, [this](const QString& ip) {
+        // اخراج کاربران - از SessionManager به UI
+        connect(&session, &SessionManager::participantListChanged,
+                w_onlicechatHost, [this](const QList<Person>& persons) {
+                    // اگر تعداد کاربران کم شده، احتمالاً اخراج شده‌اند
+                    w_onlicechatHost->updateParticipants(persons);
+                });
 
-                    SessionManager::getInstance().joinSession(QHostAddress(ip), UDP_PORT,
-                                                              UserManager::getInstance().getUserName());
+        // پایان سشن - از UI به SessionManager
+        connect(w_onlicechatHost, &onlineChatHost::endSession,
+                &session, &SessionManager::leaveSession);
 
-                    connect(&SessionManager::getInstance(), &SessionManager::showInfoMessage,
-                            w_session_window, [=](const QString& msg) {
-                               // w_session_window->setStatusMessage(msg);
-                            });
+        connect(w_onlicechatHost, &onlineChatHost::endSession,
+                this, &Application::show_online_choice);
 
-                    connect(&SessionManager::getInstance(), &SessionManager::participantListChanged,
-                            w_session_window, [=](const QList<Person>& persons) {
-                                if (!SessionManager::getInstance().getSessioonActive())
-                                    return;
-
-                                w_session_window->onConnectionSuccess(persons);
-                            });
-
-                    // ⛔️ Timeout ایمن: بعد ۱۰ ثانیه اگر اتصال نگرفت، خطا
-                    QTimer::singleShot(10000, w_session_window, [=]() {
-                        if (!SessionManager::getInstance().getSessioonActive()) {
-                            w_session_window->onConnectionFailed();
-                        }
-                    });
-
-
+        // نمایش پیام‌های اطلاعاتی
+        connect(&session, &SessionManager::showInfoMessage,
+                w_onlicechatHost, [](const QString& msg) {
+                    // می‌توانیم پیام‌ها را در UI نمایش دهیم
+                    qDebug() << "Session Info:" << msg;
                 });
     }
 
-    w_session_window->show();
+    w_main_window->getStack().setCurrentWidget(w_onlicechatHost);
+}
+
+void Application::show_online_chat()
+{
+    if(!w_onlineChat){
+        w_onlineChat = new onlinechat();
+        w_main_window->getStack().addWidget(w_onlineChat);
+
+        auto&& session = SessionManager::getInstance();
+        // اتصال ارسال پیام چت بر اساس نقش
+        if (session.getSessioonActive() && session.getInstance().ISHost()) {
+            connect(w_onlineChat, &onlinechat::sendMessage, &session, &SessionManager::onChatMessageSendRequested);
+        } else {
+            connect(w_onlineChat, &onlinechat::sendMessage, &session, &SessionManager::sendChatMessageToHost);
+        }
+        // دریافت پیام چت از SessionManager و نمایش در UI
+        connect(&session, &SessionManager::newChatMessageForUI, w_onlineChat, &onlinechat::onNewMessage);
+        // به‌روزرسانی لیست کاربران
+        connect(&session, &SessionManager::participantListChanged, w_onlineChat, [this](const QList<Person>& persons) {
+            QStringList usernames;
+            for (const auto& person : persons) {
+                usernames.append(person.getUserName());
+            }
+            w_onlineChat->updateParticipants(usernames);
+        });
+        // پایان سشن - از UI به SessionManager
+        connect(w_onlineChat, &onlinechat::leaveSession, &session, &SessionManager::leaveSession);
+        connect(w_onlineChat, &onlinechat::leaveSession, this, &Application::show_online_choice);
+        // پایان سشن - از SessionManager به UI
+        // پیام سیستمی
+        connect(&session, &SessionManager::systemMessage, w_onlineChat, &onlinechat::onSystemMessage);
+        // اخراج شدن
+        connect(&session, &SessionManager::kickedFromSession, w_onlineChat, &onlinechat::onKicked);
+    }
+    w_main_window->getStack().setCurrentWidget(w_onlineChat);
+}
+
+void Application::prepertoPlay_RecivedSong(const Song currSong)
+{
+    PlayerManager::getInstance().loadSingleMedia(currSong.getPath());
 }
 
 void Application::preparetoPlay_playList(qint64 playlistID)
@@ -508,4 +663,55 @@ void Application::edite_update_playlistSongs(qint64 playListId, const QList<qint
         qDebug()<<e.what();
     }
 
+}
+
+void Application::onRemotePlay(qint64 position) {
+    if (!m_songReady) {
+        m_pendingRemotePlay = true;
+        m_pendingRemotePlayPosition = position;
+        return;
+    }
+    PlayerManager::getInstance().loadSingleMedia(m_sessionSong.getPath());
+    PlayerManager::getInstance().seek(position);
+    PlayerManager::getInstance().play();
+}
+void Application::onRemotePause() {
+    PlayerManager::getInstance().pause();
+}
+void Application::onRemoteSeek(qint64 position) {
+    PlayerManager::getInstance().seek(position);
+}
+
+void Application::onSetCurrentSong(const Song& song) {
+    m_sessionSong = song;
+    m_songReady = !song.getPath().isEmpty();
+    if (m_pendingRemotePlay && m_songReady) {
+        PlayerManager::getInstance().loadSingleMedia(m_sessionSong.getPath());
+        PlayerManager::getInstance().seek(m_pendingRemotePlayPosition);
+        PlayerManager::getInstance().play();
+        m_pendingRemotePlay = false;
+    }
+}
+
+void Application::onPlayPauseClicked() {
+    PlayerManager& playerManager = PlayerManager::getInstance();
+    SessionManager& sessionManager = SessionManager::getInstance();
+    bool wasPlaying = (playerManager.getPlaybackState() == QMediaPlayer::PlayingState);
+    playerManager.togglePlayPause();
+    if (sessionManager.getSessioonActive() && sessionManager.ISHost()) {
+        if (wasPlaying) {
+            sessionManager.broadcastPauseCommand();
+        } else {
+            sessionManager.broadcastPlayCommand(playerManager.getCurrentPosition());
+        }
+    }
+}
+
+void Application::onSeeked(qint64 position) {
+    PlayerManager& playerManager = PlayerManager::getInstance();
+    SessionManager& sessionManager = SessionManager::getInstance();
+    playerManager.seek(position);
+    if (sessionManager.getSessioonActive() && sessionManager.ISHost()) {
+        sessionManager.broadcastSeekCommand(position);
+    }
 }

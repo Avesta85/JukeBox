@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "qstackedwidget.h"
 #include "src/backend/core/song.h"
 #include "src/ui/playmusicwindow.h"
 #include <QMainWindow>
@@ -31,10 +32,17 @@ public:
     StageWidget* getStage() const;
     JukeBoxSessionWidget* getJukeBoxSession() const;
 
+    QDockWidget& getDock()const;
+    QStackedWidget& getStack()const;
+
 public slots:
     void updateSongInfo(const Song& song);
 
 private:
     Ui::MainWindow *ui;
+
+
+    QDockWidget* onlineDock;
+    QStackedWidget* onlineStack;
 };
 #endif // MAINWINDOW_H

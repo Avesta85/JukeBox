@@ -27,6 +27,19 @@ DBM &DBM::get_instance()
     return *s_instance;
 }
 
+void DBM::Reload_folder()
+{
+    try{
+        this->fineMusicDir();
+
+        this->applySyncChanges(this->scanDiskForSongs(this->m_db_songs_folder));
+    }
+    catch(const std::runtime_error& e)
+    {
+        qDebug()<<e.what();
+    }
+}
+
 DBM::DBM()
 {
     main_thread = QThread::currentThread();
@@ -974,6 +987,17 @@ Song DBM::getSongFromID(qint64 id)
         return Song(name, path, 0, "", id);
     }
     return Song("", "", 0, "", 0);
+}
+
+Song DBM::getSongByName(const QString& name)
+{
+    auto list = getAllSongs();
+    for(auto&  s: list){
+        if(s.getName() == name+".mp3" ||s.getName() == name+".wav"){
+            return s;
+        }
+    }
+    return Song();
 }
 
 

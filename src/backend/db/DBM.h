@@ -39,6 +39,8 @@ public:
 
     //song sync
 
+
+    void Reload_folder();
     QMap<QString,QString> scanDiskForSongs(const QString& folder_path) const; // read disk and create {path , songs_name } map
 
     void applySyncChanges(const QMap<QString,QString>& diskSongs); // update songs table from pram: disksongs
@@ -99,6 +101,8 @@ public:
     bool isDbOpen();
 
     bool isUsernameUnique(const QString& Username);
+
+    Song getSongByName(const QString& name);
 
 private:
     // Static Private Variable
