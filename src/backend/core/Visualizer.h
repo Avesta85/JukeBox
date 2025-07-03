@@ -1,46 +1,52 @@
-#ifndef VISUALIZERWIDGET_H
-#define VISUALIZERWIDGET_H
+#ifndef AUDIO_VISUALIZER_H
+#define AUDIO_VISUALIZER_H
 
 #include <QWidget>
+#include <QMediaPlayer>
 #include <QTimer>
-#include <QMutex>
 #include <QVector>
-#include <QString>
-#include "miniaudio.h"
+#include <QPainter>
 
-enum class VisualizerMode {
-    Bars,
-    Waveform,
-    Random
-};
-
-class VisualizerWidget : public QWidget {
+class AudioVisualizer : public QWidget
+{
     Q_OBJECT
-public:
-    explicit VisualizerWidget(QWidget *parent = nullptr);
-    ~VisualizerWidget();
 
-    void loadAndPlay(const QString &filePath);
-    void setVisualizerMode(VisualizerMode newMode);
+public:
+    enum class Pattern {
+        Bars,
+        Circles,
+        Waveform
+    };
+    Q_ENUM(Pattern)
+
+    explicit AudioVisualizer(QWidget *parent = nullptr);
+    static AudioVisualizer* getInstance();
+    void setPlaybackState(QMediaPlayer::PlaybackState state);
+    void updateAudioLevel(int volumePercent);
+
+public slots:
+    void setPattern(Pattern newPattern);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
-    static void dataCallback(ma_device* device, void* output, const void* input, ma_uint32 frameCount);
-    void processAudio(const float* data, ma_uint32 count);
+    static AudioVisualizer* instance;
 
-    void drawBars(QPainter &p);
-    void drawWaveform(QPainter &p);
+    QMediaPlayer::PlaybackState m_playbackState;
+    QTimer m_animationTimer;
+    QVector<double> m_barHeights;
+    int m_numBars;
+    double m_currentVolumeLevel;
+    Pattern m_currentPattern;
 
-    ma_decoder decoder;
-    ma_device device;
-    QVector<float> samples;
-    QMutex mutex;
-    QTimer *timer;
+    void initializeBarHeights();
+    void animateBars();
 
-    VisualizerMode mode = VisualizerMode::Bars;
+    void drawBars(QPainter& painter);
+    void drawCircles(QPainter& painter);
+    void drawWaveform(QPainter& painter);
 };
 
-#endif // VISUALIZERWIDGET_H
-
+#endif // AUDIO_VISUALIZER_H

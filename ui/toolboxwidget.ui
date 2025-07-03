@@ -36,6 +36,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="pushButton_vis">
+     <property name="text">
+      <string>Cover Art</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="pushButton_favorite">
      <property name="text">
       <string>Favorite Songs</string>

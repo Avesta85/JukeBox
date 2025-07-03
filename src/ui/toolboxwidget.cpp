@@ -9,9 +9,12 @@ ToolBoxWidget::ToolBoxWidget(QWidget *parent)
 
     connect(ui->pushButton_movie_managment, &QPushButton::clicked, this, [this]() {
         emit videoManagementClicked();
+        ui->pushButton_vis->hide();
+        ui->pushButton_playlist_management->hide();
     });
     connect(ui->pushButton_playlist_management, &QPushButton::clicked, this, [this]() {
         emit playlistManagementClicked();
+         ui->pushButton_vis->show();
     });
 }
 
@@ -43,22 +46,34 @@ void ToolBoxWidget::on_pushButton_about_us_clicked()
 void ToolBoxWidget::on_pushButton_clicked()
 {
     emit SongManagementClicked();
+
+    playerMode = songC;
+    ui->pushButton_vis->show();
+    ui->pushButton_vis->setText("Cover Art");
+    ui->pushButton_playlist_management->show();
 }
 
 
 void ToolBoxWidget::on_pushButton_favorite_clicked()
 {
+    playerMode = songC;
+    ui->pushButton_vis->show();
+    ui->pushButton_vis->setText("Cover Art");
     emit FavoriteSongsClicked();
 }
 
 
 void ToolBoxWidget::on_pushButton_3_clicked()
 {
+
     emit FriendsListClicked();
 }
 
 void ToolBoxWidget::on_pushButton_Queue_clicked()
 {
+    playerMode = songC;
+    ui->pushButton_vis->show();
+    ui->pushButton_vis->setText("Cover Art");
     emit QueueClicked();
 }
 
@@ -69,9 +84,20 @@ void ToolBoxWidget::on_pushButton_online_clicked()
 
 
 
-
 void ToolBoxWidget::on_pushButton_vis_clicked()
 {
+    if(playerMode == songC)
+    {
+        playerMode = songV;
+        ui->pushButton_vis->setText("Visualizer");
+        emit visualizerClicked();
+    }
 
+    else if(playerMode == songV)
+    {
+        playerMode = songC;
+        ui->pushButton_vis->setText("Cover Art");
+        emit coverArtClicke();
+    }
 }
 

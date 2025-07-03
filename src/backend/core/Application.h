@@ -15,6 +15,7 @@
 #include "src/ui/playlistchoicewindow.h"
 #include "src/ui/playmusicwindow.h"
 #include "src/ui/jukeboxsessionwidget.h"
+#include "src/backend/core/Visualizer.h"
 
 #include <QTimer>
 #include <QMap>
@@ -121,6 +122,7 @@ private:
     Dialog_Friends* w_Friend_Window;
     Dialog_Queue* w_Queue_window;
     JukeBoxSessionWidget* w_session_window;
+    AudioVisualizer* visualizer = nullptr;
 
 
 

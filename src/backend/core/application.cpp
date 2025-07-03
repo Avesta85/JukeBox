@@ -186,7 +186,8 @@ void Application::showMainWindow()
     {
         w_main_window = new MainWindow();
 
-
+        if(!visualizer)
+            visualizer = AudioVisualizer::getInstance();
 
 
         ToolBoxWidget* toolbox = w_main_window->getToolBox();
@@ -195,15 +196,24 @@ void Application::showMainWindow()
 
         connect(toolbox, &ToolBoxWidget::movieManagementClicked, stage, &StageWidget::showMovieManagementPage);
         connect(toolbox, &ToolBoxWidget::videoManagementClicked, stage, &StageWidget::showVideoManagementPage);
+        connect(toolbox, &ToolBoxWidget::visualizerClicked, stage, &StageWidget::showVisualizerPage);
+        connect(toolbox, &ToolBoxWidget::coverArtClicke, stage, &StageWidget::showCoverArtPage);
         connect(toolbox, &ToolBoxWidget::playlistManagementClicked, this, &Application::show_playlistWindow);
         connect(toolbox, &ToolBoxWidget::SongManagementClicked, this, &Application::show_playMusicWindow);
         connect(toolbox, &ToolBoxWidget::FavoriteSongsClicked, this, &Application::show_FavoriteSongWindow);
         connect(toolbox, &ToolBoxWidget::FriendsListClicked, this, &Application::show_FriendWindow);
         connect(toolbox, &ToolBoxWidget::QueueClicked, this, &Application::show_QueueWindow);
+
         connect(toolbox, &ToolBoxWidget::onlineManagmentClicked, this, &Application::show_sessionWindow);
         PlayerManager& playerManager = PlayerManager::getInstance();
         SessionManager& sessionManager = SessionManager::getInstance();
         PlayerControlWidget* playerControls = w_main_window->getPlayerControls();
+
+        QObject::connect(&playerManager, &PlayerManager::playbackStateChanged,
+                         visualizer, &AudioVisualizer::setPlaybackState);
+
+        QObject::connect(&playerManager, &PlayerManager::volumeChanged,
+                         visualizer, &AudioVisualizer::updateAudioLevel);
 
         connect(playerControls, &PlayerControlWidget::playPauseClicked, this, &Application::onPlayPauseClicked);
         connect(playerControls, &PlayerControlWidget::seeked, this, &Application::onSeeked);

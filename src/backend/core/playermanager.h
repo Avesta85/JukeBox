@@ -24,7 +24,7 @@ public:
     static PlayerManager& getInstance();
     ~PlayerManager();
     PlayerManager::RepeatMode getRepeatMode();
-    void setVisualizer(VisualizerWidget* visualizer);
+    void setVisualizer(AudioVisualizer* visualizer);
     QMediaPlayer::PlaybackState getPlaybackState() const;
     qint64 getCurrentPosition() const;
 
@@ -78,7 +78,7 @@ private:
     QVector<int> m_shuffleIndexes;
     int m_currentShuffleIndex = 0;
 
-    VisualizerWidget* m_visualizer = nullptr;
+    AudioVisualizer* m_visualizer = nullptr;
 
     bool ismovie;
     bool synced;

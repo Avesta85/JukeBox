@@ -286,10 +286,7 @@ void PlayerManager::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
     }
 }
 
-void PlayerManager::setVisualizer(VisualizerWidget* visualizer)
-{
-    m_visualizer = visualizer;
-}
+
 
 void PlayerManager::syncedsussecfully() {
     synced = true;
