@@ -98,7 +98,6 @@ HEADERS += \
     src/backend/core/Visualizer.h \
     src/backend/core/application.h \
     src/backend/core/media.h \
-    src/backend/core/miniaudio.h \
     src/backend/core/movie.h \
     src/backend/core/person.h \
     src/backend/core/playermanager.h \
