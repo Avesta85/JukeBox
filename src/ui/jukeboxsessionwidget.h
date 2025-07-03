@@ -2,6 +2,8 @@
 #define JUKEBOXSESSIONWIDGET_H
 
 #include <QDockWidget>
+#include <QTimer>
+#include "src/backend/core/person.h"
 
 namespace Ui {
 class JukeBoxSessionWidget;
@@ -14,6 +16,8 @@ class JukeBoxSessionWidget : public QDockWidget
 public:
     explicit JukeBoxSessionWidget(QWidget *parent = nullptr);
     ~JukeBoxSessionWidget();
+    QTimer* m_connectionTimeoutTimer = nullptr;
+    bool& getConnecting();
 
 
 
@@ -30,7 +34,11 @@ public slots:
     void showJoiningState();
     void showConnectedState();
     void updateParticipantList(const QStringList& participants);
-
+    void showParticipantListState();
+    void enableConnectButten();
+    void resetJoinForm();
+    void onConnectionSuccess(const QList<Person>& persons);
+    void onConnectionFailed();
 
 private slots:
 
@@ -41,6 +49,9 @@ private slots:
     void on_pushButton_leave_clicked();
 private:
     Ui::JukeBoxSessionWidget *ui;
+    bool m_isConnecting = false;
+
+
 };
 
 #endif // JUKEBOXSESSIONWIDGET_H

@@ -7,6 +7,8 @@
 #include <QMediaPlayer>
 #include <QList>
 #include <QVector>
+#include "Visualizer.h"
+
 
 class QAudioOutput;
 
@@ -22,6 +24,8 @@ public:
     static PlayerManager& getInstance();
     ~PlayerManager();
     PlayerManager::RepeatMode getRepeatMode();
+    void setVisualizer(VisualizerWidget* visualizer);
+
 public slots:
 
     void loadSingleMedia(const QString& filePath);
@@ -69,6 +73,8 @@ private:
 
     QVector<int> m_shuffleIndexes;
     int m_currentShuffleIndex = 0;
+
+    VisualizerWidget* m_visualizer = nullptr;
 };
 
 #endif // PLAYERMANAGER_H

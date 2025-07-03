@@ -47,12 +47,6 @@
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="JukeBoxSessionWidget" name="dockWidget_juckbox_session_placeholder">
-   <attribute name="dockWidgetArea">
-    <number>1</number>
-   </attribute>
-   <widget class="QWidget" name="dockWidgetContents_3"/>
-  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -71,12 +65,6 @@
    <class>ToolBoxWidget</class>
    <extends>QWidget</extends>
    <header location="global">src/ui/toolboxwidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>JukeBoxSessionWidget</class>
-   <extends>QDockWidget</extends>
-   <header>jukeboxsessionwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

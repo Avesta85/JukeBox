@@ -6,7 +6,6 @@
 #include <windows.h>
 
 
-
 FileReceiverWorker::FileReceiverWorker(QTcpSocket* socket, const QString& savePath, QObject *parent)
     : QObject{parent},
     m_socket(socket),

@@ -79,10 +79,15 @@ private:
         volume
     };
 
+    enum FatoriteMusic
+    {
+        yes,
+        no
+    };
+
     PlayOrPause playStatus = pause;
     PlatingType playingTipe = repeatOne;
     ValumeStatus valumeStatus = volume;
-
     qint64 m_currentSongId = -1;
     bool m_isFavorite = false;
     void updateLikeIcon();

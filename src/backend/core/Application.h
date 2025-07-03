@@ -10,7 +10,11 @@
 #include "src/ui/editplaylist.h"
 #include "src/ui/playlistchoicewindow.h"
 #include "src/ui/playmusicwindow.h"
+#include "src/ui/jukeboxsessionwidget.h"
 #include <QObject>
+#include <QHostAddress>
+#include <QTimer>
+#include <QMap>
 
 class ChangePasswordWindow;
 class ChoiceWindow;
@@ -48,6 +52,7 @@ public:
     void show_FavoriteSongWindow();
     void show_FriendWindow();
     void show_QueueWindow();
+    void show_sessionWindow();
 signals:
     void update_Friend_view(const QList<Person> FriendsList);
     void Playlist_view_updated(const QList<Playlist> playlist_list);
@@ -98,6 +103,8 @@ private:
     Dialog_FavoriteSongs* w_FavoritSongs;
     Dialog_Friends* w_Friend_Window;
     Dialog_Queue* w_Queue_window;
+    JukeBoxSessionWidget* w_session_window = nullptr;
+
     // function
     void switchWindow(QWidget* nextWindow);
 

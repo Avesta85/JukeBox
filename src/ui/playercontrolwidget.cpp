@@ -166,3 +166,4 @@ void PlayerControlWidget::updateLikeIcon()
     else
         ui->pushButton->setIcon(QIcon(":/icone/heart.png"));
 }
+

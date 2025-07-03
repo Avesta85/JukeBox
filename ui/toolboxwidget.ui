@@ -64,6 +64,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="pushButton_online">
+     <property name="text">
+      <string>online</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="pushButton_about_us">
      <property name="text">
       <string>About Us</string>

@@ -62,3 +62,9 @@ void ToolBoxWidget::on_pushButton_Queue_clicked()
     emit QueueClicked();
 }
 
+void ToolBoxWidget::on_pushButton_online_clicked()
+{
+    emit onlineManagmentClicked();
+}
+
+

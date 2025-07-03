@@ -48,6 +48,7 @@ win32 {
 SOURCES += \
     src/backend/core/SendEmail.cpp \
     src/backend/core/UserManager.cpp \
+    src/backend/core/Visualizer.cpp \
     src/backend/core/application.cpp \
     src/backend/core/playermanager.cpp \
     src/backend/db/DBM.cpp \
@@ -77,6 +78,7 @@ SOURCES += \
     src/ui/loginwindow.cpp \
     src/ui/mainwindow.cpp \
     src/ui/moviemanagementwindow.cpp \
+    src/ui/online_choice.cpp \
     src/ui/playercontrolwidget.cpp \
     src/ui/playlistchoicewindow.cpp \
     src/ui/playmusicwindow.cpp \
@@ -90,8 +92,10 @@ SOURCES += \
 HEADERS += \
     src/backend/core/SendEmail.h \
     src/backend/core/UserManager.h \
+    src/backend/core/Visualizer.h \
     src/backend/core/application.h \
     src/backend/core/media.h \
+    src/backend/core/miniaudio.h \
     src/backend/core/movie.h \
     src/backend/core/person.h \
     src/backend/core/playermanager.h \
@@ -119,6 +123,7 @@ HEADERS += \
     src/ui/loginwindow.h \
     src/ui/mainwindow.h \
     src/ui/moviemanagementwindow.h \
+    src/ui/online_choice.h \
     src/ui/playercontrolwidget.h \
     src/ui/playlistchoicewindow.h \
     src/ui/playmusicwindow.h \
@@ -132,6 +137,7 @@ HEADERS += \
     src/backend/security/SecurityManager.h
 
 FORMS += \
+    ui/online_choice.ui \
     ui/dialog_queue.ui \
     ui/dialog_friends.ui \
     ui/dialog_favoritesongs.ui \

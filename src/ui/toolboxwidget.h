@@ -27,6 +27,8 @@ signals:
     void aboutUsClicked();
     void videoManagementClicked();
     void QueueClicked();
+    void onlineManagmentClicked();
+
 private slots:
 
     void on_pushButton_clicked();
@@ -36,6 +38,8 @@ private slots:
     void on_pushButton_3_clicked();
 
     void on_pushButton_Queue_clicked();
+    void on_pushButton_online_clicked();
+
 
 private:
 
