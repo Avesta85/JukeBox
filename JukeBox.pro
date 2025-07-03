@@ -50,6 +50,7 @@ SOURCES += \
     src/backend/core/UserManager.cpp \
     src/backend/core/Visualizer.cpp \
     src/backend/core/application.cpp \
+    src/backend/core/audioanalyzer.cpp \
     src/backend/core/playermanager.cpp \
     src/backend/db/DBM.cpp \
     src/backend/core/person.cpp \
@@ -90,6 +91,7 @@ HEADERS += \
     src/backend/core/UserManager.h \
     src/backend/core/Visualizer.h \
     src/backend/core/application.h \
+    src/backend/core/audioanalyzer.h \
     src/backend/core/media.h \
     src/backend/core/miniaudio.h \
     src/backend/core/movie.h \

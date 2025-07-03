@@ -12,6 +12,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QVideoWidget>
+#include <QGraphicsProxyWidget>
 
 StageWidget::StageWidget(QWidget *parent)
     : QStackedWidget(parent)
@@ -34,6 +35,14 @@ StageWidget::StageWidget(QWidget *parent)
 
     // In constructor, after setupUi, ensure videoWidget_main fits layout
     ui->videoWidget_main->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    auto* scene = new QGraphicsScene(this);
+    ui->graphicsView_visualizer->setScene(scene);
+
+    visualizer = AudioVisualizer::getInstance();
+    auto* proxy = scene->addWidget(visualizer);
+    proxy->setPos(100, 100);
+    proxy->setFlag(QGraphicsItem::ItemIsMovable);
 
     showCoverArtPage();
 }
@@ -71,6 +80,11 @@ void StageWidget::showVideoManagementPage()
     this->setCurrentWidget(ui->page_video_management);
 }
 
+void StageWidget::showVisualizerPage()
+{
+    this->setCurrentWidget(ui->page_visualizer);
+}
+
 void StageWidget::onFilterChanged(int index) {
     if (!ui->videoWidget_main) return;
     if (index == 1) { // Grayscale
@@ -89,3 +103,13 @@ void StageWidget::onOpenButtonClicked() {
         emit videoFileSelected(filePath);
     }
 }
+
+void StageWidget::on_comboBox_currentIndexChanged(int index)
+{
+    if(index == 0)
+        visualizer->setPattern(AudioVisualizer::Pattern::Bars);
+
+    else if(index == 1)
+        visualizer->setPattern(AudioVisualizer::Pattern::Waveform);
+}
+

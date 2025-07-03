@@ -2,6 +2,7 @@
 #define STAGEWIDGET_H
 #include "qvideowidget.h"
 #include <QStackedWidget>
+#include "src/backend/core/Visualizer.h"
 
 class playmusicwindow;
 class MovieManagementWindow;
@@ -27,6 +28,7 @@ public slots:
     void showCoverArtPage();
     void showVideoPage();
     void showVideoManagementPage();
+    void showVisualizerPage();
 
 signals:
     void videoFileSelected(const QString& filePath);
@@ -35,11 +37,15 @@ private:
     Ui::StageWidget *ui;
 
     MovieManagementWindow* m_movieManagementPage;
+    //VisualizerWidget* visualizer;
+    AudioVisualizer* visualizer;
+
 
 private slots:
     void onFilterChanged(int index);
     void onOpenButtonClicked();
 
+    void on_comboBox_currentIndexChanged(int index);
 };
 
 #endif // STAGEWIDGET_H

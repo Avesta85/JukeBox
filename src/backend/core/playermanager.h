@@ -8,7 +8,9 @@
 #include <QList>
 #include <QVector>
 #include "Visualizer.h"
-
+#include "audioanalyzer.h"
+#include <QVBoxLayout>
+#include <QWidget>
 
 class QAudioOutput;
 
@@ -24,7 +26,7 @@ public:
     static PlayerManager& getInstance();
     ~PlayerManager();
     PlayerManager::RepeatMode getRepeatMode();
-    void setVisualizer(VisualizerWidget* visualizer);
+    //void setVisualizer(VisualizerWidget* visualizer);
 
 public slots:
 
@@ -62,6 +64,8 @@ private:
 
     QMediaPlayer* m_player;
     QAudioOutput* m_audioOutput;
+    QWidget window;
+    QVBoxLayout* layout;
 
     Song* m_currentMedia;
     QList<Song> m_playlist;
@@ -74,7 +78,8 @@ private:
     QVector<int> m_shuffleIndexes;
     int m_currentShuffleIndex = 0;
 
-    VisualizerWidget* m_visualizer = nullptr;
+   /// VisualizerWidget* m_visualizer = nullptr;
+   /// AudioAnalyzer* m_analyzer = nullptr;
 };
 
 #endif // PLAYERMANAGER_H

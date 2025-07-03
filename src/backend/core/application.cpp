@@ -17,7 +17,6 @@
 
 #include <QThread>
 
-
 std::unique_ptr<Application> Application::s_instance = nullptr;
 
 Application &Application::getInstance()
@@ -187,6 +186,9 @@ void Application::showMainWindow()
     {
         w_main_window = new MainWindow();
 
+        if(!visualizer)
+            visualizer = AudioVisualizer::getInstance();
+
         ToolBoxWidget* toolbox = w_main_window->getToolBox();
         StageWidget* stage = w_main_window->getStage();
 
@@ -196,9 +198,21 @@ void Application::showMainWindow()
         connect(toolbox, &ToolBoxWidget::playlistManagementClicked, this, &Application::show_playlistWindow);
         connect(toolbox, &ToolBoxWidget::SongManagementClicked, this, &Application::show_playMusicWindow);
         connect(toolbox, &ToolBoxWidget::onlineManagmentClicked, this, &Application::show_sessionWindow);
+        connect(toolbox, &ToolBoxWidget::SongManagementClicked, stage, &StageWidget::showCoverArtPage);
+        connect(toolbox, &ToolBoxWidget::visualizerClicked, stage, &StageWidget::showVisualizerPage);
+        connect(toolbox, &ToolBoxWidget::coverArtClicke, stage, &StageWidget::showCoverArtPage);
+
+
+
 
         PlayerManager& playerManager = PlayerManager::getInstance();
         PlayerControlWidget* playerControls = w_main_window->getPlayerControls();
+
+        QObject::connect(&playerManager, &PlayerManager::playbackStateChanged,
+                         visualizer, &AudioVisualizer::setPlaybackState);
+
+        QObject::connect(&playerManager, &PlayerManager::volumeChanged,
+                         visualizer, &AudioVisualizer::updateAudioLevel);
 
         connect(playerControls, &PlayerControlWidget::playPauseClicked, &playerManager, &PlayerManager::togglePlayPause);
         connect(playerControls, &PlayerControlWidget::nextClicked, &playerManager, &PlayerManager::next);

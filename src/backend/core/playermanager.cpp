@@ -1,14 +1,16 @@
 #include "src/backend/core/playermanager.h"
 #include "qfileinfo.h"
 #include <QAudioOutput>
-#include <QWidget>
+//#include <QWidget>
 #include <QDebug>
 #include <QMediaMetaData>
 #include <QVideoWidget>
 #include <algorithm>
 #include <random>
+//#include <QVBoxLayout>
 
 std::unique_ptr<PlayerManager> PlayerManager::s_instance = nullptr;
+
 
 
 PlayerManager::PlayerManager(QObject *parent)
@@ -52,6 +54,7 @@ void PlayerManager::cleanupCurrentMedia() {
 // === پیاده‌سازی منطق جدید ===
 
 void PlayerManager::loadSingleMedia(const QString& filePath) {
+
     cleanupCurrentMedia();
     m_playlist.clear();
     m_currentIndex = -1;
@@ -63,14 +66,6 @@ void PlayerManager::loadSingleMedia(const QString& filePath) {
 
     m_player->setSource(QUrl::fromLocalFile(filePath));
     emit currentSongChanged(*m_currentMedia);
-
-    //if (m_visualizer)
-      //  m_visualizer->loadForAnalysis(filePath);
-
-   // m_visualizer->show();
-
-    // Automatically play the media once it's loaded.
-    // QMediaPlayer will wait for the media to be ready before playing.
     m_player->play();
 }
 
@@ -112,15 +107,17 @@ void PlayerManager::togglePlayPause()
 void PlayerManager::play() {
     qDebug() << "[PlayerManager] play() called";
     m_player->play();
+  //  if (m_analyzer) m_analyzer->resume();
 }
 
 void PlayerManager::pause() {
     qDebug() << "[PlayerManager] pause() called";
     m_player->pause();
+   // if (m_analyzer) m_analyzer->pause();
 }
 
 void PlayerManager::playSongAtIndex(int index) {
-    if (index < 0 || index >= m_playlist.size()) return;
+   // if (index < 0 || index >= m_playlist.size()) return;
 
     m_currentIndex = index;
     const Song& songToPlay = m_playlist.at(index);
@@ -254,9 +251,6 @@ void PlayerManager::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
     }
 }
 
-void PlayerManager::setVisualizer(VisualizerWidget* visualizer)
-{
-    m_visualizer = visualizer;
-}
+
 
 

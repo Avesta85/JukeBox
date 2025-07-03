@@ -7,6 +7,7 @@
 #include "src/ui/editplaylist.h"
 #include "src/ui/playlistchoicewindow.h"
 #include "src/ui/playmusicwindow.h"
+#include "src/backend/core/Visualizer.h"
 #include "src/ui/jukeboxsessionwidget.h"
 #include "src/backend/network/sessionmanager.h"
 #include <QObject>
@@ -92,6 +93,7 @@ private:
     EditPlayList* w_playlist_editWindow;
     playmusicwindow* w_playMusic_window;
     JukeBoxSessionWidget* w_session_window = nullptr;
+    AudioVisualizer* visualizer = nullptr;
 
     class MainWindow* w_main_window;
     // function
