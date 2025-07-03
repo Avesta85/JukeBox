@@ -27,7 +27,7 @@ bool sendMail(const char* from, const char* to, const char* verifiMessage)
         return false;
     }
 
-    const char* password = "zizpjuzuanejognr";
+    const char* password = "ddlgxrmrzbkdumyw";
 
     std::string payload =
         "To: " + std::string(to) + "\r\n"

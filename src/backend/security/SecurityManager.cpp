@@ -122,7 +122,7 @@ const QString SecurityManager::SendVerification_Code(QString &Email)
 {
 
     QString code = QString::number(QRandomGenerator::global()->bounded(12345, 100000));
-    sendMail("mohammad1384esf@gmail.com",Email.toStdString().c_str(),code.toStdString().c_str());
+    sendMail("jukebox.enjoy@gmail.com",Email.toStdString().c_str(),code.toStdString().c_str());
     return code;
 }
 
