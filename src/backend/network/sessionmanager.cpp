@@ -83,8 +83,6 @@ void SessionManager::onPlaySongRequested(const Song &song)
 
     if (needingUsers.isEmpty()){
         qDebug() << "No other participants. Playing song directly.";
-        // TODO: فرمان پخش نهایی را اینجا ارسال کن
-        // broadcastCommand(NetworkCommand::Play, songName);
         return;
     }
     m_pendingSongRequest.insert(songname,needingUsers);
@@ -102,14 +100,12 @@ void SessionManager::onChatMessageSendRequested(const QString &message)
     if(!m_isSessionActive || message.isEmpty()) return;
     if (m_isHost) {
         emit newChatMessageForUI("Me: "+message);
-        // ارسال به همه کلاینت‌ها
         for(const Participant& p : m_participants) {
             if(p.username != m_localUser.username) {
                 ConnectionManager::getInstance().sendCommand(p.address, UDP_PORT_CLIENT, NetworkCommand::ChatMessage, message);
             }
         }
     } else {
-        // اگر کلاینت هستیم، پیام را فقط به هاست بفرست
         sendChatMessageToHost(message);
         emit newChatMessageForUI("Me: "+message); // نمایش فوری برای خود کاربر
     }
@@ -118,9 +114,7 @@ void SessionManager::onChatMessageSendRequested(const QString &message)
 void SessionManager::sendChatMessageToHost(const QString& message)
 {
     if (!m_isSessionActive || m_isHost) return;
-    // ارسال فقط به هاست
     ConnectionManager::getInstance().sendCommand(m_hostAddress, UDP_PORT_HOST, NetworkCommand::ChatMessage, message);
-    // نمایش پیام در UI خود کلاینت
     emit newChatMessageForUI("Me: "+message);
 }
 
@@ -265,7 +259,6 @@ void SessionManager::processNetworkCommand(NetworkCommand command, const QVarian
                 emit setCurrentSong(song);
             } else {
                 ConnectionManager::getInstance().sendCommand(m_hostAddress, UDP_PORT_HOST, NetworkCommand::SongResponseNegative, responsePayload);
-                // Request file from host
                 QVariantMap fileReqPayload;
                 fileReqPayload["fileName"] = songName;
                 ConnectionManager::getInstance().sendCommand(m_hostAddress, UDP_PORT_HOST, NetworkCommand::FileTransferRequest, fileReqPayload);
@@ -345,6 +338,16 @@ void SessionManager::processNetworkCommand(NetworkCommand command, const QVarian
         qint64 pos = payload.toLongLong();
         emit remoteSeekRequested(pos);
     }
+    else if (command == NetworkCommand::SessionLeave) {
+        QString leavingUsername = payload.toString();
+        auto it = std::remove_if(m_participants.begin(), m_participants.end(),
+                                 [&](const Participant& p){ return p.username == leavingUsername; });
+        if (it != m_participants.end()) {
+            m_participants.erase(it, m_participants.end());
+            emit participantListChanged(participantsAsPersonList());
+            broadcastParticipantList();
+        }
+    }
 }
 
 void SessionManager::onCheckSongResponseTimeout()
@@ -364,19 +367,16 @@ void SessionManager::onCheckSongResponseTimeout()
             continue;
         }
 
-        // Track timeouts for this song
         int& timeoutCount = timeoutCounts[songName];
         timeoutCount++;
 
         if (timeoutCount > MAX_TIMEOUTS) {
-            // Too many timeouts, mark as failed and notify
             emit syncError(QString("Sync failed for song '%1': too many timeouts. Skipping these users: %2").arg(songName, usersToSync.join(", ")));
             qDebug() << "[Sync][Error] Too many timeouts for song" << songName << ". Skipping users:" << usersToSync;
             timeoutCounts.remove(songName);
             continue;
         }
 
-        // Try to send file to each user
         for (const QString& username : usersToSync) {
             Participant targetParticipant;
             bool found = false;
@@ -396,10 +396,8 @@ void SessionManager::onCheckSongResponseTimeout()
                 emit syncError(QString("Could not find participant '%1' to send file '%2'").arg(username, songName));
             }
         }
-        // After sending, break to wait for next timeout or acks
         break;
     }
-    // If all pending songs processed, clear timeout counts
     if (m_pendingSongRequest.isEmpty()) {
         timeoutCounts.clear();
     }
@@ -467,7 +465,6 @@ QList<Person> SessionManager::participantsAsPersonList() const {
 
 
 void SessionManager::onFileTransferAccepted(const QString& senderUsername, const QString& fileName) {
-    // CLIENT: If we are a client and the file was for us
     if (!m_isHost && senderUsername == m_localUser.username) {
         emit syncStatusChanged("Song received successfully. Loading into library...");
         qDebug() << "[FileTransfer] File received for client:" << fileName;
@@ -476,7 +473,6 @@ void SessionManager::onFileTransferAccepted(const QString& senderUsername, const
         msgBox.setText(QString("File '%1' received successfully! Click OK to continue.").arg(fileName));
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.exec();
-        // Send FileReceivedAck to host
         QVariantMap ackPayload;
         ackPayload["fileName"] = fileName;
         ConnectionManager::getInstance().sendCommand(m_hostAddress, UDP_PORT_HOST, NetworkCommand::FileReceivedAck, ackPayload);
@@ -491,7 +487,6 @@ void SessionManager::onFileTransferAccepted(const QString& senderUsername, const
             qDebug() << "[FileTransfer] Song set as current after transfer:" << song.getName();
         }
     }
-    // HOST: Remove user from pending list for this file, and if all are done, emit songsynced
     if(m_pendingSongRequest.contains(fileName)) {
         m_pendingSongRequest[fileName].removeAll(senderUsername);
         qDebug() << "[FileTransfer][Host] Ack received from user:" << senderUsername << "for file:" << fileName;
@@ -507,7 +502,6 @@ void SessionManager::kickUser(const QString& username)
 {
     if (!m_isSessionActive || !m_isHost) return;
 
-    // پیدا کردن کاربر در لیست
     Participant targetParticipant;
     bool found = false;
     for (const auto& p : m_participants) {
@@ -523,7 +517,6 @@ void SessionManager::kickUser(const QString& username)
         return;
     }
 
-    // ارسال فرمان اخراج به کاربر
     QVariantMap payload;
     payload["username"] = username;
     payload["reason"] = "Kicked by host";
@@ -531,10 +524,8 @@ void SessionManager::kickUser(const QString& username)
     ConnectionManager::getInstance().sendCommand(targetParticipant.address, UDP_PORT_CLIENT, 
                                                 NetworkCommand::KickUser, payload);
 
-    // حذف از لیست شرکت‌کنندگان
     m_participants.removeAll(targetParticipant);
     
-    // به‌روزرسانی لیست برای بقیه
     broadcastParticipantList();
     emit participantListChanged(participantsAsPersonList());
     
@@ -605,5 +596,13 @@ void SessionManager::broadcastSeekCommand(qint64 position) {
         broadcastCommand(NetworkCommand::Seek, position);
     }
 }
+
+void SessionManager::sendLeaveRequestToHost()
+{
+    if (!m_isHost && m_isSessionActive) {
+        ConnectionManager::getInstance().sendCommand(m_hostAddress, UDP_PORT_HOST, NetworkCommand::SessionLeave, m_localUser.username);
+    }
+}
+
 
 

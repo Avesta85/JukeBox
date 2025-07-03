@@ -11,3 +11,4 @@ void Movie::setDirector(const QString NewDirector)
 
 const QString& Movie::getDirector()
 {return this->director;}
+

@@ -30,3 +30,4 @@ private:
 };
 
 #endif // DIALOG_FRIENDS_H
+

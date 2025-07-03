@@ -178,7 +178,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    $$PWD/res/images/157822-concert-fortnite_extended_set-electronic_dance_music-here_with_me-automotive_lighting-3840x2160.jpg
+    $$PWD/res/images/157822-concert-fortnite_extended_set-electronic_dance_music-here_with_me-automotive_lighting-3840x2160.jpg \
+    res/icone/arrow.png
 
 RESOURCES += \
     $$PWD/res/seoned-resorces.qrc \

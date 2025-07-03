@@ -25,8 +25,8 @@
  ***************************************************************************/
 
 #include <stdarg.h>
-#include <stdio.h> /* needed for FILE */
-#include "curl.h"  /* for CURL_EXTERN */
+#include <stdio.h> 
+#include "curl.h"  
 
 #ifdef  __cplusplus
 extern "C" {
@@ -38,7 +38,7 @@ extern "C" {
   defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L) &&         \
   !defined(CURL_NO_FMT_CHECKS)
 #if defined(__MINGW32__) && !defined(__clang__)
-#if defined(__MINGW_PRINTF_FORMAT)  /* mingw-w64 3.0.0+. Needs stdio.h. */
+#if defined(__MINGW_PRINTF_FORMAT)  
 #define CURL_TEMP_PRINTF(fmt, arg) \
   __attribute__((format(__MINGW_PRINTF_FORMAT, fmt, arg)))
 #else
@@ -79,7 +79,8 @@ CURL_EXTERN char *curl_mvaprintf(const char *format, va_list args)
 #undef CURL_TEMP_PRINTF
 
 #ifdef  __cplusplus
-} /* end of extern "C" */
+} 
 #endif
 
-#endif /* CURLINC_MPRINTF_H */
+#endif 
+

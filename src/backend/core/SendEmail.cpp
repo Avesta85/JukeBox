@@ -27,10 +27,8 @@ bool sendMail(const char* from, const char* to, const char* verifiMessage)
         return false;
     }
 
-    // 🔐 WARNING: You should NOT hardcode credentials like this in production
     const char* password = "zizpjuzuanejognr";
 
-    // Build the email message with headers
     std::string payload =
         "To: " + std::string(to) + "\r\n"
                                    "From: " + std::string(from) + "\r\n"
@@ -42,7 +40,6 @@ bool sendMail(const char* from, const char* to, const char* verifiMessage)
     char* payload_data = strdup(payload.c_str());
     char* payload_ptr = payload_data;
 
-    // Build the full path to cacert.pem
     QString certPath = QCoreApplication::applicationDirPath() + "/cacert.pem";
     if (!QFile::exists(certPath)) {
         qDebug() << "CA cert file not found at:" << certPath;
@@ -57,7 +54,6 @@ bool sendMail(const char* from, const char* to, const char* verifiMessage)
     curl_easy_setopt(curl, CURLOPT_PASSWORD, password);
     curl_easy_setopt(curl, CURLOPT_URL, "smtps://smtp.gmail.com:465");
 
-    // Set up SSL certificate options
     curl_easy_setopt(curl, CURLOPT_CAINFO, certPath.toStdString().c_str());
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2L);
@@ -78,10 +74,10 @@ bool sendMail(const char* from, const char* to, const char* verifiMessage)
     else
         qDebug() << "Email sent successfully ✔️";
 
-    // Clean up resources
     curl_slist_free_all(recipients);
     curl_easy_cleanup(curl);
     free(payload_data);
 
     return (res == CURLE_OK);
 }
+

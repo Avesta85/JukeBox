@@ -1,6 +1,7 @@
 #include "onlinechat.h"
 #include "ui_onlinechat.h"
 #include <QTimer>
+#include "src/backend/network/sessionmanager.h"
 
 onlinechat::onlinechat(QWidget *parent)
     : QDialog(parent)
@@ -28,6 +29,7 @@ void onlinechat::on_pushButton_send_clicked()
 
 void onlinechat::on_pushButton_leave_clicked()
 {
+    SessionManager::getInstance().sendLeaveRequestToHost();
     emit leaveSession();
 }
 
@@ -59,7 +61,6 @@ void onlinechat::onKicked(const QString& reason)
     ui->pushButton_Leave->setEnabled(false);
     ui->lineEdit_message->setEnabled(false);
     ui->listWidget_Participant->setEnabled(false);
-    // optionally close after a delay
     QTimer::singleShot(2000, this, &QDialog::close);
 }
 
@@ -72,3 +73,4 @@ void onlinechat::onSessionEnded()
     ui->listWidget_Participant->setEnabled(false);
     QTimer::singleShot(2000, this, &QDialog::close);
 }
+

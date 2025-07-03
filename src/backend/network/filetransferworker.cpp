@@ -55,7 +55,6 @@ void FileTransferWorker::onConnected()
     out.device()->seek(0);
     out << (qint64)(header.size() + m_totalBytes - sizeof(qint64));
 
-    // ابتدا هدر را ارسال می‌کنیم
     m_socket->write(header);
 
     qint64 bytesRemaining = m_totalBytes;
@@ -93,3 +92,4 @@ void FileTransferWorker::onSocketError()
     emit error(m_socket->errorString());
     m_socket->close();
 }
+

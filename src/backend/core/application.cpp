@@ -41,25 +41,21 @@ void Application::Run()
     this->show_choiceWindow();
     UserManager::getInstance();
 }
-//ok
 void Application::show_choiceWindow()
 {
     if (!w_choice_window) {
         w_choice_window = new ChoiceWindow();
 
-        // signals
         connect(w_choice_window,&ChoiceWindow::LoginRequest,this,&Application::show_loginWindow);
         connect(w_choice_window,&ChoiceWindow::SignupRequest,this,&Application::show_signupWindow);
     }
     switchWindow(w_choice_window);
 }
-//ok
 void Application::show_loginWindow()
 {
     if (!w_login_window) {
         w_login_window = new LoginWindow();
 
-        // signals
         connect(w_login_window,&LoginWindow::CancelOperation,this,&Application::show_choiceWindow);
         connect(w_login_window,&LoginWindow::ForgotPassword,this,&Application::show_forgotPassword_window);
         connect(w_login_window, &LoginWindow::LoggedInsuccessfully, this, &Application::showMainWindow);
@@ -77,7 +73,6 @@ void Application::show_signupWindow()
     }
     switchWindow(w_signUp_window);
 }
-//ok
 void Application::show_changePasswordWindow(QString Username)
 {
     if(!w_change_password_window){
@@ -100,7 +95,6 @@ void Application::show_emailVWindow(QString Email, QString Username)
     w_email_verification_window->Emailsender(Email);
     switchWindow(w_email_verification_window);
 }
-//ok
 void Application::show_forgotPassword_window()
 {
     if(!w_forgot_password_window){
@@ -257,7 +251,6 @@ void Application::showMainWindow()
 
         connect(playerControls, &PlayerControlWidget::repeatModeClicked, this, [playerControls]() {
             PlayerManager::getInstance().changeRepeatMode();
-            // Update icon based on new mode
             auto mode = PlayerManager::getInstance().getRepeatMode();
             QIcon icon;
             switch (mode) {
@@ -270,7 +263,10 @@ void Application::showMainWindow()
                 case PlayerManager::RepeatMode::RepeatAll:
                     icon = QIcon(":/icone/repeat.png");
                     break;
-            }
+                case PlayerManager::RepeatMode::NoRepeat:
+                    icon = QIcon(":/icone/arrow.png");
+                    break;
+                }
             playerControls->setRepeatIcon(icon);
         });
         this->show_online_choice();
@@ -284,14 +280,10 @@ void Application::showMainWindow()
         connect(&sessionManager, &SessionManager::setCurrentSong, this, &Application::onSetCurrentSong);
 
         connect(&sessionManager, &SessionManager::syncStatusChanged, this, [](const QString& status){
-            // نمایش وضعیت همگام‌سازی در UI
             qDebug() << "[SYNC STATUS]" << status;
-            // اگر UI خاصی دارید، اینجا نمایش دهید
         });
         connect(&sessionManager, &SessionManager::syncError, this, [](const QString& error){
-            // نمایش خطا در UI
             qDebug() << "[SYNC ERROR]" << error;
-            // اگر UI خاصی دارید، اینجا نمایش دهید
         });
     }
 
@@ -395,61 +387,21 @@ void Application::show_QueueWindow()
 
 void Application::show_sessionWindow()
 {
-    // if (!w_session_window)
-    // {
-    //     w_session_window = new JukeBoxSessionWidget();
-
-    //     // اتصال یک‌باره به سیگنال Connect
-
-    //     connect(w_session_window, &JukeBoxSessionWidget::createSessionClicked,
-    //             this, [this]() {
-    //                 SessionManager::getInstance().startNewSession(
-    //                     UserManager::getInstance().getUserName(),
-    //                     QHostAddress::Any,  // یا QHostAddress::LocalHost یا IP دلخواه
-    //                     UDP_PORT
-    //                     );
 
 
-    //                 QStringList list;
-    //                 list << UserManager::getInstance().getUserName();
-    //                 w_session_window->updateParticipantList(list);
-    //                 w_session_window->showParticipantListState();
-    //             });
 
 
-    //     disconnect(&SessionManager::getInstance(), nullptr, w_session_window, nullptr);
-
-    //     connect(w_session_window, &JukeBoxSessionWidget::connectToHostClicked,
-    //             this, [this](const QString& ip) {
-
-    //                 SessionManager::getInstance().joinSession(QHostAddress(ip), UDP_PORT,
-    //                                                           UserManager::getInstance().getUserName());
-
-    //                 connect(&SessionManager::getInstance(), &SessionManager::showInfoMessage,
-    //                         w_session_window, [=](const QString& msg) {
-    //                            // w_session_window->setStatusMessage(msg);
-    //                         });
-
-    //                 connect(&SessionManager::getInstance(), &SessionManager::participantListChanged,
-    //                         w_session_window, [=](const QList<Person>& persons) {
-    //                             if (!SessionManager::getInstance().getSessioonActive())
-    //                                 return;
-
-    //                             w_session_window->onConnectionSuccess(persons);
-    //                         });
-
-    //                 // ⛔️ Timeout ایمن: بعد ۱۰ ثانیه اگر اتصال نگرفت، خطا
-    //                 QTimer::singleShot(10000, w_session_window, [=]() {
-    //                     if (!SessionManager::getInstance().getSessioonActive()) {
-    //                         w_session_window->onConnectionFailed();
-    //                     }
-    //                 });
 
 
-    //             });
-    // }
 
-    // w_session_window->show();
+
+
+
+
+
+
+
+
 }
 
 void Application::show_online_choice()
@@ -501,37 +453,23 @@ void Application::show_online_chatHost()
                     w_onlicechatHost->updateParticipants(persons);
                 });
 
-        // پایان جلسه
-        // connect(&session, &SessionManager::showInfoMessage,
-        //         w_onlicechatHost, [this](const QString& msg){
-        //             if (msg.contains("session ended", Qt::CaseInsensitive)) {
-        //                 w_onlicechatHost->onSessionEnded();
-        //                 this->show_online_choice();
-        //             }
-        //         });
 
-        // اخراج کاربران - از UI به SessionManager
         connect(w_onlicechatHost, &onlineChatHost::disconnectUsers,
                 &session, &SessionManager::kickUsers);
 
-        // اخراج کاربران - از SessionManager به UI
         connect(&session, &SessionManager::participantListChanged,
                 w_onlicechatHost, [this](const QList<Person>& persons) {
-                    // اگر تعداد کاربران کم شده، احتمالاً اخراج شده‌اند
                     w_onlicechatHost->updateParticipants(persons);
                 });
 
-        // پایان سشن - از UI به SessionManager
         connect(w_onlicechatHost, &onlineChatHost::endSession,
                 &session, &SessionManager::leaveSession);
 
         connect(w_onlicechatHost, &onlineChatHost::endSession,
                 this, &Application::show_online_choice);
 
-        // نمایش پیام‌های اطلاعاتی
         connect(&session, &SessionManager::showInfoMessage,
                 w_onlicechatHost, [](const QString& msg) {
-                    // می‌توانیم پیام‌ها را در UI نمایش دهیم
                     qDebug() << "Session Info:" << msg;
                 });
     }
@@ -546,15 +484,12 @@ void Application::show_online_chat()
         w_main_window->getStack().addWidget(w_onlineChat);
 
         auto&& session = SessionManager::getInstance();
-        // اتصال ارسال پیام چت بر اساس نقش
         if (session.getSessioonActive() && session.getInstance().ISHost()) {
             connect(w_onlineChat, &onlinechat::sendMessage, &session, &SessionManager::onChatMessageSendRequested);
         } else {
             connect(w_onlineChat, &onlinechat::sendMessage, &session, &SessionManager::sendChatMessageToHost);
         }
-        // دریافت پیام چت از SessionManager و نمایش در UI
         connect(&session, &SessionManager::newChatMessageForUI, w_onlineChat, &onlinechat::onNewMessage);
-        // به‌روزرسانی لیست کاربران
         connect(&session, &SessionManager::participantListChanged, w_onlineChat, [this](const QList<Person>& persons) {
             QStringList usernames;
             for (const auto& person : persons) {
@@ -562,13 +497,10 @@ void Application::show_online_chat()
             }
             w_onlineChat->updateParticipants(usernames);
         });
-        // پایان سشن - از UI به SessionManager
+
         connect(w_onlineChat, &onlinechat::leaveSession, &session, &SessionManager::leaveSession);
         connect(w_onlineChat, &onlinechat::leaveSession, this, &Application::show_online_choice);
-        // پایان سشن - از SessionManager به UI
-        // پیام سیستمی
         connect(&session, &SessionManager::systemMessage, w_onlineChat, &onlinechat::onSystemMessage);
-        // اخراج شدن
         connect(&session, &SessionManager::kickedFromSession, w_onlineChat, &onlinechat::onKicked);
     }
     w_main_window->getStack().setCurrentWidget(w_onlineChat);
@@ -715,3 +647,27 @@ void Application::onSeeked(qint64 position) {
         sessionManager.broadcastSeekCommand(position);
     }
 }
+
+Application::~Application() {
+    if (w_change_password_window) delete w_change_password_window;
+    if (w_choice_window) delete w_choice_window;
+    if (w_email_verification_window) delete w_email_verification_window;
+    if (w_forgot_password_window) delete w_forgot_password_window;
+    if (w_login_window) delete w_login_window;
+    if (w_receive_secureWords_window) delete w_receive_secureWords_window;
+    if (w_signUp_window) delete w_signUp_window;
+    if (w_showKey_Window) delete w_showKey_Window;
+    if (w_main_window) delete w_main_window;
+    if (w_playlist_choicewindow) delete w_playlist_choicewindow;
+    if (w_playlist_createWindow) delete w_playlist_createWindow;
+    if (w_playlist_editWindow) delete w_playlist_editWindow;
+    if (w_playMusic_window) delete w_playMusic_window;
+    if (w_FavoritSongs) delete w_FavoritSongs;
+    if (w_Friend_Window) delete w_Friend_Window;
+    if (w_Queue_window) delete w_Queue_window;
+    if (w_onlineChoice) delete w_onlineChoice;
+    if (w_onlineJoin) delete w_onlineJoin;
+    if (w_onlineChat) delete w_onlineChat;
+    if (w_onlicechatHost) delete w_onlicechatHost;
+}
+

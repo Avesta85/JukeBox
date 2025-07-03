@@ -29,30 +29,30 @@ extern "C" {
 #endif
 
 struct curl_header {
-  char *name;    /* this might not use the same case */
+  char *name;    
   char *value;
-  size_t amount; /* number of headers using this name  */
-  size_t index;  /* ... of this instance, 0 or higher */
-  unsigned int origin; /* see bits below */
-  void *anchor; /* handle privately used by libcurl */
+  size_t amount; 
+  size_t index;  
+  unsigned int origin; 
+  void *anchor; 
 };
 
-/* 'origin' bits */
-#define CURLH_HEADER    (1<<0) /* plain server header */
-#define CURLH_TRAILER   (1<<1) /* trailers */
-#define CURLH_CONNECT   (1<<2) /* CONNECT headers */
-#define CURLH_1XX       (1<<3) /* 1xx headers */
-#define CURLH_PSEUDO    (1<<4) /* pseudo headers */
+
+#define CURLH_HEADER    (1<<0) 
+#define CURLH_TRAILER   (1<<1) 
+#define CURLH_CONNECT   (1<<2) 
+#define CURLH_1XX       (1<<3) 
+#define CURLH_PSEUDO    (1<<4) 
 
 typedef enum {
   CURLHE_OK,
-  CURLHE_BADINDEX,      /* header exists but not with this index */
-  CURLHE_MISSING,       /* no such header exists */
-  CURLHE_NOHEADERS,     /* no headers at all exist (yet) */
-  CURLHE_NOREQUEST,     /* no request with this number was used */
-  CURLHE_OUT_OF_MEMORY, /* out of memory while processing */
-  CURLHE_BAD_ARGUMENT,  /* a function argument was not okay */
-  CURLHE_NOT_BUILT_IN   /* if API was disabled in the build */
+  CURLHE_BADINDEX,      
+  CURLHE_MISSING,       
+  CURLHE_NOHEADERS,     
+  CURLHE_NOREQUEST,     
+  CURLHE_OUT_OF_MEMORY, 
+  CURLHE_BAD_ARGUMENT,  
+  CURLHE_NOT_BUILT_IN   
 } CURLHcode;
 
 CURL_EXTERN CURLHcode curl_easy_header(CURL *easy,
@@ -68,7 +68,8 @@ CURL_EXTERN struct curl_header *curl_easy_nextheader(CURL *easy,
                                                      struct curl_header *prev);
 
 #ifdef __cplusplus
-} /* end of extern "C" */
+} 
 #endif
 
-#endif /* CURLINC_HEADER_H */
+#endif 
+

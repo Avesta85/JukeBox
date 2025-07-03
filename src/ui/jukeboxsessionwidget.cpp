@@ -61,7 +61,6 @@ void JukeBoxSessionWidget::enableConnectButten()
 
 void JukeBoxSessionWidget::on_pushButton_create_session_clicked()
 {
-    // Show user's IP
     QString ip;
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
     for (const QHostAddress &address : ipAddressesList) {
@@ -154,5 +153,6 @@ void JukeBoxSessionWidget::onConnectionFailed()
     ui->label_status->setText("⛔️ Connection failed. Please check and try again.");
     showDisconnectedState();
 }
+
 
 

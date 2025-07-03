@@ -32,3 +32,4 @@ private:
 };
 
 #endif // DIALOG_QUEUE_H
+

@@ -29,14 +29,14 @@ extern "C" {
 #endif
 
 struct curl_ws_frame {
-  int age;              /* zero */
-  int flags;            /* See the CURLWS_* defines */
-  curl_off_t offset;    /* the offset of this data into the frame */
-  curl_off_t bytesleft; /* number of pending bytes left of the payload */
-  size_t len;           /* size of the current data chunk */
+  int age;              
+  int flags;            
+  curl_off_t offset;    
+  curl_off_t bytesleft; 
+  size_t len;           
 };
 
-/* flag bits */
+
 #define CURLWS_TEXT       (1<<0)
 #define CURLWS_BINARY     (1<<1)
 #define CURLWS_CONT       (1<<2)
@@ -56,7 +56,7 @@ CURL_EXTERN CURLcode curl_ws_recv(CURL *curl, void *buffer, size_t buflen,
                                   size_t *recv,
                                   const struct curl_ws_frame **metap);
 
-/* flags for curl_ws_send() */
+
 #define CURLWS_PONG       (1<<6)
 
 /*
@@ -72,7 +72,7 @@ CURL_EXTERN CURLcode curl_ws_send(CURL *curl, const void *buffer,
                                   curl_off_t fragsize,
                                   unsigned int flags);
 
-/* bits for the CURLOPT_WS_OPTIONS bitmask: */
+
 #define CURLWS_RAW_MODE   (1<<0)
 #define CURLWS_NOAUTOPONG (1<<1)
 
@@ -82,4 +82,5 @@ CURL_EXTERN const struct curl_ws_frame *curl_ws_meta(CURL *curl);
 }
 #endif
 
-#endif /* CURLINC_WEBSOCKETS_H */
+#endif 
+

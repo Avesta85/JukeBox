@@ -30,3 +30,4 @@ private:
 };
 
 #endif // ONLINE_CHOICE_H
+

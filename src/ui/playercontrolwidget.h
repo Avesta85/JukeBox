@@ -47,7 +47,6 @@ private slots:
 
     void on_pushButton_playing_type_clicked();
 
-    //void on_pushButton_mute_clicked();
 
     void on_horizontalSlider_volume_valueChanged(int value);
 
@@ -94,3 +93,4 @@ private:
 };
 
 #endif // PLAYERCONTROLWIDGET_H
+

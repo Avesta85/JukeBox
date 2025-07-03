@@ -39,3 +39,4 @@ private:
 };
 
 #endif // FILETRANSFERWORKER_H
+

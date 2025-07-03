@@ -126,3 +126,4 @@ const QString SecurityManager::SendVerification_Code(QString &Email)
     return code;
 }
 
+

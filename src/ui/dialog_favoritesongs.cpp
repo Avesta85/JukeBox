@@ -21,7 +21,6 @@ Dialog_FavoriteSongs::Dialog_FavoriteSongs(QWidget *parent)
             this->hide();
         }
     });
-    // Connect search button
     connect(ui->pushButton, &QPushButton::clicked, this, [this]() {
         QString searchText = ui->lineEdit_search_song->text();
         QList<Song> filtered;
@@ -66,3 +65,4 @@ void Dialog_FavoriteSongs::fill_table(const QList<Song>& list)
     }
     ui->tableWidget_songs_of_playlist->resizeColumnsToContents();
 }
+

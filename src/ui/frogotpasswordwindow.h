@@ -34,3 +34,4 @@ private:
 };
 
 #endif // FROGOTPASSWORDWINDOW_H
+

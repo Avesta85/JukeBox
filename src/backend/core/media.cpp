@@ -30,3 +30,4 @@ const QString& Media::getName() const
 
 const size_t& Media::getDuration() const
 {return this->duration;}
+

@@ -12,3 +12,4 @@ MovieManagementWindow::~MovieManagementWindow()
 {
     delete ui;
 }
+

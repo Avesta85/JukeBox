@@ -11,7 +11,6 @@
 #include "src/backend/core/person.h"
 
 namespace {
-// Helper to filter persons by username substring
 QList<Person> filterPersons(const QList<Person>& list, const QString& search) {
     if (search.trimmed().isEmpty()) return list;
     QList<Person> filtered;
@@ -23,7 +22,6 @@ QList<Person> filterPersons(const QList<Person>& list, const QString& search) {
 }
 }
 
-// Store all friends for search filtering
 static QList<Person> s_allFriends;
 
 Dialog_Friends::Dialog_Friends(QWidget *parent)
@@ -31,7 +29,6 @@ Dialog_Friends::Dialog_Friends(QWidget *parent)
     , ui(new Ui::Dialog_Friends)
 {
     ui->setupUi(this);
-    // Connect search button
     connect(ui->pushButton, &QPushButton::clicked, this, [this]() {
         QString searchText = ui->lineEdit_search_song->text();
         QList<Person> filtered;
@@ -45,7 +42,6 @@ Dialog_Friends::Dialog_Friends(QWidget *parent)
         }
         fill_table(filtered);
     });
-    // Connect delete button
     connect(ui->pushButton_2, &QPushButton::clicked, this, [this]() {
         QList<Person> toDelete;
         for (int i = 0; i < ui->tableWidget_songs_of_playlist->rowCount(); ++i) {
@@ -63,7 +59,6 @@ Dialog_Friends::Dialog_Friends(QWidget *parent)
         if (!toDelete.isEmpty())
             emit delete_Friend(toDelete);
     });
-    // Table setup
     ui->tableWidget_songs_of_playlist->setColumnCount(2);
     QStringList headers; headers << "Select" << "Username";
     ui->tableWidget_songs_of_playlist->setHorizontalHeaderLabels(headers);
@@ -96,3 +91,4 @@ void Dialog_Friends::fill_table(const QList<Person>& list)
     }
     ui->tableWidget_songs_of_playlist->resizeColumnsToContents();
 }
+

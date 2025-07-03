@@ -14,7 +14,6 @@ Playlist::Playlist(const QString& name, size_t id,size_t ownerId) : name(name), 
 
 Playlist::Playlist(const Playlist& other) : name(other.name), playlistId(other.playlistId)
 {
-    // these are shallow copy , if you want to have a sprated source must use deep copy wich is not commen
 
     qDebug() << "Playlist copy constructor called for:" << name;
 }
@@ -37,3 +36,4 @@ const QString& Playlist::getName() const
 
 const size_t& Playlist::getId() const
 {return this->playlistId;}
+

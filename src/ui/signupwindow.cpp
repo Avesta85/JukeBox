@@ -141,7 +141,6 @@ void SignupWindow::on_pushButton_signup_clicked()
         return;
     }
     else{
-        //gen security key;
         SecurityManager sm;
         auto key = sm.securityKey_gen();
         qDebug()<< key;
@@ -170,4 +169,5 @@ void SignupWindow::on_pushButton_signup_clicked()
     ui->lineEdit_password->clear();
     ui->lineEdit_username->clear();
 }
+
 

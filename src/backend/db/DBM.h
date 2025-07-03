@@ -19,25 +19,16 @@
 #include "src/backend/core/playlist.h"
 #include "src/backend/core/person.h"
 
-///
-/// \brief The DBM class
-///
-/// All input string about User must be hashed before passed
-/// All input directly send to db without hashing
-///
-///
 class DBM final
 {
 
 
 public:
 
-    //C&D
     ~DBM();
     static DBM& get_instance();
 
 
-    //song sync
 
 
     void Reload_folder();
@@ -49,7 +40,6 @@ public:
 
     void applyVerifySongsPath(); // delete invalid path from db
 
-    //insert
 
     bool insertSong(const QString& name , const QString& path);
 
@@ -64,7 +54,6 @@ public:
 
     bool insertFavoritSong(const size_t user_id ,const size_t song_id);
 
-    //select
 
     void selectUser(std::optional<User>& local_user_holder,const QString& Username,const QString& Password);
     QList<Playlist> getPlaylistsForUser(qint64 userId);
@@ -79,7 +68,6 @@ public:
     size_t getSongIdFromPath(const QString& path);
     Song getSongFromID(qint64 id);
 
-    // delete
 
     bool deleteUser(const size_t user_id);
     bool deleteSong(const size_t Song_id);
@@ -89,14 +77,12 @@ public:
     bool deleteFavoritSong(const size_t user_id , const size_t song_id);
 
 
-    //update
 
     bool updateUserPassword(qint64 user_id ,const QString& newPassword );
     bool updateUserPassword(const QString& userName,const QString& newPassword );
     bool updateUserEmail(qint64 user_id , const QString& newEmail);
     bool updatePlaylistName(const size_t playlist_id,const QString& newPlaylist_Name);
 
-    //ckeckers
 
     bool isDbOpen();
 
@@ -105,7 +91,6 @@ public:
     Song getSongByName(const QString& name);
 
 private:
-    // Static Private Variable
     static std::unique_ptr<DBM> s_instance;
 
     static const QString s_db_path;
@@ -113,7 +98,6 @@ private:
     static const QString s_db_name;
 
 
-    // Private Member Variable
 
     QThread* main_thread;
 
@@ -123,11 +107,8 @@ private:
 
     QMutex m_db_mutex;
 
-    // Private Function
 
-    // --Static
 
-    // --Member
     DBM();
 
     void SetupDb();
@@ -139,3 +120,4 @@ private:
 };
 
 #endif // DBM_H
+

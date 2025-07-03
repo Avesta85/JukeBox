@@ -74,7 +74,7 @@
          </property>
          <property name="icon">
           <iconset resource="../res/icones.qrc">
-           <normaloff>:/icone/repeatone.png</normaloff>:/icone/repeatone.png</iconset>
+           <normaloff>:/icone/arrow.png</normaloff>:/icone/arrow.png</iconset>
          </property>
         </widget>
        </item>

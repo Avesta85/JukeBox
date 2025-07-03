@@ -55,6 +55,7 @@ public slots:
     void onFileTransferAccepted(const QString& senderUsername, const QString& fileName);
     void kickUser(const QString& username);
     void kickUsers(const QList<Person>& users);
+    void sendLeaveRequestToHost();
 
 
 private slots:
@@ -78,7 +79,6 @@ signals:
     void systemMessage(const QString& message);
 
 
-    // signals for PlayerManager
 
 
     void remotePlayRequested(qint64 position);
@@ -112,3 +112,4 @@ private :
 };
 
 #endif // SESSIONMANAGER_H
+

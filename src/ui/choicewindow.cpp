@@ -15,7 +15,6 @@ ChoiceWindow::ChoiceWindow(QWidget *parent)
     if (screen) {
         QRect screenGeometry = screen->geometry();
         setGeometry(screenGeometry);
-        // not bad for test //qDebug() << "Screen Geometry: " << screenGeometry;
     } else {
         qDebug() << "Could not get primary screen information. Dialog might not be full screen.";
     }
@@ -38,4 +37,5 @@ void ChoiceWindow::on_pushButton_signup_clicked()
 {
     emit SignupRequest();
 }
+
 

@@ -46,3 +46,4 @@ private:
     QStackedWidget* onlineStack;
 };
 #endif // MAINWINDOW_H
+

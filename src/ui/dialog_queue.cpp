@@ -63,11 +63,11 @@ void Dialog_Queue::on_pushButton_play_clicked()
     for (int i = 0; i < ui->tableWidget_songs_of_playlist->rowCount(); ++i) {
         QTableWidgetItem* checkItem = ui->tableWidget_songs_of_playlist->item(i, 0);
         if (checkItem && checkItem->checkState() == Qt::Checked) {
-            // find song id from filtered list
             if (i < m_filteredSongs.size())
                 checkedIds.append(m_filteredSongs[i].getID());
         }
     }
     emit play_Queue(checkedIds);
 }
+
 

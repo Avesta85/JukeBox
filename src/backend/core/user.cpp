@@ -49,7 +49,6 @@ void User::setLastName(const QString lastName)
 
 void User::setID(const size_t ID)
 {
-    // exeption...
     m_ID = ID;
 }
 
@@ -76,10 +75,10 @@ QString User::getEmail()const noexcept {return m_email;}
 QString User::getPassword()const noexcept {return m_password;}
 
 
-//exeption for this methods.....
 QString User::getFirstName()const noexcept {return m_firstName;}
 QString User::getLastName()const noexcept {return m_lastName;}
 size_t User::getID()const noexcept {return m_ID;}
 
 
 User::~User(){}
+

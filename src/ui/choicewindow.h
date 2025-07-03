@@ -31,3 +31,4 @@ signals:
 };
 
 #endif // CHOICEWINDOW_H
+

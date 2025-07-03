@@ -52,3 +52,4 @@ private:
 };
 
 #endif // TOOLBOXWIDGET_H
+

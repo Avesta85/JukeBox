@@ -35,10 +35,10 @@ class Application : public QObject
     Q_OBJECT
 public:
     static Application& getInstance();
+    ~Application();
 
 
     void Run();
-    ///// window getters
 
     void show_choiceWindow();
     void show_loginWindow();
@@ -99,13 +99,10 @@ private:
     explicit Application(QObject *parent = nullptr);
 
 
-    // static V
     static std::unique_ptr<Application> s_instance;
 
 
-    //member V
     QWidget* m_currentWindow;
-    // member Window
 
     ChangePasswordWindow* w_change_password_window;
     ChoiceWindow* w_choice_window;
@@ -127,12 +124,10 @@ private:
 
 
 
-    /////online part
     online_choice* w_onlineChoice;
     onlineJoin* w_onlineJoin;
     onlinechat* w_onlineChat;
     onlineChatHost* w_onlicechatHost;
-    // function
     void switchWindow(QWidget* nextWindow);
 
     Song m_sessionSong;
@@ -148,3 +143,4 @@ private slots:
 };
 
 #endif // APPLICATION_H
+

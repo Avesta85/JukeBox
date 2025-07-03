@@ -36,3 +36,4 @@ private:
 };
 
 #endif // EDITPLAYLIST_H
+

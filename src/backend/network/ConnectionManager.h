@@ -52,3 +52,4 @@ private slots :
 
 
 #endif // CONNECTIONMANAGER_H
+

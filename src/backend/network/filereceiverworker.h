@@ -37,3 +37,4 @@ private :
 };
 
 #endif // FILERECEIVERWORKER_H
+

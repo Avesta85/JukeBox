@@ -10,7 +10,6 @@ PlaylistChoiceWindow::PlaylistChoiceWindow(QWidget* parent)
 {
     ui->setupUi(this);
 
-    // Context menu
     contextMenu = new QMenu(this);
     contextMenu->addAction("Songs", this, SLOT(onSongsAction()));
     contextMenu->addAction("Delete", this, SLOT(onDeleteAction()));
@@ -28,7 +27,6 @@ PlaylistChoiceWindow::~PlaylistChoiceWindow() {
 
 void PlaylistChoiceWindow::updatePlaylistView(const QList<Playlist>playlists)
 {
-    // Only update m_allPlaylists if this is the full list (not a filtered list)
     if (playlists.size() >= m_allPlaylists.size() || m_allPlaylists.isEmpty()) {
         m_allPlaylists = playlists;
     }
@@ -78,4 +76,5 @@ void PlaylistChoiceWindow::onDeleteAction() {
 void PlaylistChoiceWindow::onPlayAction() {
     emit playPlaylistRequested(contextPlaylistID);
 }
+
 

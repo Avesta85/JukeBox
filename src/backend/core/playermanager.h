@@ -1,7 +1,7 @@
 #ifndef PLAYERMANAGER_H
 #define PLAYERMANAGER_H
 
-#include "qvideowidget.h"
+#include <QVideoWidget>
 #include "src/backend/core/song.h"
 #include <QObject>
 #include <QMediaPlayer>
@@ -18,7 +18,7 @@ class PlayerManager : public QObject
 
 public:
     enum class PlayMode { SingleMedia, Playlist };
-    enum class RepeatMode { Shuffle , RepeatOne, RepeatAll };
+    enum class RepeatMode { Shuffle, RepeatOne, RepeatAll, NoRepeat };
     Q_ENUM(RepeatMode);
 
     static PlayerManager& getInstance();
@@ -52,6 +52,8 @@ signals:
     void volumeChanged(int volume);
     void mutedChanged(bool isMuted);
     void RequestForsync(const Song);
+    void coverAndLabelChanged(const QPixmap& cover, const QString& label);
+    void repeatModeChanged(RepeatMode mode);
 
 private:
     explicit PlayerManager(QObject *parent = nullptr);
@@ -80,6 +82,9 @@ private:
 
     bool ismovie;
     bool synced;
-    };
+
+    void setRepeatMode(RepeatMode mode);
+};
 
 #endif // PLAYERMANAGER_H
+

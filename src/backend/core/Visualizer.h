@@ -43,3 +43,4 @@ private:
 };
 
 #endif // VISUALIZERWIDGET_H
+

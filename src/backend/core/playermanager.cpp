@@ -1,14 +1,15 @@
-#include "src/backend/core/playermanager.h"
+#include "playermanager.h"
 #include "qfileinfo.h"
+#include "qmediametadata.h"
 #include "src/backend/db/DBM.h"
 #include "src/backend/network/sessionmanager.h"
 #include <QAudioOutput>
 #include <QWidget>
 #include <QDebug>
-#include <QMediaMetaData>
 #include <QVideoWidget>
 #include <algorithm>
 #include <random>
+#include <QPixmap>
 
 std::unique_ptr<PlayerManager> PlayerManager::s_instance = nullptr;
 
@@ -19,11 +20,10 @@ PlayerManager::PlayerManager(QObject *parent)
     m_audioOutput(new QAudioOutput(this)),
     m_currentMedia(nullptr),
     m_playMode(PlayMode::SingleMedia),
-    m_repeatMode(RepeatMode::RepeatOne),
+    m_repeatMode(RepeatMode::NoRepeat),
     m_currentIndex(-1)
 {
     m_player->setAudioOutput(m_audioOutput);
-    // اتصال سیگنال‌های داخلی به سیگنال‌های عمومی
     connect(m_player, &QMediaPlayer::playbackStateChanged, this, &PlayerManager::playbackStateChanged);
     connect(m_player, &QMediaPlayer::positionChanged, this, &PlayerManager::positionChanged);
     connect(m_player, &QMediaPlayer::durationChanged, this, &PlayerManager::durationChanged);
@@ -51,14 +51,12 @@ void PlayerManager::cleanupCurrentMedia() {
     }
 }
 
-// === پیاده‌سازی منطق جدید ===
 
 void PlayerManager::loadSingleMedia(const QString& filePath) {
     cleanupCurrentMedia();
     m_playlist.clear();
     m_currentIndex = -1;
     m_playMode = PlayMode::SingleMedia;
-
     m_currentMedia = new Song();
     m_currentMedia->setPath(filePath);
     m_currentMedia->setName(QFileInfo(filePath).baseName());
@@ -66,8 +64,18 @@ void PlayerManager::loadSingleMedia(const QString& filePath) {
     m_currentMedia->setID(num);
     m_player->setSource(QUrl::fromLocalFile(filePath));
     emit currentSongChanged(*m_currentMedia);
+    QMediaPlayer tempPlayer;
+    tempPlayer.setSource(QUrl::fromLocalFile(filePath));
+    QVariant coverVar = tempPlayer.metaData().value(QMediaMetaData::CoverArtImage);
+    QPixmap coverPixmap;
+    if (coverVar.isValid()) {
+        QImage coverImage = coverVar.value<QImage>();
+        coverPixmap = QPixmap::fromImage(coverImage).scaled(300, 300, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    } else {
+        coverPixmap = QPixmap(":/default/cover.png").scaled(300, 300, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
+    emit coverAndLabelChanged(coverPixmap, m_currentMedia->getName());
     synced = false;
-    // پخش خودکار حذف شد
 }
 
 
@@ -120,13 +128,21 @@ void PlayerManager::pause() {
 
 void PlayerManager::playSongAtIndex(int index) {
     if (index < 0 || index >= m_playlist.size()) return;
-
     m_currentIndex = index;
     const Song& songToPlay = m_playlist.at(index);
-
-
     m_player->setSource(QUrl::fromLocalFile(songToPlay.getPath()));
     emit currentSongChanged(songToPlay);
+    QMediaPlayer tempPlayer;
+    tempPlayer.setSource(QUrl::fromLocalFile(songToPlay.getPath()));
+    QVariant coverVar = tempPlayer.metaData().value(QMediaMetaData::CoverArtImage);
+    QPixmap coverPixmap;
+    if (coverVar.isValid()) {
+        QImage coverImage = coverVar.value<QImage>();
+        coverPixmap = QPixmap::fromImage(coverImage).scaled(300, 300, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    } else {
+        coverPixmap = QPixmap(":/default/cover.png").scaled(300, 300, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
+    emit coverAndLabelChanged(coverPixmap, songToPlay.getName());
     play();
 }
 
@@ -138,6 +154,11 @@ void PlayerManager::next() {
             generateShuffleIndexes();
         }
         playSongAtIndex(m_shuffleIndexes[m_currentShuffleIndex % m_shuffleIndexes.size()]);
+    } else if (m_repeatMode == RepeatMode::NoRepeat) {
+        if (m_currentIndex + 1 < m_playlist.size()) {
+            m_currentIndex++;
+            playSongAtIndex(m_currentIndex);
+        } // else do nothing (stop at last song)
     } else {
         m_currentIndex = (m_currentIndex + 1) % m_playlist.size();
         playSongAtIndex(m_currentIndex);
@@ -174,23 +195,31 @@ void PlayerManager::setMuted(bool muted) {
 }
 
 void PlayerManager::changeRepeatMode() {
-    // Cycle: Shuffle -> RepeatOne -> RepeatAll -> Shuffle ...
-    if (m_repeatMode == RepeatMode::Shuffle) {
-        m_repeatMode = RepeatMode::RepeatOne;
-        // TODO: به UI خبر بده که آیکون را به RepeatOne تغییر دهد
-        m_currentShuffleIndex = 0; // Reset shuffle index
-    } else if (m_repeatMode == RepeatMode::RepeatOne) {
-        m_repeatMode = RepeatMode::RepeatAll;
-        // TODO: به UI خبر بده که آیکون را به RepeatAll تغییر دهد
-        m_currentShuffleIndex = 0; // Reset shuffle index
-    } else if (m_repeatMode == RepeatMode::RepeatAll) {
-        m_repeatMode = RepeatMode::Shuffle;
-        // TODO: به UI خبر بده که آیکون را به Shuffle تغییر دهد
-        if (!m_playlist.isEmpty()) {
-            generateShuffleIndexes();
-        }
+    switch (m_repeatMode) {
+        case RepeatMode::Shuffle:
+            m_repeatMode = RepeatMode::RepeatOne;
+            break;
+        case RepeatMode::RepeatOne:
+            m_repeatMode = RepeatMode::RepeatAll;
+            break;
+        case RepeatMode::RepeatAll:
+            m_repeatMode = RepeatMode::NoRepeat;
+            break;
+        case RepeatMode::NoRepeat:
+            m_repeatMode = RepeatMode::Shuffle;
+            break;
+    }
+    emit repeatModeChanged(m_repeatMode);
+    m_currentShuffleIndex = 0; // Reset shuffle index if needed
+}
+
+void PlayerManager::setRepeatMode(RepeatMode mode) {
+    if (m_repeatMode != mode) {
+        m_repeatMode = mode;
+        emit repeatModeChanged(mode);
     }
 }
+
 PlayerManager& PlayerManager::getInstance() {
     if (!s_instance) {
         s_instance.reset(new PlayerManager());
@@ -251,6 +280,7 @@ void PlayerManager::onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
                     generateShuffleIndexes();
                 }
                 playSongAtIndex(m_shuffleIndexes[m_currentShuffleIndex % m_shuffleIndexes.size()]);
+            } else if (m_repeatMode == RepeatMode::NoRepeat) {
             }
         }
     }
@@ -273,5 +303,6 @@ QMediaPlayer::PlaybackState PlayerManager::getPlaybackState() const {
 qint64 PlayerManager::getCurrentPosition() const {
     return m_player->position();
 }
+
 
 

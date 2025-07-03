@@ -11,18 +11,14 @@ public:
 
     SecurityManager();
     ~SecurityManager();
-    // encrypt and decrypt
     QString encrypt(const QString& plainText, const QString& baseSecret)const;
     QString decrypt(const QString& encryptedText,  const QString& baseSecret)const;
 
-    //hash
     QString Hash(const QString& plainText)const;
 
-    //security_key gen
 
     QString securityKey_gen()const;
 
-    // send Email verifycation code
 
     const QString SendVerification_Code(QString& Email);
 
@@ -34,3 +30,4 @@ private:
 
 
 #endif // SECURITYMANAGER_H
+

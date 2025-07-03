@@ -18,11 +18,11 @@ PlayerControlWidget::PlayerControlWidget(QWidget *parent)
     connect(ui->pushButton_next, &QPushButton::clicked, this, &PlayerControlWidget::on_pushButton_next_clicked);
     connect(ui->pushButton_previous, &QPushButton::clicked, this, &PlayerControlWidget::on_pushButton_previous_clicked);
     connect(ui->pushButton_mute, &QPushButton::clicked, this, &PlayerControlWidget::handleMuteClicked);
-    connect(ui->pushButton_playing_type, &QPushButton::clicked, this, &PlayerControlWidget::on_pushButton_playing_type_clicked);
     connect(ui->horizontalSlider_volume, &QSlider::valueChanged, this, &PlayerControlWidget::on_horizontalSlider_volume_valueChanged);
     connect(ui->horizontalSlider_timeline, &QSlider::sliderMoved, this, &PlayerControlWidget::on_horizontalSlider_timeline_sliderMoved);
     connect(ui->pushButton, &QPushButton::clicked, this, &PlayerControlWidget::onLikeButtonClicked);
     updateLikeIcon();
+    ui->pushButton_playing_type->setIcon(QIcon(":/icon.arrow.png"));
 }
 
 PlayerControlWidget::~PlayerControlWidget()
@@ -59,7 +59,6 @@ void PlayerControlWidget::updatePosition(qint64 position)
     ui->horizontalSlider_timeline->blockSignals(false);
 
 
-    // time lable update
     int seconds = (position / 1000) % 60;
     int minutes = (position / 60000) % 60;
     ui->label_passed_time->setText(QString("%1:%2").arg(minutes, 2, 10, QChar('0')).arg(seconds, 2, 10, QChar('0')));
@@ -166,4 +165,5 @@ void PlayerControlWidget::updateLikeIcon()
     else
         ui->pushButton->setIcon(QIcon(":/icone/heart.png"));
 }
+
 

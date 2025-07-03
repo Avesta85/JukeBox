@@ -33,7 +33,6 @@ void EditPlayList::update_SongView(const QList<Song>& AllSong, const QList<Song>
     m_playlistId = playlistId;
     m_initialPlaylistName = playlistName;
     int row = 0;
-    // 1. Add playlist songs (checked, in order)
     for (const Song& s : playlistSong) {
         ui->tableWidget_allSong->insertRow(row);
         QTableWidgetItem* item = new QTableWidgetItem(s.getName());
@@ -43,7 +42,6 @@ void EditPlayList::update_SongView(const QList<Song>& AllSong, const QList<Song>
         ui->tableWidget_allSong->setItem(row, 0, item);
         row++;
     }
-    // 2. Add remaining songs (unchecked)
     QSet<qint64> alreadyAddedIds = playlistIds;
     for (const Song& s : AllSong) {
         if (alreadyAddedIds.contains(s.getID())) continue;
@@ -55,7 +53,6 @@ void EditPlayList::update_SongView(const QList<Song>& AllSong, const QList<Song>
         ui->tableWidget_allSong->setItem(row, 0, item);
         row++;
     }
-    // Set playlist name
     ui->lineEdit_playlistName->setText(playlistName);
 }
 
@@ -76,7 +73,6 @@ void EditPlayList::on_pushButton_save_clicked()
         if (!checkedIds.contains(id)) removedSongs << id;
     }
     emit update_songToPlaylist(m_playlistId, newSongs, removedSongs);
-    // Check for playlist name change
     QString newName = ui->lineEdit_playlistName->text().trimmed();
     if (!newName.isEmpty() && newName != m_initialPlaylistName) {
         emit update_playlistName(m_playlistId, newName);
@@ -88,3 +84,4 @@ void EditPlayList::on_pushButton_back_clicked()
 {
     this->reject();
 }
+

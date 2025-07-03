@@ -20,3 +20,4 @@ private:
 };
 
 #endif // MOVIEMANAGEMENTWINDOW_H
+

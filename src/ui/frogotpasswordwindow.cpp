@@ -61,7 +61,6 @@ void FrogotPasswordWindow::on_pushButton_ok_clicked()
         return;
     }
 
-    // databace
 
     if(ui->radioButton_email_verification->isChecked())
     {
@@ -104,4 +103,5 @@ void FrogotPasswordWindow::on_pushButton_back_clicked()
     emit backToLoginWindow();
     ui->lineEdit->clear();
 }
+
 

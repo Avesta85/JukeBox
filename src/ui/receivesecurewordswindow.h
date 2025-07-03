@@ -39,3 +39,4 @@ private:
 
 
 #endif // RECEIVESECUREWORDSWINDOW_H
+

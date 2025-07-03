@@ -27,12 +27,9 @@ StageWidget::StageWidget(QWidget *parent)
     this->addWidget(moviePageContainer);
     moviePageContainer = moviePageContainer;
 
-    // Connect filter button in video management page
-    // connect(ui->button_filter, &QPushButton::clicked, this, &StageWidget::onFilterButtonClicked);
     connect(ui->comboBox_filter, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &StageWidget::onFilterChanged);
     connect(ui->button_open, &QPushButton::clicked, this, &StageWidget::onOpenButtonClicked);
 
-    // In constructor, after setupUi, ensure videoWidget_main fits layout
     ui->videoWidget_main->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     showCoverArtPage();
@@ -89,3 +86,4 @@ void StageWidget::onOpenButtonClicked() {
         emit videoFileSelected(filePath);
     }
 }
+

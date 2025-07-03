@@ -27,9 +27,9 @@
 extern "C" {
 #endif
 
-/* Flag bits in the curl_blob struct: */
-#define CURL_BLOB_COPY   1 /* tell libcurl to copy the data */
-#define CURL_BLOB_NOCOPY 0 /* tell libcurl to NOT copy the data */
+
+#define CURL_BLOB_COPY   1 
+#define CURL_BLOB_NOCOPY 0 
 
 struct curl_blob {
   void *data;
@@ -119,7 +119,8 @@ CURL_EXTERN CURLcode curl_easy_send(CURL *curl, const void *buffer,
 CURL_EXTERN CURLcode curl_easy_upkeep(CURL *curl);
 
 #ifdef  __cplusplus
-} /* end of extern "C" */
+} 
 #endif
 
 #endif
+

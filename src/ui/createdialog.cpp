@@ -11,7 +11,6 @@ mycreateDialog::mycreateDialog(QWidget *parent)
     , ui(new Ui::mycreateDialog)
 {
     ui->setupUi(this);
-    //connect(ui->pushButton_creat, &QPushButton::clicked, this, &mycreateDialog::on_pushButton_creat_clicked);
 }
 
 mycreateDialog::~mycreateDialog()
@@ -52,6 +51,7 @@ void mycreateDialog::update_songsList(const QList<Song> songsList)
         ui->tableWidget->setItem(i, 0, item);
     }
 }
+
 
 
 

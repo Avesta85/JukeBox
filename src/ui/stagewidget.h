@@ -43,3 +43,4 @@ private slots:
 };
 
 #endif // STAGEWIDGET_H
+

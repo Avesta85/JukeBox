@@ -140,3 +140,4 @@ void VisualizerWidget::drawWaveform(QPainter &p) {
 
 
 }
+

@@ -16,3 +16,4 @@ const QString& Song::getArtist()const
 
 const size_t& Song::getID()const
 {return this->id; }
+

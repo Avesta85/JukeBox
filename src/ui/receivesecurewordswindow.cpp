@@ -125,3 +125,4 @@ void ReceiveSecureWordsWindow::on_pushButton_coniform_clicked()
     }
 }
 
+

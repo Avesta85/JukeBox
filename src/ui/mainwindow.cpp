@@ -1,8 +1,6 @@
 #include "mainwindow.h"
-#include "src/ui/jukeboxsessionwidget.h"
+#include "qdockwidget.h"
 #include "ui_mainwindow.h"
-#include "src/backend/network/sessionmanager.h"
-#include "src/backend/core/playermanager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -59,3 +57,4 @@ void MainWindow::updateSongInfo(const Song& song)
         this->setWindowTitle("JukeBox");
     }
 }
+

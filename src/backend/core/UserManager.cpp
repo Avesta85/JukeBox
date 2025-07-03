@@ -276,3 +276,4 @@ bool UserManager::is_loggedin()
 {
     return m_local_user.has_value();
 }
+

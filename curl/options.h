@@ -29,18 +29,18 @@ extern "C" {
 #endif
 
 typedef enum {
-  CURLOT_LONG,    /* long (a range of values) */
-  CURLOT_VALUES,  /*      (a defined set or bitmask) */
-  CURLOT_OFF_T,   /* curl_off_t (a range of values) */
-  CURLOT_OBJECT,  /* pointer (void *) */
-  CURLOT_STRING,  /*         (char * to null-terminated buffer) */
-  CURLOT_SLIST,   /*         (struct curl_slist *) */
-  CURLOT_CBPTR,   /*         (void * passed as-is to a callback) */
-  CURLOT_BLOB,    /* blob (struct curl_blob *) */
-  CURLOT_FUNCTION /* function pointer */
+  CURLOT_LONG,    
+  CURLOT_VALUES,  
+  CURLOT_OFF_T,   
+  CURLOT_OBJECT,  
+  CURLOT_STRING,  
+  CURLOT_SLIST,   
+  CURLOT_CBPTR,   
+  CURLOT_BLOB,    
+  CURLOT_FUNCTION 
 } curl_easytype;
 
-/* Flag bits */
+
 
 /* "alias" means it is provided for old programs to remain functional,
    we prefer another name */
@@ -65,6 +65,7 @@ CURL_EXTERN const struct curl_easyoption *
 curl_easy_option_next(const struct curl_easyoption *prev);
 
 #ifdef __cplusplus
-} /* end of extern "C" */
+} 
 #endif
-#endif /* CURLINC_OPTIONS_H */
+#endif 
+

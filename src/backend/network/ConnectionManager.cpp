@@ -155,7 +155,6 @@ void ConnectionManager::onNewFileConnection()
     connect(worker, &FileReceiverWorker::finished, worker, &FileReceiverWorker::deleteLater);
     connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
-    // connect(worker, &FileReceiverWorker::progress, this, &ConnectionManager::fileTransferProgress);
 
     thread->start();
 
@@ -164,3 +163,4 @@ void ConnectionManager::onNewFileConnection()
 
 ConnectionManager::~ConnectionManager()
 {}
+

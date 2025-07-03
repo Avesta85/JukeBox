@@ -15,7 +15,6 @@ ChangePasswordWindow::ChangePasswordWindow(QWidget *parent)
     QRegularExpressionValidator *passwordValidator = new QRegularExpressionValidator(rxPassword, this);
     if (ui->lineEdit_password) {
         ui->lineEdit_password->setValidator(passwordValidator);
-        // همچنین خوب است حالت نمایش رمز عبور را تنظیم کنید
         ui->lineEdit_confirmePassword->setEchoMode(QLineEdit::Password);
     } else
     {
@@ -25,7 +24,6 @@ ChangePasswordWindow::ChangePasswordWindow(QWidget *parent)
     QRegularExpressionValidator *passwordValidator1 = new QRegularExpressionValidator(rxPassword, this);
     if (ui->lineEdit_confirmePassword) {
         ui->lineEdit_confirmePassword->setValidator(passwordValidator1);
-        // همچنین خوب است حالت نمایش رمز عبور را تنظیم کنید
         ui->lineEdit_confirmePassword->setEchoMode(QLineEdit::Password);
     } else
     {
@@ -67,7 +65,6 @@ void ChangePasswordWindow::on_pushButton_clicked()
         return;
     }
 
-    // databace
     SecurityManager sm;
     if(DBM::get_instance().updateUserPassword(Username,sm.Hash(password)))
     {
@@ -81,4 +78,5 @@ void ChangePasswordWindow::on_pushButton_clicked()
 
     emit goToLoginWindow();
 }
+
 

@@ -29,6 +29,8 @@ void onlineChatHost::on_pushButton_Send_2_clicked()
 void onlineChatHost::on_pushButton_End_clicked()
 {
     emit endSession();
+    ui->listWidget_Participant_2->clear();
+    this->close();
 }
 
 void onlineChatHost::on_pushButton_Disconnect_clicked()
@@ -79,11 +81,8 @@ void onlineChatHost::onUsersDisconnected(const QList<Person>& users)
 
 void onlineChatHost::kickUsers(const QList<Person>& users)
 {
-    // این اسلات می‌تواند از UI یا SessionManager فراخوانی شود
-    // برای اخراج کاربران از سشن
     emit disconnectUsers(users);
     
-    // به‌روزرسانی UI
     for (const Person& user : users) {
         QString username = user.getUserName();
         QList<QListWidgetItem*> found = ui->listWidget_Participant_2->findItems(username, Qt::MatchExactly);
@@ -92,3 +91,4 @@ void onlineChatHost::kickUsers(const QList<Person>& users)
         }
     }
 }
+

@@ -48,17 +48,14 @@ DBM::DBM()
 
         this->fineMusicDir();
 
-        // load from disk
         QFuture<QMap<QString,QString>> future = QtConcurrent::run([this](){
             return this->scanDiskForSongs(this->m_db_songs_folder);
         });
 
-        // setup db
         this->SetupDb();
 
         future.waitForFinished();
 
-        // apply changes to setuped db
 
         auto diskSongs = future.result();
 
@@ -100,7 +97,6 @@ void DBM::SetupTable()
     std::scoped_lock<QMutex>lock(m_db_mutex);
     QSqlQuery query;
 
-    // user table id , Username , firstname , lastname,password ,email,secret key
 
     bool success = query.exec(""
                               "CREATE TABLE IF NOT EXISTS Users ( "
@@ -113,7 +109,6 @@ void DBM::SetupTable()
                               "secret_key TEXT "
                               "); ");
 
-    //song table id , name, path
 
 
     success &= query.exec(""
@@ -123,7 +118,6 @@ void DBM::SetupTable()
                           "path TEXT UNIQUE NOT NULL "
                           "); ");
 
-    //playlist table id , name , id
 
     success &= query.exec(""
                           "CREATE TABLE IF NOT EXISTS Playlists ( "
@@ -133,7 +127,6 @@ void DBM::SetupTable()
                           "FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE "
                           "); ");
 
-    //playlist songs id id
 
     success &= query.exec(""
                           "CREATE TABLE IF NOT EXISTS PlaylistSongs ( "
@@ -144,7 +137,6 @@ void DBM::SetupTable()
                           "FOREIGN KEY (song_id) REFERENCES Songs (id) ON DELETE CASCADE "
                           ");");
 
-    //favorite song id id
 
     success &= query.exec(""
                           "CREATE TABLE IF NOT EXISTS FavoriteSongs ( "
@@ -155,7 +147,6 @@ void DBM::SetupTable()
                           "FOREIGN KEY (song_id) REFERENCES Songs (id) ON DELETE CASCADE "
                           "); ");
 
-    //friend id , Username, ip , port
 
     success &= query.exec(""
                           "CREATE TABLE IF NOT EXISTS Friends ( "
@@ -199,7 +190,6 @@ QMap<QString, QString> DBM::scanDiskForSongs(const QString &folder_path) const
 void DBM::applySyncChanges(const QMap<QString, QString> &diskSongs)
 {
     std::scoped_lock<QMutex>lock(m_db_mutex);
-    // load from songs table
 
     QMap<QString,QString> dbSongs;
     QSqlQuery selectQuery;
@@ -217,7 +207,6 @@ void DBM::applySyncChanges(const QMap<QString, QString> &diskSongs)
 
     }
 
-    // compare
 
     auto tmplist1 = dbSongs.keys();
     const QSet<QString> dbPath(tmplist1.begin(),tmplist1.end());
@@ -272,7 +261,6 @@ void DBM::applySyncChanges(const QMap<QString, QString> &diskSongs)
     }
 }
 
-// insert
 bool DBM::insertSong(const QString &name, const QString &path)
 {
     std::scoped_lock<QMutex>lock(m_db_mutex);
@@ -393,7 +381,6 @@ bool DBM::insertFavoritSong(const size_t user_id, const size_t song_id)
     return true;
 }
 
-//select
 
 void DBM::selectUser(std::optional<User>&local_user_holder,const QString &Username, const QString &Password)
 {
@@ -609,7 +596,6 @@ QString DBM::getSKeyofUser(const QString &username)
     return "";
 }
 
-// delete
 bool DBM::deleteUser(const size_t user_id)
 {
     std::scoped_lock locker(m_db_mutex);
@@ -802,7 +788,6 @@ bool DBM::updateUserEmail(qint64 user_id, const QString &newEmail)
     }
 }
 
-// update
 bool DBM::updatePlaylistName(const size_t playlist_id, const QString &newPlaylist_Name)
 {
     std::scoped_lock locker(m_db_mutex);
@@ -877,7 +862,6 @@ void DBM::applyVerifySongsPath()
 {
 
     std::scoped_lock<QMutex>lock(m_db_mutex);
-    // Select all songs
 
     QMap<qint64,QString> allsongs;
     QSqlQuery selectall;
@@ -999,5 +983,6 @@ Song DBM::getSongByName(const QString& name)
     }
     return Song();
 }
+
 
 

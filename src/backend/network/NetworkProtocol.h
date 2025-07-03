@@ -53,3 +53,4 @@ using ParticipantInfo = QMap<QString, QString>;
 Q_DECLARE_METATYPE(ParticipantInfo)
 
 #endif // NETWORKPROTOCOL_H
+

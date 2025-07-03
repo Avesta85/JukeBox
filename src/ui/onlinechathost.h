@@ -1,8 +1,11 @@
 #ifndef ONLINECHATHOST_H
 #define ONLINECHATHOST_H
 
-#include "src/backend/core/person.h"
+#include <QObject>
 #include <QDialog>
+#include <QList>
+#include <QString>
+#include "../backend/core/person.h"
 
 namespace Ui {
 class onlineChatHost;
@@ -39,3 +42,4 @@ private:
 };
 
 #endif // ONLINECHATHOST_H
+
