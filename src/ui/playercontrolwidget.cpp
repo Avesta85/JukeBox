@@ -22,7 +22,7 @@ PlayerControlWidget::PlayerControlWidget(QWidget *parent)
     connect(ui->horizontalSlider_timeline, &QSlider::sliderMoved, this, &PlayerControlWidget::on_horizontalSlider_timeline_sliderMoved);
     connect(ui->pushButton, &QPushButton::clicked, this, &PlayerControlWidget::onLikeButtonClicked);
     updateLikeIcon();
-    ui->pushButton_playing_type->setIcon(QIcon(":/icon.arrow.png"));
+   // ui->pushButton_playing_type->setIcon(QIcon(":/icon.arrow.png"));
 }
 
 PlayerControlWidget::~PlayerControlWidget()
