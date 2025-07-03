@@ -64,8 +64,8 @@
          <enum>QFrame::Shadow::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_8">
+         <item row="0" column="0">
+          <spacer name="horizontalSpacer_7">
            <property name="orientation">
             <enum>Qt::Orientation::Horizontal</enum>
            </property>
@@ -135,6 +135,20 @@
             </layout>
            </item>
            <item>
+            <widget class="QLineEdit" name="lineEdit_get_friend">
+             <property name="placeholderText">
+              <string>Eneter yuor friend name for add</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="text">
+              <string>Add</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QTableWidget" name="tableWidget_songs_of_playlist"/>
            </item>
            <item>
@@ -146,8 +160,8 @@
            </item>
           </layout>
          </item>
-         <item row="0" column="0">
-          <spacer name="horizontalSpacer_7">
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_8">
            <property name="orientation">
             <enum>Qt::Orientation::Horizontal</enum>
            </property>

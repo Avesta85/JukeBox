@@ -23,6 +23,9 @@ public slots:
 signals:
 
     void delete_Friend(const QList<Person> deletedPerson);
+private slots:
+    void on_pushButton_3_clicked();
+
 private:
     Ui::Dialog_Friends *ui;
     QList<Person> m_allFriends;

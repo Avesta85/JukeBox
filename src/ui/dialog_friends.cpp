@@ -8,6 +8,8 @@
 #include <QHeaderView>
 #include <QString>
 #include <Qt>
+#include <QMessageBox>
+#include "src/backend/core/UserManager.h"
 #include "src/backend/core/person.h"
 
 namespace {
@@ -90,5 +92,33 @@ void Dialog_Friends::fill_table(const QList<Person>& list)
         ui->tableWidget_songs_of_playlist->setItem(i, 1, nameItem);
     }
     ui->tableWidget_songs_of_playlist->resizeColumnsToContents();
+}
+
+
+void Dialog_Friends::on_pushButton_3_clicked()
+{
+    QString friendName = ui->lineEdit_get_friend->text();
+
+    if(friendName.isEmpty())
+    {
+        QMessageBox msgBox(QMessageBox::Warning, "Warning", "fill the your feiend name field", QMessageBox::Ok, this);
+        msgBox.setWindowIcon(QIcon(":/icone/warning.png"));
+        msgBox.setIconPixmap(QPixmap(":/icone/warning2.png"));
+        msgBox.exec();
+
+        return;
+    }
+
+    else
+    {
+        UserManager::getInstance().addFriend(friendName);
+        ui->lineEdit_get_friend->clear();
+        QMessageBox msgBox(QMessageBox::Information, "information",
+                          "friend name added! pleae close friend name and open it again!",
+                          QMessageBox::Ok,
+                          this);
+
+        msgBox.exec();
+    }
 }
 

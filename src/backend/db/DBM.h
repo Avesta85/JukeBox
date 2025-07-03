@@ -28,9 +28,6 @@ public:
     ~DBM();
     static DBM& get_instance();
 
-
-
-
     void Reload_folder();
     QMap<QString,QString> scanDiskForSongs(const QString& folder_path) const; // read disk and create {path , songs_name } map
 
