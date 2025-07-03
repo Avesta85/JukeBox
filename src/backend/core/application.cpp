@@ -203,6 +203,7 @@ void Application::showMainWindow()
         connect(toolbox, &ToolBoxWidget::FavoriteSongsClicked, this, &Application::show_FavoriteSongWindow);
         connect(toolbox, &ToolBoxWidget::FriendsListClicked, this, &Application::show_FriendWindow);
         connect(toolbox, &ToolBoxWidget::QueueClicked, this, &Application::show_QueueWindow);
+        connect(toolbox, &ToolBoxWidget::backCoverArt, stage, &StageWidget::showCoverArtPage);
 
         connect(toolbox, &ToolBoxWidget::onlineManagmentClicked, this, &Application::show_sessionWindow);
         PlayerManager& playerManager = PlayerManager::getInstance();

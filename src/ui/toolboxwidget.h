@@ -30,6 +30,7 @@ signals:
     void onlineManagmentClicked();
     void visualizerClicked();
     void coverArtClicke();
+    void backCoverArt();
 
 private slots:
 

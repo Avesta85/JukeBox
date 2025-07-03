@@ -42,6 +42,7 @@ StageWidget::StageWidget(QWidget *parent)
     proxy->setPos(100, 100);
     proxy->setFlag(QGraphicsItem::ItemIsMovable);
 
+
     showCoverArtPage();
 }
 
